@@ -1,0 +1,15 @@
+HandOutlines
+HouseTwenty
+PigAirwayPressure
+PigCVP
+InlineSkate
+EthanolLevel
+CinCECGTorso
+ACSF1
+EOGHorizontalSignal
+EOGVerticalSignal
+Haptics
+Mallat
+StarLightCurves
+MixedShapesRegularTrain
+MixedShapesSmallTrain

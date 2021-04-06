@@ -1,0 +1,13 @@
+C://Code/UCR_TS_Archive_2015/HandOutlines/HandOutlines_TRAIN
+C://Code/UCR_TS_Archive_2015/InlineSkate/InlineSkate_TRAIN
+C://Code/UCR_TS_Archive_2015/CinC_ECG_torso/CinC_ECG_torso_TRAIN
+C://Code/UCR_TS_Archive_2015/Haptics/Haptics_TRAIN
+C://Code/UCR_TS_Archive_2015/MALLAT/MALLAT_TRAIN
+C://Code/UCR_TS_Archive_2015/StarLightCurves/StarLightCurves_TRAIN
+C://Code/UCR_TS_Archive_2015/Worms/Worms_TRAIN
+C://Code/UCR_TS_Archive_2015/RefrigerationDevices/RefrigerationDevices_TRAIN
+C://Code/UCR_TS_Archive_2015/Computers/Computers_TRAIN
+C://Code/UCR_TS_Archive_2015/LargeKitchenAppliances/LargeKitchenAppliances_TRAIN
+C://Code/UCR_TS_Archive_2015/ScreenType/ScreenType_TRAIN
+C://Code/UCR_TS_Archive_2015/SmallKitchenAppliances/SmallKitchenAppliances_TRAIN
+C://Code/UCR_TS_Archive_2015/Lighting2/Lighting2_TRAIN
