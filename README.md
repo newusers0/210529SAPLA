@@ -5,16 +5,16 @@ This repository contains VS2019 C++ implementation of the [SAPLA](https://sites.
 ```
 This is implementation of SAPLA, APCA, PLA, CHEBY, APLA, PAA, SAX, PAALM, R-tree, KNN.
 ```
-* SAPLA algorithm is implemented in [CAPLA](https://github.com/newusers0/210519SAPLA/blob/master/CAPLA.h).
-* APCA algorithm is implemented in [CAPCA](https://github.com/newusers0/210519SAPLA/blob/master/CAPCA.h).
-* PLA algorithm is implemented in [CPLA](https://github.com/newusers0/210519SAPLA/blob/master/CPLA.h).
-* CHEBY algorithm is implemented in [CCHEBYSHEV](https://github.com/newusers0/210519SAPLA/blob/master/CCHEBYSHEV.h).
-* APLA algorithm is implemented in [APLA_ICDE07](https://github.com/newusers0/210519SAPLA/blob/master/APLA_ICDE07.h).
-* PAA algorithm is implemented in [CAPCA](https://github.com/newusers0/210519SAPLA/blob/master/CAPCA.h).
-* SAX algorithm is implemented in [saxquantizer](https://github.com/newusers0/210519SAPLA/blob/master/lib/saxquantizer.hpp) from original [code](https://github.com/melsabagh/sax).
-* PAALM algorithm is implemented in [CAPCA](https://github.com/newusers0/210519SAPLA/blob/master/CAPCA.h).
-* R-tree algorithm is implemented in [RTree](https://github.com/newusers0/210519SAPLA/blob/master/RTree.h) from original [code](https://superliminal.com/sources/).
-* KNN algorithm is implemented in [MULTI](https://github.com/newusers0/210519SAPLA/blob/master/MULTI_DIMENSION.h).
+* SAPLA algorithm is implemented in [CAPLA](https://github.com/newusers0/210529SAPLA/blob/master/CAPLA.h).
+* APCA algorithm is implemented in [CAPCA](https://github.com/newusers0/210529SAPLA/blob/master/CAPCA.h).
+* PLA algorithm is implemented in [CPLA](https://github.com/newusers0/210529SAPLA/blob/master/CPLA.h).
+* CHEBY algorithm is implemented in [CCHEBYSHEV](https://github.com/newusers0/210529SAPLA/blob/master/CCHEBYSHEV.h).
+* APLA algorithm is implemented in [APLA_ICDE07](https://github.com/newusers0/210529SAPLA/blob/master/APLA_ICDE07.h).
+* PAA algorithm is implemented in [CAPCA](https://github.com/newusers0/210529SAPLA/blob/master/CAPCA.h).
+* SAX algorithm is implemented in [saxquantizer](https://github.com/newusers0/210529SAPLA/blob/master/lib/saxquantizer.hpp) from original [code](https://github.com/melsabagh/sax).
+* PAALM algorithm is implemented in [CAPCA](https://github.com/newusers0/210529SAPLA/blob/master/CAPCA.h).
+* R-tree algorithm is implemented in [RTree](https://github.com/newusers0/210529SAPLA/blob/master/RTree.h) from original [code](https://superliminal.com/sources/).
+* KNN algorithm is implemented in [MULTI](https://github.com/newusers0/210529SAPLA/blob/master/MULTI_DIMENSION.h).
 ---
 
 ## Data
