@@ -3,7 +3,7 @@ This repository contains VS2019 C++ implementation of the [SAPLA](https://sites.
 
 ## Introduction
 ```
-This is implementation of SAPLA, APCA, PLA, CHEBY, APLA, PAA, SAX, PAALM, R-tree, KNN.
+This is implementation of SAPLA, APLA, APCA, PLA, PAA, CHEBY, PAALM, SAX, R-tree, updated R-tree, KNN.
 ```
 * SAPLA algorithm is implemented in [CAPLA](https://github.com/newusers0/210529SAPLA/blob/master/CAPLA.h).
 * APLA algorithm is implemented in [APLA_ICDE07](https://github.com/newusers0/210529SAPLA/blob/master/APLA_ICDE07.h).
