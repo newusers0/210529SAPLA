@@ -16,8 +16,7 @@ TEMPLATE
 class CAPLA : virtual public GEOMETRY, virtual public TOOL, virtual public PLA_QUAL {
 public:
 	struct TOOL::INPUT_ARGUMENT input_argument;
-	struct TOOL::OUTPUT_ARGUMENT output_argument;//181214
-	//struct TOOL::TIME time_record[20];//181210
+	struct TOOL::OUTPUT_ARGUMENT output_argument;
 
 	struct POINT;//210509
 	struct BREAK_POINT_COEFFICIENT;
