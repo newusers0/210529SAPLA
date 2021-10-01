@@ -14,7 +14,7 @@ This is implementation of SAPLA, APCA, PLA, CHEBY, APLA, PAA, SAX, PAALM, R-tree
 * SAX algorithm is implemented in [saxquantizer](https://github.com/newusers0/210529SAPLA/blob/master/lib/saxquantizer.hpp) from original [code](https://github.com/melsabagh/sax).
 * PAALM algorithm is implemented in [CAPCA](https://github.com/newusers0/210529SAPLA/blob/master/CAPCA.h).
 * R-tree algorithm is implemented in [RTree](https://github.com/newusers0/210529SAPLA/blob/master/lib/RTree.h) from original [code](https://superliminal.com/sources/).
-* Updated R-tree algorithm is implemented in [RTree](https://github.com/newusers0/210529SAPLA/blob/master/RTree_Partition.h) from original [code](https://superliminal.com/sources/).
+* Updated R-tree algorithm is implemented in [RTree](https://github.com/newusers0/210529SAPLA/blob/master/RTree_partition.h) from original [code](https://superliminal.com/sources/).
 * KNN algorithm is implemented in [MULTI](https://github.com/newusers0/210529SAPLA/blob/master/MULTI_DIMENSION.h).
 ---
 
