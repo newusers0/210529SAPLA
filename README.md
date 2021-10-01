@@ -1,4 +1,4 @@
-# An Indexable Approximation Method with Low Max Deviation Upper Bound for Time Series
+# An Indexable Time Series Dimensionality Reduction Method forMax Deviation Reduction and Similarity Search
 This repository contains VS2019 C++ implementation of the [SAPLA](https://sites.google.com/view/sapla0/home).
 
 ## Introduction
