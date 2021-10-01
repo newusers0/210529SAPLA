@@ -4061,10 +4061,6 @@ inline void TOOL::print_input_argument_KNN_result(const T& const input_argument)
 
 	cout << "Total KNN time : " << input_argument.knn_total_time << " us" << endl;
 
-	cout << "R-tree Euclidean distance time : " << input_argument.distance_euc_time << " us" << endl;
-
-	cout << "R-tree index distance time : " << input_argument.distance_lowbound_time << " us" << endl;
-
 	cout << "pruning power: " << input_argument.pruning_power << endl;
 }
 

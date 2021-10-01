@@ -13,14 +13,16 @@ TEMPLATE
 class EVALUATION : virtual public TOOL, virtual public APLA, virtual public CHEBYSHEV_QUAL{
 public:
 
-	void evaluate_multi_KNN_speed();
+	void evaluate_multi_KNN_speed(int option_tree_t);
 	template<typename T, typename Y>
 	inline void print_input_output(const T& const input_argument, const Y& const output_argument);
 };
 
 
 TEMPLATE
-void Evaluation::evaluate_multi_KNN_speed() {
+void Evaluation::evaluate_multi_KNN_speed(int option_tree_t) {
+
+	if (option_tree_t != 0 && option_tree_t != 1) return;
 
 	string* chebyshev_write_pointer = nullptr;
 	string dataset_attribute[] = { "", "Single dataset", "Mixed dataset", "Multi dimension data set" };
@@ -58,7 +60,7 @@ void Evaluation::evaluate_multi_KNN_speed() {
 
 	const int& const evaluation_type = 0;
 	const size_t& const data_type = 1;
-	const int option_tree = 1;
+	const int option_tree = option_tree_t;
 	string data_file_name = "./191202DataSet/data_set.txt";
 	string* file_address_pointer = nullptr;
 	const string& const str_suffix = "1";

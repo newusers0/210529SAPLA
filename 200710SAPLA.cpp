@@ -20,9 +20,11 @@ typedef double ValueType;
 
 int main()
 {
-	
+	int option_tree = 0;
+	cout << "Input: 0 Rtree. 1 updated Rtree" << endl;
+	cin >> option_tree;
 	Evaluation evaluation;
-	evaluation.evaluate_multi_KNN_speed();
+	evaluation.evaluate_multi_KNN_speed(option_tree);
 	system("pause");
 	return 0;
 }

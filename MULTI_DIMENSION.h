@@ -3057,7 +3057,7 @@ void MULTI::all_knn(typename TOOL::DATA_SOURCE& const data_source, const vector<
 
 	/*-----------------------------------------Evaluation------------------------------------*/
 	output_argument.run_time = input_argument.whole_run_time;
-	cout << "Accuracy: " << input_argument.result_accuracy << ", KNN time: " << input_argument.knn_total_time  << "us, whole time: " << input_argument.whole_run_time << endl;
+	cout << "Accuracy: " << input_argument.result_accuracy << ", KNN time: " << input_argument.knn_total_time  << "us" << endl;
 	/*---------------------------------------------------------------------------------------*/
 	/*delete[] query_time_series;
 	query_time_series = nullptr;*/
@@ -3151,13 +3151,7 @@ bool MULTI::apla_knn_multi(typename TOOL::INPUT_ARGUMENT& const input_argument, 
 				/*-------------------------------------------- Print Result ---------------------------------*/
 				cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! APLA Find result !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    result list size: " << result.size() << endl;
 
-				cout << "Total KNN time : " << input_argument.knn_total_time << " us" << endl;
-
-			
-
 				cout << "pruning power: " << input_argument.pruning_power << endl;
-
-				
 				result.sort([](const APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR& first, const  APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR& second) {return first.d_dist < second.d_dist; });//small to big
 
 				for (typename list<APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR>::iterator it = result.begin(); it != result.end(); ++it) {
@@ -3585,14 +3579,6 @@ std::multiset<pair<double, int>> MULTI::all_knn_multi(typename TOOL::DATA_SOURCE
 				assert(input_argument.pruning_power != INF && input_argument.knn_total_time != INF);
 				/*-------------------------------------------- Print Result ---------------------------------*/
 				cout << "!!!!!!!!!!!!! KNN Find result !!!!!!!!!!!!!!!!!!!!!!!!!!!!   result list size: " << result.size() << endl;
-
-				cout << "Total KNN time : " << input_argument.knn_total_time << " us" << endl;
-
-				cout << "R-tree index navigate time : " << input_argument.navigate_index_time << " us" << endl;
-
-				cout << "R-tree Euclidean distance time : " << input_argument.distance_euc_time << " us" << endl;
-
-				cout << "R-tree index distance time : " << input_argument.distance_lowbound_time << " us" << endl;
 
 				cout << "pruning power: " << input_argument.pruning_power << endl;
 
