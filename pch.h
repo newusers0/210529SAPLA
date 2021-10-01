@@ -72,16 +72,23 @@ typedef double ElementType;
 #define APLA CAPLA<DataType>//181112
 #define MULTI MULTI_DIMENSION<DataType>
 #define Evaluation EVALUATION<DataType>
+#define RTREE_PARTITION RTree_partition<DataType, ElementType>//210618
 
 #define INF std::numeric_limits<double>::infinity()
 #define EPS 1e-8//190311 for min circle cover
 #define MIN_D 1e-4
 /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 
+/*-------210618----------*/
 #include "./lib/RTree.h"
 typedef RTree<DataType, ElementType> RTREE;
+//#define RTREE RTree<DataType, ElementType>
+/*---------------------*/
 
 static int PAA_or_APCA = DBL_MAX;
+
+//TEMPLATE
+//class APLA_ICDE07;
 
 
 // TODO: add headers that you want to pre-compile here

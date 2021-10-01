@@ -220,6 +220,7 @@
     <ClCompile Include="lib\chebyshev_polynomial.cpp" />
     <ClCompile Include="MULTI_DIMENSION.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="RTree_partition.cpp" />
     <ClCompile Include="SHARE_TOOL.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -235,8 +236,10 @@
     <ClInclude Include="lib\doublyLinkedList.h" />
     <ClInclude Include="lib\RTree.h" />
     <ClInclude Include="lib\saxquantizer.hpp" />
+    <ClInclude Include="lib\SmallestEnclosingCircle.hpp" />
     <ClInclude Include="MULTI_DIMENSION.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="RTree_partition.h" />
     <ClInclude Include="SHARE_TOOL.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
