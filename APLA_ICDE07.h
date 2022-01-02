@@ -10,6 +10,35 @@
 #include "CPLA.h"
 #include "CAPLA.h"
 
+////#include <algorithm>
+//#include <iterator>
+//#include <queue>
+////#include <string>
+//#include <cassert>
+//#include <iostream>
+//#include <iomanip>
+//#include <functional>
+//#include <numeric>
+//
+//#include <time.h>
+//#include <chrono>
+//#include <ctime>
+//#include <Windows.h>
+//#include <stdlib.h>
+//#include <stdio.h>
+//#include <list>
+////#include <vector>
+//#include <fstream>
+//#include <sstream>
+//#include <cstdint>
+//#include <cmath>
+//#include <math.h>
+//#include <complex>
+//#include <random>
+//#include <type_traits>
+//#include <iosfwd>
+//#include <limits>
+
 using namespace std;
 
 
@@ -17,6 +46,7 @@ using namespace std;
 
 TEMPLATE
 class APLA_ICDE07 :virtual public GEOMETRY, virtual public TOOL, virtual public PLA_QUAL, virtual public APLA {
+	//friend class CAPLA<DataType>;
 public:
 	struct TOOL::INPUT_ARGUMENT input_argument;
 	struct TOOL::OUTPUT_ARGUMENT output_argument;//181214
@@ -25,76 +55,209 @@ public:
 
 	template<typename T>
 	APLA_ICDE07(const T& const n, const T& const N);
-	void getAPLA_ICDE07(typename TOOL::INPUT_ARGUMENT& const input_argument, const vector<DataType>& const original_time_series_vector);
+	//191016
+	//template<typename T>
+	//double getSegmentMaxDifference(const vector<DataType>& const original_time_series_vector, const T& const segment_pla);
+	//191016
+	void getAPLA_ICDE07(typename TOOL::INPUT_ARGUMENT& const input_argument, const vector<DataType>& const original_time_series_vector);// From paper APLA ICDE 07
 
-	template<typename T> 
-	void getAPLA_ICDE07(typename TOOL::INPUT_ARGUMENT& const input_argument, const vector<DataType>& const original_time_series_vector, DoublyLinkedList<T>& const F_result_vector);
+	template<typename T> //PLA_QUAL::PLA_C 191121 has return value
+	void getAPLA_ICDE07(typename TOOL::INPUT_ARGUMENT& const input_argument, const vector<DataType>& const original_time_series_vector, DoublyLinkedList<T>& const F_result_vector);// From paper APLA ICDE 07 
 };
 
+//#include "APLA_ICDE07.cpp"
 
+//************************************
+// Method:getAPLA_ICDE07
+// Qualifier:Use Linked List ot instead Vector. For every segment, use minmax point as endpoint. Then for every segment use same subsegemnt number to merge.
+// Input:
+// Output:
+// date:191016
+// author:
+//************************************
 TEMPLATE
 template<typename T>
-APLA_ICDE::APLA_ICDE07(const T& const n, const T& const N) {
+APLA_ICDE::APLA_ICDE07(const T& const n, const T& const N) {//
 	input_argument.time_series_length = n;
 	input_argument.point_dimension = N;
 }
 
+//************************************
+// Method:getSegmentMaxDifference
+// Qualifier:get absolute difference for one segment
+// Input:
+// Output:
+// date:191016
+// author:
+//************************************
+//TEMPLATE
+//template<typename T>
+//double APLA_ICDE::getSegmentMaxDifference(const vector<DataType>& const original_time_series_vector, const T& const segment_pla) {
+//#ifdef _DEBUG
+//	//assert(area_vector.size() == input_argument.point_dimension);
+//	//assert(segment_pla.rectangle_width == segment_pla.right_endpoint + 1 && *segment_pla.apla.a != INF && *segment_pla.apla.b != INF);
+//#endif
+//	
+//	int variable_id = NULL; //[0-segment_length
+//	int array_id = 0;
+//	int segment_left_id = segment_pla.right_endpoint - segment_pla.rectangle_width + 1;
+//	double max_difference = -1;
+//
+//#ifdef _DEBUG
+//	assert(segment_left_id > -1);
+//#endif
+//	for (variable_id = 0; variable_id < segment_pla.right_endpoint; variable_id++) {
+//		max_difference = max(max_difference, fabs(*segment_pla.apla.a * variable_id + *segment_pla.apla.b - original_time_series_vector[variable_id]));
+//	}
+//
+//	/*=================================Evaluation Result=====================================================================*/
+////#ifdef _DEBUG
+////	typename TOOL::getDeviation(input_argument, original_time_series, reconstruct_time_series, output_argument);
+////	assert(sum_deviation == output_argument.sum_deviation);
+////#endif
+//	/*..............................................................................................................*/
+//	//TOOL::deleteArray(reconstruct_time_series);
+//
+//	return max_difference;
+//}
+
+//**********************************************************************************************************************************
+// Method:getAPLA_ICDE07
+// Qualifier:Use Linked List ot instead Vector. For every segment, use minmax point as endpoint. Then for every segment use same subsegemnt number to merge.
+// Input:
+// Output:
+// date:191016
+// author:
+//**********************************************************************************************************************************
 TEMPLATE
-void APLA_ICDE::getAPLA_ICDE07(typename TOOL::INPUT_ARGUMENT& const input_argument, const vector<DataType>& const original_time_series_vector) {
+void APLA_ICDE::getAPLA_ICDE07(typename TOOL::INPUT_ARGUMENT& const input_argument, const vector<DataType>& const original_time_series_vector) {// From paper APLA ICDE 07 
 	TOOL::recordStartTime(TOOL::time_record[49]);
 
-	std::vector<std::vector<PLA_QUAL::PLA_C>> L_PLA_factor_vector(input_argument.time_series_length, std::vector<PLA_QUAL::PLA_C>(input_argument.point_dimension + 1));
-	
-	std::vector<std::vector<double>> max_error_vector(input_argument.time_series_length, std::vector<double>(input_argument.point_dimension + 1, INF));
-	std::vector<std::vector<double>> A_best_right_endpoint_vector(input_argument.time_series_length, std::vector<double>(input_argument.point_dimension + 1, 0.0));
-	std::vector<PLA_QUAL::PLA_C> F_result_vector(input_argument.point_dimension); 
+	std::vector<std::vector<PLA_QUAL::PLA_C>> L_PLA_factor_vector(input_argument.time_series_length, std::vector<PLA_QUAL::PLA_C>(input_argument.point_dimension + 1));//L[0] is for intitial a&B. L Fit a line PLA L through original time series
+	//PLA_by_index_vector.resize();
+	std::vector<std::vector<double>> max_error_vector(input_argument.time_series_length, std::vector<double>(input_argument.point_dimension + 1, INF));// the max error of L, 0,1,2,...,right_endpoint. reconstruct_series - origitnal time seires
+	std::vector<std::vector<double>> A_best_right_endpoint_vector(input_argument.time_series_length, std::vector<double>(input_argument.point_dimension + 1, 0.0));//A keeps track best result. is the index of the first point of the t_th segment of the best t-segment approximation to	points 0,...,w
+	std::vector<PLA_QUAL::PLA_C> F_result_vector(input_argument.point_dimension);//F 
 
-	double c_max_error = -INF;
-	int w = INF;
-	int t = INF;
+	double c_max_error = -INF;//c
+	int w = INF;//w
+	int t = INF;// t segment id
 
 	typename PLA_QUAL::PLA_C temp_pla;
-	
+	//typename PLA_QUAL::PLA_C last_pla;
 
+	/*=================================================max deviation for every PLA approximation 0,...,w ======================================================*/
 	temp_pla.right_endpoint = 0;
 	temp_pla.rectangle_width = 1;
 	for (w = 1; w < input_argument.time_series_length; w++) {
 		temp_pla.right_endpoint++;
 		temp_pla.rectangle_width++;
-		
+		//PLA_QUAL::getAAndBByPLASegment(original_time_series_vector, temp_pla);
 		L_PLA_factor_vector[w][0] = PLA_QUAL::getAAndBByAccumulation(original_time_series_vector, L_PLA_factor_vector[w - 1][0], temp_pla);
 #ifdef _DEBUG
 		assert(temp_pla.apla.a != INF && temp_pla.apla.b != INF);
 #endif
-		
+		//PLA_by_index_vector.emplace_back(std::vector<PLA_QUAL::PLA>());
+		//PLA_by_index_vector[right_endpoint-1].emplace_back(temp_pla);
+		//L_PLA_factor_vector[w][0] = temp_pla;
+		//max_error_vector.emplace_back(std::vector<double>());
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//if (w + 1 < input_argument.time_series_length && original_time_series_vector[w + 1] == original_time_series_vector[w]) {
+			//max_error_vector[w - 1].emplace_back(INF);
+			//max_error_vector[w][0] = -INF;
+		//}
+		//else {
+			//max_error_vector[w - 1].emplace_back(getSegmentMaxDifference(original_time_series_vector, temp_pla));
 		max_error_vector[w][0] = PLA_QUAL::getSegmentMaxDifference(original_time_series_vector, temp_pla);
-		
+		//}
+		//max_error_vector[w][0] = PLA_QUAL::getSegmentMaxDifference(original_time_series_vector, temp_pla);
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		//A_right_endpoint_vector.emplace_back(std::vector<double>());
+		//A_right_endpoint_vector[w - 1].emplace_back(0);
 		A_best_right_endpoint_vector[w][0] = 0;
 	}
-	
-	for (t = 1; t < input_argument.point_dimension; t++) {
-		for (w = t + 1; w < input_argument.time_series_length; w++) {
-			
+	/*========================================================================================================================================================*/
+//#ifdef _DEBUG
+//	cout << "L a&b right_endpoint: \n";
+//	for_each(L_PLA_factor_vector.begin(), L_PLA_factor_vector.end(), [](auto&& const au) {
+//		for (auto&& auu : au) {
+//			cout << auu.right_endpoint << " "<< auu.rectangle_width <<" "<< auu.apla.a <<" "<<auu.apla.b<<",          ";
+//		}
+//		cout << endl;
+//	});
+//
+//	cout << "Error : \n";
+//	for_each(max_error_vector.begin(), max_error_vector.end(), [](auto&& const au) {
+//		for (auto&& auu : au) {
+//			cout << auu << "        ";
+//		}
+//		cout << endl;
+//	});
+//#endif
+	/*=======================================================================================================*/
+	for (t = 1; t < input_argument.point_dimension; t++) {// segment id
+		//cout << "t = " << t <<"--"<< input_argument.point_dimension << endl;
+		for (w = t + 1; w < input_argument.time_series_length; w++) {// time series id
+			//cout << "w = " << w <<"--"<< input_argument.time_series_length << endl;
 			for (int sub_id = t; sub_id < w; sub_id++) {//t to w-1
-				
+				/*--------------------------------Maximum max_deviaiton during [sub_id - w], while sub_id++ ---------------------------------------------------*/
+				//cout << "sub id = "<< sub_id << " -- "<< w << endl;
+				//cout << "----------------------- 1 Get best index-------------------------------\n";
 				temp_pla.right_endpoint = w;
-				
+				//if (t == 1)
+					//temp_pla.rectangle_width = temp_pla.right_endpoint + 1;
+				//else
 				temp_pla.rectangle_width = temp_pla.right_endpoint - sub_id;
 				PLA_QUAL::getAAndBByPLASegment(original_time_series_vector, temp_pla);
-			
+				//cout << "--------------------2 compute coefficient--------------------------\n";
+				//cout << "L[" << sub_id << "," << temp_pla.right_endpoint << "], segment width: " << temp_pla.rectangle_width << ", a: " << temp_pla.apla.a << ", b: " << temp_pla.apla.b << endl;
 				double temp_sub_max_error = PLA_QUAL::getSegmentMaxDifference(original_time_series_vector, temp_pla);
 				c_max_error = max(max_error_vector[sub_id][t - 1], temp_sub_max_error);//maximum max
-				
+				//cout << "--------------------3 compare  error--------------------------\n";
+				//cout <<"error: [" << sub_id<<","<<t-1<<"]: "<<max_error_vector[sub_id][t - 1] << " VS segment error: " << temp_sub_max_error<< ",   C: " << c_max_error << endl;
+				/*---------------------------------------------------------------------------------------------------------------------------------------------*/
+				/*if (w < input_argument.time_series_length && w + 1 < input_argument.time_series_length && original_time_series_vector[w + 1] == original_time_series_vector[w]) {
+					max_error_vector[w][0] = -INF;
+				}
+				if (sub_id > 0 && original_time_series_vector[sub_id - 1] == original_time_series_vector[sub_id]) {
+					max_error_vector[w][0] = -INF;
+				}*/
+				//cout << "------------------------4 change best index----------------------\n";
+				//cout << "sub id: " << sub_id << " ==  t: " << t << endl;
+				//cout << "C:" << c_max_error << " == error[" << w << "," << t << "]: " << max_error_vector[w][t] << endl;
 				if (sub_id == t || c_max_error < max_error_vector[w][t]) {
 
-					
+					/*	if (sub_id == t) {
+							cout << "sub id: " << sub_id << " ==  t: " << t << endl;
+						}
+						else{
+							cout << " C:"<< c_max_error<<" == error["<<w<<","<<t<<"]?"<< max_error_vector[w][t] <<endl;
+						}*/
 					L_PLA_factor_vector[w][t] = temp_pla;//L
 					max_error_vector[w][t] = c_max_error;// 
 					A_best_right_endpoint_vector[w][t] = sub_id;//A
 
-					
+					//cout<< "L["<<w<<","<< t<<"]   =  " << "L'[" << sub_id << "," << temp_pla.right_endpoint << "] segment width: " << temp_pla.rectangle_width << " a: " << temp_pla.apla.a << " b: " << temp_pla.apla.b << endl;
+					//cout << "error[" << w << "," << t << "] : " << c_max_error << endl;
+					//cout << "A[" << w << "," << t << "] : " << sub_id << endl;
 				}
-				
+				//cout << "-----------------------------------------------------------------------------------------------------------------\n";
+				//cout << "L a&b right_endpoint: \n";
+				//for_each(L_PLA_factor_vector.begin(), L_PLA_factor_vector.end(), [](auto&& const au) {
+				//	for (auto&& auu : au) {
+				//		cout << auu.right_endpoint << " " << auu.rectangle_width << " " << auu.apla.a << " " << auu.apla.b << ",          ";
+				//	}
+				//	cout << endl;
+				//});
+
+				////cout << "Error : \n";
+				//for_each(max_error_vector.begin(), max_error_vector.end(), [](auto&& const au) {
+				//	for (auto&& auu : au) {
+				//		cout << auu << "        ";
+				//	}
+				//	cout << endl;
+				//});
 			}
 		}
 	}
@@ -104,7 +267,11 @@ void APLA_ICDE::getAPLA_ICDE07(typename TOOL::INPUT_ARGUMENT& const input_argume
 #endif
 	t--;
 
-	
+	//!!!!!!!!!!!!!!!!!!!!!! Below while has problem for file 7.
+	//while (t > 0 && max_error_vector[input_argument.time_series_length - 1][t-1] < max_error_vector[input_argument.time_series_length - 1][t]) {
+	//	//F_result_vector[t] = 0;
+	//	t--;
+	//}
 	c_max_error = max_error_vector[input_argument.time_series_length - 1][t];
 	w = input_argument.time_series_length - 1;
 	while (t >= 0) {
@@ -114,8 +281,62 @@ void APLA_ICDE::getAPLA_ICDE07(typename TOOL::INPUT_ARGUMENT& const input_argume
 		t--;
 	}
 	output_argument.run_time = TOOL::recordFinishTime(TOOL::time_record[49]);
-	
+	//F_result_vector.pop_back();
+	/*=======================================================================================================*/
+	//F_result_vector[1].rectangle_width = F_result_vector[1].right_endpoint + 1;
 
+	/*=======================================================================================================*/
+	/*delete temp_pla.apla.a;
+	delete temp_pla.apla.b;
+	delete last_pla.apla.a;
+	delete last_pla.apla.b;*/
+	/*-------------------------------       Print     -------------------------------------------------------------------*/
+#ifdef _DEBUG
+	/*cout << "L a&b right_endpoint: \n";
+	for_each(L_PLA_factor_vector.begin(), L_PLA_factor_vector.end(), [](auto&& const au) {
+		for (auto&& auu: au) {
+			cout << auu.right_endpoint << " " << auu.rectangle_width << " " << auu.apla.a << " " << auu.apla.b << ",          ";
+		}
+		cout << endl;
+	});
+
+	cout << "Error : \n";
+	for_each(max_error_vector.begin(), max_error_vector.end(), [](auto&& const au) {
+		for (auto&& auu : au) {
+			cout << auu << "         ";
+		}
+		cout << endl;
+	});
+
+	cout << "Best id : \n";
+	for_each(A_best_right_endpoint_vector.begin(), A_best_right_endpoint_vector.end(), [](auto&& const au) {
+		for (auto&& auu : au) {
+			cout << auu << " ";
+		}
+		cout << endl;
+	});*/
+
+	cout << endl;
+	cout << "ICDE 07 a&b :  ";
+	for_each(F_result_vector.begin(), F_result_vector.end(), [](auto&& const au) {
+		cout << au.apla.a << " " << au.apla.b << ", ";
+		});
+	cout << endl;
+#endif
+
+#ifdef _DEBUG
+	/*---------------------------------------------Evaluation---------------------------------------------------------------*/
+	assert(c_max_error != INF && c_max_error != -INF && F_result_vector.size() == input_argument.point_dimension && F_result_vector.back().right_endpoint == input_argument.time_series_length - 1 && F_result_vector.front().right_endpoint + 1 == F_result_vector.front().rectangle_width);
+	double sum_segment_width = F_result_vector.front().rectangle_width;
+
+	for_each(F_result_vector.begin() + 1, F_result_vector.end(), [&](auto&& const au) {
+		//cout << std::prev(&au, 1)->right_endpoint << " ";
+		assert(au.right_endpoint != INF && au.rectangle_width == au.right_endpoint - std::prev(&au, 1)->right_endpoint);
+		sum_segment_width += au.rectangle_width;
+		});
+	assert(sum_segment_width == input_argument.time_series_length);
+	/*-------------------------------------------------------------------------------------------------------------------------*/
+#endif
 	/*-----------------------------------------Output Result-----------------------------------------------------*/
 	cout << "ICDE07 right end point: ";
 	for_each(F_result_vector.begin(), F_result_vector.end(), [](auto&& const au) {
@@ -141,8 +362,16 @@ void APLA_ICDE::getAPLA_ICDE07(typename TOOL::INPUT_ARGUMENT& const input_argume
 }
 
 
+//**********************************************************************************************************************************
+// Method:getAPLA_ICDE07
+// Qualifier:Use Linked List ot instead Vector. For every segment, use minmax point as endpoint. Then for every segment use same subsegemnt number to merge.
+// Input://PLA_QUAL::PLA_C 191121 has return value
+// Output:
+// date:191016
+// author:
+//**********************************************************************************************************************************
 TEMPLATE
-template<typename T> 
+template<typename T> //PLA_QUAL::PLA_C 191121
 void APLA_ICDE::getAPLA_ICDE07(typename TOOL::INPUT_ARGUMENT& const input_argument, const vector<DataType>& const original_time_series_vector, DoublyLinkedList<T>& const F_result_vector) {// From paper APLA ICDE 07 
 	TOOL::recordStartTime(TOOL::time_record[49]);
 #ifdef _DEBUG

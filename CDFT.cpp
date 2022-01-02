@@ -2,6 +2,7 @@
 #ifndef _CDFT_CPP_
 #define _CDFT_CPP_
 
+#include "CDFT.h"
 
 //TEMPLATE
 //template<typename T>

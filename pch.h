@@ -76,7 +76,7 @@ typedef double ElementType;
 
 #define INF std::numeric_limits<double>::infinity()
 #define EPS 1e-8//190311 for min circle cover
-#define MIN_D 1e-4
+#define MIN_D 1e-5
 /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 
 /*-------210618----------*/

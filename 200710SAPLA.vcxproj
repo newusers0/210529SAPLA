@@ -103,20 +103,23 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\local\boost_1_70_0;D:\local\boost_1_74_0_b1_rc1;D:\Code\boost_1_72_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <SupportJustMyCode>false</SupportJustMyCode>
-      <ShowIncludes>true</ShowIncludes>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <SupportJustMyCode>true</SupportJustMyCode>
+      <ShowIncludes>false</ShowIncludes>
       <DiagnosticsFormat>Column</DiagnosticsFormat>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
-      <MinimalRebuild>false</MinimalRebuild>
+      <MinimalRebuild>true</MinimalRebuild>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -127,21 +130,24 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\local\boost_1_70_0;D:\local\boost_1_74_0_b1_rc1;D:\Code\boost_1_72_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <SupportJustMyCode>false</SupportJustMyCode>
-      <ShowIncludes>true</ShowIncludes>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <SupportJustMyCode>true</SupportJustMyCode>
+      <ShowIncludes>false</ShowIncludes>
       <DiagnosticsFormat>Column</DiagnosticsFormat>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
-      <MinimalRebuild>false</MinimalRebuild>
+      <MinimalRebuild>true</MinimalRebuild>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -154,40 +160,43 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\local\boost_1_70_0;D:\local\boost_1_74_0_b1_rc1;D:\Code\boost_1_72_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <SupportJustMyCode>false</SupportJustMyCode>
+      <AdditionalIncludeDirectories>C:\local\boost_1_76_0_b1_rc2;C:\local\boost_1_70_0;D:\local\boost_1_74_0_b1_rc1;D:\Code\boost_1_72_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <SupportJustMyCode>true</SupportJustMyCode>
       <DiagnosticsFormat>Column</DiagnosticsFormat>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
-      <MinimalRebuild>false</MinimalRebuild>
+      <MinimalRebuild>true</MinimalRebuild>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <Optimization>Disabled</Optimization>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\local\boost_1_70_0\lib64-msvc-14.2;D:\local\boost_1_74_0_b1_rc1\lib64-msvc-14.2;D:\Code\boost_1_72_0\lib64-msvc-14.1;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\local\boost_1_76_0_b1_rc2\lib64-msvc-14.2;C:\local\boost_1_70_0\lib64-msvc-14.2;D:\local\boost_1_74_0_b1_rc1\lib64-msvc-14.2;D:\Code\boost_1_72_0\lib64-msvc-14.1;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ShowProgress>NotSet</ShowProgress>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\local\boost_1_70_0;D:\local\boost_1_74_0_b1_rc1;D:\Code\boost_1_72_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <SupportJustMyCode>false</SupportJustMyCode>
+      <AdditionalIncludeDirectories>C:\local\boost_1_76_0_b1_rc2;C:\local\boost_1_70_0;D:\local\boost_1_74_0_b1_rc1;D:\Code\boost_1_72_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <SupportJustMyCode>true</SupportJustMyCode>
       <DiagnosticsFormat>Classic</DiagnosticsFormat>
-      <MinimalRebuild>false</MinimalRebuild>
+      <MinimalRebuild>true</MinimalRebuild>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <Optimization>MaxSpeed</Optimization>
       <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -197,13 +206,16 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\local\boost_1_70_0\lib64-msvc-14.2;D:\local\boost_1_74_0_b1_rc1\lib64-msvc-14.2;D:\Code\boost_1_72_0\lib64-msvc-14.1;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\local\boost_1_76_0_b1_rc2\lib64-msvc-14.2;C:\local\boost_1_70_0\lib64-msvc-14.2;D:\local\boost_1_74_0_b1_rc1\lib64-msvc-14.2;D:\Code\boost_1_72_0\lib64-msvc-14.1;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ShowProgress>NotSet</ShowProgress>
     </Link>
   </ItemDefinitionGroup>
@@ -213,11 +225,15 @@
     <ClCompile Include="CAPCA.cpp" />
     <ClCompile Include="CAPCA_KNN.cpp" />
     <ClCompile Include="CAPLA.cpp" />
+    <ClCompile Include="CAPLA_PUB.cpp" />
     <ClCompile Include="CCHEBYSHEV.cpp" />
+    <ClCompile Include="CDFT.cpp" />
     <ClCompile Include="CPLA.cpp" />
     <ClCompile Include="EVALUATION.cpp" />
     <ClCompile Include="GEOMETRY_TOOL.cpp" />
     <ClCompile Include="lib\chebyshev_polynomial.cpp" />
+    <ClCompile Include="lib\dtwrecoge.cpp" />
+    <ClCompile Include="lib\SmallestEnclosingCircle.cpp" />
     <ClCompile Include="MULTI_DIMENSION.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="RTree_partition.cpp" />
@@ -228,12 +244,15 @@
     <ClInclude Include="CAPCA.h" />
     <ClInclude Include="CAPCA_KNN.h" />
     <ClInclude Include="CAPLA.h" />
+    <ClInclude Include="CAPLA_PUB.h" />
     <ClInclude Include="CCHEBYSHEV.h" />
+    <ClInclude Include="CDFT.h" />
     <ClInclude Include="CPLA.h" />
     <ClInclude Include="EVALUATION.h" />
     <ClInclude Include="GEOMETRY_TOOL.h" />
     <ClInclude Include="lib\chebyshev_polynomial.hpp" />
     <ClInclude Include="lib\doublyLinkedList.h" />
+    <ClInclude Include="lib\dtwrecoge.h" />
     <ClInclude Include="lib\RTree.h" />
     <ClInclude Include="lib\saxquantizer.hpp" />
     <ClInclude Include="lib\SmallestEnclosingCircle.hpp" />

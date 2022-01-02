@@ -2037,7 +2037,6 @@ void CHEBYSHEV_QUAL::rangeSearchMulti(typename TOOL::INPUT_ARGUMENT& const input
 	/*priority_queue <ID_DIST, vector<ID_DIST>, priorityIncrement > queue;*/
 	double temp_navigate_time = 0;
 
-
 	typename T::Iterator it;
 	for (RTree.GetFirst(it); !RTree.IsNull(it); RTree.GetNext(it)) {
 		leaf_id = RTree.GetAt(it);
@@ -2046,18 +2045,15 @@ void CHEBYSHEV_QUAL::rangeSearchMulti(typename TOOL::INPUT_ARGUMENT& const input
 		APCA_KNN_QUAL::printArray(chebyshev_array[leaf_id].coefficient, input_argument.degree_m+1);
 		cout << "id: " << leaf_id <<" ";*/
 
-
 		double cheby_dist = getChebyshevDistance(input_argument.point_multi_single_dimension, chebyshev_query, chebyshev_array[leaf_id], chebyshev_distance);
 		//cout << "cheby dist: " << cheby_dist << ",    radius: " << radius << endl;
 		if (cheby_dist < radius) {
 			/*cout << "Loop: " << endl;*/
 
-
 			id_dist.trajectory_id = leaf_id;
 			//APCA_KNN_QUAL::getFileStreamByID(input_argument.read_file_name, input_argument.time_series_length, leaf_id, original_time_series);
 			//TOOL::getMultiFoldToSingleByID(input_argument.read_multiple_file_name, input_argument.arity_d, input_argument.time_series_length, leaf_id, original_time_series);
 			//id_dist.d_dist = chebyshev_distance;
-
 
 			/*-----------------------------------------------------Original Time Series---------------------------------------------------------------------------------------*/
 			//already normalized
@@ -2080,11 +2076,13 @@ void CHEBYSHEV_QUAL::rangeSearchMulti(typename TOOL::INPUT_ARGUMENT& const input
 			//}
 			//TOOL::normalizeStandard(input_argument.time_series_length, original_time_series);
 
+			TOOL::recordStartTime(TOOL::time_record[1]);// KNN CPU time
 			id_dist.d_dist = TOOL::distanceEUC(query_time_series_vector, original_time_series_vector);
+			input_argument.knn_CPU_time += TOOL::recordFinishTime(TOOL::time_record[1]);
 
 #ifdef _DEBUG
 			double test_EU_dist = typename APCA_KNN_QUAL::distanceEUC(query_time_series, input_argument.point_multi_single_length, original_time_series, input_argument.point_multi_single_length);
-			assert(id_dist.d_dist == test_EU_dist);
+			assert(fabs(id_dist.d_dist - test_EU_dist) <= 0.001);
 #endif
 
 			/*=========================Evaluation=================================*/
@@ -2499,9 +2497,11 @@ std::multiset<pair<double, int>> CHEBYSHEV_QUAL::KNNCHEBYMulti(typename TOOL::IN
 #endif
 
 	/*-------------------------Evaluation ---------------------------------*/
+	input_argument.knn_CPU_time = 0;
 	input_argument.knn_total_time = 0.0;// KNN total time
 	input_argument.knn_total_time_has_IO = 0.0;// KNN total time 210606
 	input_argument.IO_cost = 0.0;
+	TOOL::recordStartTime(TOOL::time_record[1]);// CPU time 21215
 	TOOL::recordStartTime(TOOL::time_record[3]);// whole time
 	TOOL::recordStartTime(TOOL::time_record[16]);// whole time has IO 210606
 	TOOL::recordStartTime(TOOL::time_record[2]);// KNN total time
@@ -2535,6 +2535,8 @@ std::multiset<pair<double, int>> CHEBYSHEV_QUAL::KNNCHEBYMulti(typename TOOL::IN
 
 	typename T::Iterator it;//KNN for distance_chebyshev
 	for (RTree.GetFirst(it); !RTree.IsNull(it); RTree.GetNext(it)) {
+		
+
 		leaf_id = RTree.GetAt(it);
 		id_dist.trajectory_id = leaf_id;
 
@@ -2584,12 +2586,14 @@ std::multiset<pair<double, int>> CHEBYSHEV_QUAL::KNNCHEBYMulti(typename TOOL::IN
 		//APCA_KNN_QUAL::getFileStreamByID(input_argument.read_file_name, input_argument.time_series_length, queue.top().trajectory_id, original_time_series);
 
 		/*-----------------------------------------------------Original Time Series---------------------------------------------------------------------------------------*/
+		input_argument.knn_CPU_time += TOOL::recordFinishTime(TOOL::time_record[1]);
 		input_argument.knn_total_time += TOOL::recordFinishTime(TOOL::time_record[2]);
 		input_argument.whole_run_time += TOOL::recordFinishTime(TOOL::time_record[3]);
 		//already normalized
 		TOOL::read_normalized_multi_time_series(data_source, queue.top().trajectory_id, original_time_series_vector);
 		TOOL::recordStartTime(TOOL::time_record[3]);// whole time
 		TOOL::recordStartTime(TOOL::time_record[2]);// KNN total time
+		
 
 #ifdef _DEBUG
 		assert(original_time_series_vector.size() == input_argument.time_series_length);
@@ -2605,11 +2609,13 @@ std::multiset<pair<double, int>> CHEBYSHEV_QUAL::KNNCHEBYMulti(typename TOOL::IN
 		//}
 		//TOOL::normalizeStandard(input_argument.time_series_length, original_time_series);
 
+		TOOL::recordStartTime(TOOL::time_record[1]);// KNN CPU time
 		distance_euc = TOOL::distanceEUC(query_time_series_vector, original_time_series_vector);
+		input_argument.knn_CPU_time += TOOL::recordFinishTime(TOOL::time_record[1]);
 
 #ifdef _DEBUG
 		double test_distance_euc = typename APCA_KNN_QUAL::distanceEUC(query_time_series, input_argument.point_multi_single_length, original_time_series, input_argument.point_multi_single_length);
-		assert(distance_euc == test_distance_euc);
+		//assert(distance_euc == test_distance_euc);
 #endif
 
 		/*-----------------Evaluation---------------------------------*/

@@ -376,7 +376,14 @@ double& APCA_KNN_QUAL::distanceAE(DataType*& const orginal_array, const int& arr
 	return distance_AE;
 }
 
-
+//************************************
+// Stuct:distanceAE
+// Qualifier:for Rtree insersion. get min&max id value of rectangle
+// input:
+// output:
+// date:191206
+// author:
+//************************************
 TEMPLATE
 double APCA_KNN_QUAL::distanceAE(const vector<DataType>& const orginal_array, const int& const arrary_length, const typename APCA_QUAL::APCA& const italicC) { //For APCA&PAA
 
@@ -639,7 +646,14 @@ void APCA_KNN_QUAL::getTXTStreamSpace(const string& const file_name, const int& 
 	infile.close();
 }
 
-
+//************************************
+// Method: getRegionG
+// Qualifier: get region G from APCA paper internal node structure. max id == min id. 
+// Input:
+// Output: for original Rtree MBR, max id != min id (int APCA paper, min id == max id)
+// date:191117
+// author:
+//************************************
 TEMPLATE
 typename APCA_KNN_QUAL::REGION& APCA_KNN_QUAL::getRegionG(const RTREE::Rect& MBR, REGION& G) {
 #ifdef _DEBUG
@@ -647,6 +661,7 @@ typename APCA_KNN_QUAL::REGION& APCA_KNN_QUAL::getRegionG(const RTREE::Rect& MBR
 	double run_time0;
 	recordStartTime(time_record[11]);
 #endif
+
 
 	int i = 0;
 	//cout << "getRegionG()\n";
@@ -683,7 +698,14 @@ typename APCA_KNN_QUAL::REGION& APCA_KNN_QUAL::getRegionG(const RTREE::Rect& MBR
 	return G;
 }
 
-
+//************************************
+// Method: getRegionG
+// Qualifier: RTree Partiton. get region G from APCA paper internal node structure. max id == min id. 
+// Input:
+// Output: for original Rtree MBR, max id != min id (int APCA paper, min id == max id)
+// date:210618
+// author:
+//************************************
 TEMPLATE
 template<typename T, typename Y>
 typename Y& APCA_KNN_QUAL::getRegionG(const T& MBR, Y& G) {
@@ -728,7 +750,14 @@ typename Y& APCA_KNN_QUAL::getRegionG(const T& MBR, Y& G) {
 	return G;
 }
 
-
+//************************************
+// Method: get_region_G_original
+// Qualifier: get region G from original internal node structure. max id > min id. 
+// Input:
+// Output: for original Rtree MBR, max id != min id (int APCA paper, min id == max id)
+// date:191117
+// author:
+//************************************
 TEMPLATE
 typename APCA_KNN_QUAL::REGION& APCA_KNN_QUAL::get_region_G_original(const RTREE::Rect& const MBR, APCA_KNN_QUAL::REGION& const G) {
 	int i = 0;
@@ -889,7 +918,14 @@ double APCA_KNN_QUAL::MINDISTQR(const vector<T>& const Q, const Y& n, const REGI
 	return sqrt(minDistanceQR);
 }
 
-
+//***************************************************************
+// Method:QAPCAProjection
+// Qualifier:project query time series to one APCA approximation
+// Input: query time series, APCA of one approxiamtion
+// Output:projected query APCA.
+// date:
+// author:
+//***************************************************************
 TEMPLATE
 typename APCA_QUAL::APCA& APCA_KNN_QUAL::QAPCAProjection(const DataType* Q, const double& n, typename APCA_QUAL::APCA& italicC, typename APCA_QUAL::APCA& QProjection) {
 	//cout << "QAPCAProjection()" << endl;
@@ -1777,7 +1813,17 @@ void APCA_KNN_QUAL::normalizeStandard(T*& const original_array, const int& const
 //		}
 //
 //
+//	}
+//}
 
+//************************************
+// Method:getReconstructionError
+// Qualifier: Get max and sum devation
+// Input:
+// Output:
+// date:
+// author:
+//************************************
 TEMPLATE
 template<typename T>
 double& APCA_KNN_QUAL::getReconstructionError(T*& const original_time_series, T*& const approximation_time_series, const int& const time_series_length, double& const deviation_sum, double& const deviation_max) {

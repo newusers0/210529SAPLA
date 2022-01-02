@@ -11,12 +11,18 @@
 #include "lib/SmallestEnclosingCircle.hpp"
 #include "CPLA.h"
 
-
+//************************************
+// Class:    CAPLA
+// Qualifier:Mix of PLA & APCA
+// date: 181111
+// author:
+//************************************
 TEMPLATE
 class CAPLA : virtual public GEOMETRY, virtual public TOOL, virtual public PLA_QUAL {
 public:
 	struct TOOL::INPUT_ARGUMENT input_argument;
-	struct TOOL::OUTPUT_ARGUMENT output_argument;
+	struct TOOL::OUTPUT_ARGUMENT output_argument;//181214
+	//struct TOOL::TIME time_record[20];//181210
 
 	struct POINT;//210509
 	struct BREAK_POINT_COEFFICIENT;
@@ -42,7 +48,12 @@ public:
 	template<typename T>
 	struct OPTIMIZATION_COEFFICIENT;//200915 split & merge & optimization coefficients
 
-
+	//************************************
+	// Stuct:UPPER_BOUND_COEFFICIENT
+	// Qualifier: upper bound > max deviation.
+	// date:210113
+	// author:
+	//************************************
 	template<typename T>
 	struct UPPER_BOUND_COEFFICIENT;
 
@@ -945,8 +956,6 @@ public:
 
 	double& getPolygonArea(DataType*& const original_time_series, AREA_COEFFICIENT& const temp_coefficient);//190123
 
-	/*https://www.boost.org/doc/libs/1_69_0/libs/geometry/doc/html/geometry/reference/algorithms/convex_hull.html */
-
 	double& getConvexHullArea(DataType*& const original_time_series, AREA_COEFFICIENT& const temp_coefficient);//190227
 
 	double& getCircleArea(DataType*& const original_time_series, AREA_COEFFICIENT& const temp_coefficient);//190308
@@ -1344,20 +1353,24 @@ public:
 	// date:191111
 	// author:
 	//***************************************************************
-	template<typename T>
-	vector<T>& get_apla_projection(const vector<DataType>& const query_time_series_vector, const DoublyLinkedList<T>& const doubly_linked_list, vector<T>& const area_vector);
+	template<typename T, typename Y>
+	vector<Y>& get_apla_projection(const vector<DataType>& const query_time_series_vector, const DoublyLinkedList<T>& const doubly_linked_list, vector<Y>& const area_vector);
 	
+	//211228 project APCA
+	template<typename T, typename Y>
+	vector<Y>& get_apla_average_projection(const vector<DataType>& const query_time_series_vector, const DoublyLinkedList<T>& const doubly_linked_list, vector<Y>& const area_vector);
+
 	//191114 compue distance LB for two segments.
-	template<typename T>
-	inline long double get_segment_distance_LB(const T& const segment_1, const T& const segment_2);
+	template<typename T, typename Y>
+	inline long double get_segment_distance_LB(const T& const segment_1, const Y& const segment_2);
 
 	//210721 compue distance with power for two approximations with same right endpoints.
 	template<typename T, typename Y>
 	long double get_sqrt_distance_sapla_same_endpoints(const DoublyLinkedList<T>& const doubly_linked_list_1, const DoublyLinkedList<Y>& const doubly_linked_list_2);
 
 	//191114 compue distance LB for two APLA points.
-	template<typename T>
-	double get_distance_LB(const DoublyLinkedList<T>& const doubly_linked_list, const vector<T>& const area_vector);
+	template<typename T,typename Y>
+	double get_distance_LB(const DoublyLinkedList<T>& const doubly_linked_list, const vector<Y>& const area_vector);
 
 	//191114 directly get distanceLB from query time series & original APLA point, combine(get_apla_projection, get_segment_distance_LB, get_distance_LB)
 	template<typename T>
@@ -1406,7 +1419,7 @@ public:
 
 	//210817 get segment distance by option
 	template<typename T, typename Y, typename U>
-	inline long double get_distance_SAPLA_segment_by_option(const T& const option_distance, const Y& const segment_1, const U& const segment_2);
+	inline long double get_distance_SAPLA_segment_by_option(const T& const type_distance, const Y& const segment_1, const U& const segment_2);
 
 	// 210531 In use now. get SAPLA distance between 1 long segment and several short segments.
 	template<typename T, typename Y, typename U, typename T1, typename T2, typename T3, typename T4>
@@ -1445,9 +1458,14 @@ public:
 	template<typename T, typename Y, typename U, typename T1, typename T2>
 	long double get_same_partition_SAPLA_limit(const vector<T>& const original_time_series_vector_1, const vector<T1>& const original_time_series_vector_2, DoublyLinkedList<Y>& const doubly_linked_list_1, DoublyLinkedList<T2>& const doubly_linked_list_2, U& const number_points);
 
-	//210901 add minimum segment with limitation, and change linked list, only move list 1 when smaller than min with
+	//210901 add minimum segment with limitation, and change linked list, only move list 1 (query) when smaller than min with
 	template<typename T, typename Y, typename U, typename T1, typename T2>
 	long double get_same_partition_SAPLA_limit_only_move_1(const vector<T>& const original_time_series_vector_1, const vector<T1>& const original_time_series_vector_2, DoublyLinkedList<Y>& const doubly_linked_list_1, DoublyLinkedList<T2>& const doubly_linked_list_2, U& const option_struct);
+
+
+	//2112228 Only change linked list 1, only move list 1 (query).
+	template<typename T, typename Y, typename U, typename T1, typename T2>
+	long double get_same_partition_SAPLA_limit_only_project(const vector<T>& const original_time_series_vector_1, const vector<T1>& const original_time_series_vector_2, DoublyLinkedList<Y>& const doubly_linked_list_1, DoublyLinkedList<T2>& const doubly_linked_list_2, U& const option_struct);
 
 	//210901 Compute av. add minimum segment with limitation, and change linked list, only move list 1 when smaller than min with
 	//template<typename T, typename Y, typename U, typename T1, typename T2>
@@ -1467,11 +1485,11 @@ public:
 	
 	//210901 short segmnt increase right endpoints with  width_difference or merge with next segment. next segment decrease left
 	template<typename T, typename Y, typename U, typename T1, typename T2, typename T3>
-	void move_merge_short_segment_no_min_width(const T3& const option_method, const vector<T>& const original_time_series_short_vector, const Y& const width_min, const U& const width_difference, const T1 id_segment_short, DoublyLinkedList<T2>& const doubly_linked_list_short);
+	void move_merge_short_segment_no_min_width(const T3& const type_representation, const vector<T>& const original_time_series_short_vector, const Y& const width_min, const U& const width_difference, const T1 id_segment_short, DoublyLinkedList<T2>& const doubly_linked_list_short);
 
 	//210901 long segment decrease right endpoint with width_difference, next sement increase left
 	template<typename T, typename Y, typename U, typename T1, typename T2, typename T3>
-	void move_merge_long_segment_no_min_width(const T3& const option_method, const vector<T>& const original_time_series_long_vector, const Y& const width_min, const U& const width_difference, const T1 id_segment_long, DoublyLinkedList<T2>& const doubly_linked_list_long);
+	void move_merge_long_segment_no_min_width(const T3& const type_representation, const vector<T>& const original_time_series_long_vector, const Y& const width_min, const U& const width_difference, const T1 id_segment_long, DoublyLinkedList<T2>& const doubly_linked_list_long);
 
 	//210908 for APCA, elimite one point segment
 	template<typename T, typename Y>
@@ -1829,7 +1847,6 @@ public:
 	//void computeDft(const typename TOOL::INPUT_ARGUMENT& input_argument, DataType original_time_series[], DataType*& dft_time_series);
 
 	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&                   Compute intersection point of                         &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
-	//https://www.cnblogs.com/xpvincent/p/5208994.html
 	inline typename GEOMETRY::POINT& getIntersectionPoint(const AREA_COEFFICIENT& const temp_coefficient1, const AREA_COEFFICIENT& const temp_coefficient2, typename GEOMETRY::POINT& const intersection_point);//190527
 	inline typename GEOMETRY::POINT& getIntersectionPoint(const APLA_COEFFICIENT& const apla1, const APLA_COEFFICIENT& const apla2, typename GEOMETRY::POINT& const intersection_point);//190528
 	inline typename GEOMETRY::POINT& getIntersectionPoint(const double& const a1, const double& const b1, const double& const a2, const double& const b2, typename GEOMETRY::POINT& const intersection_point);//190528
@@ -1865,6 +1882,18 @@ public:
 	//200206 get density of triangle area
 	template<typename T, typename Y>
 	inline double getLineSegmentTriangleAreaDensity(const T& const left_segment, const  T& const right_segment, Y& const merged_segment);
+
+	//211007 get segment triangle area. If area > 0, segment 0 is top, segment 1 is down, else converse
+	template<typename T, typename Y>
+	inline long double get_segment_top_down_area_difference(const T& const segment_0, const Y& const segment_1);
+
+	//211007 get list triangle area. If area > 0, list 0 is top, list 1 is down, else converse
+	template<typename T, typename Y>
+	long double get_top_down_area_difference(const DoublyLinkedList<T>& const doubly_linked_list_0, const DoublyLinkedList<Y>& const doubly_linked_list_1);
+
+	//211012 get list triangle area. If area > 0, list 0 is top, list 1 is down, else converse
+	template<typename T, typename Y>
+	void get_convex_top(const T& const segment_candidate, DoublyLinkedList<Y>& const doubly_linked_list);
 
 	//200728 get density of triangle area from current segment & accumulates segment
 	template<typename T>
@@ -3276,21 +3305,21 @@ struct APLA::COMPARE_GREATER_SEGMENT_DENSITY {
 TEMPLATE
 template<typename T, typename Y, typename U>
 struct APLA::OPTION_DISTANCE_STRUCT {
-	T option_distance = INF;// 0 SAPLA Eucliden, 1 triangle area
-	Y option_method = INF;// 0 SAPLA/APLA/PLA/PAA/PAALM/SAX/CHEBY, 1 APCA(average)
+	T type_distance = -1;// 0 SAPLA Eucliden, 1 triangle area
+	Y type_representation = -1;// 0 SAPLA/APLA/PLA/PAA/PAALM/SAX/CHEBY, 3 APCA(average)
 	U number_point = INF;// point number to scan in original time series.
 
 	OPTION_DISTANCE_STRUCT() {
-		option_distance = 0;
-		option_method = 0;
-		number_point = 0;
+		type_distance = -1;
+		type_representation = -1;
+		number_point = INF;
 	}
 
-	OPTION_DISTANCE_STRUCT(const T& const option_distance, const Y& const option_method, const U& const number_point): option_distance(option_distance), option_method(option_method), number_point(number_point){}
+	OPTION_DISTANCE_STRUCT(const T& const type_distance, const Y& const type_representation, const U& const number_point): type_distance(type_distance), type_representation(type_representation), number_point(number_point){}
 
 	~OPTION_DISTANCE_STRUCT() {
-		option_distance = INF;
-		option_method = INF;
+		type_distance = -1;
+		type_representation = -1;
 		number_point = INF;
 	}
 };
@@ -12033,21 +12062,7 @@ void APLA::get_right_endpoint_by_accumulation_area_no_split_merge(U& const input
 #endif
 	/*..................................................................................................................*/
 
-	/*############################################################                one line time series         #####################################################################*/
-	if (doubly_linked_list.size() == 1) {
-		assert(0);
-		//return;
-		/*..................................................................................................................*/
-#ifdef _DEBUG
-		assert(split_area_difference_map.size() == 0 && merge_segment_density_map.empty());
-#endif
-		/*..................................................................................................................*/
-
-		y_projection_merge_line(input_argument, original_time_series_vector, doubly_linked_list);
-
-		return;
-	}
-	/*##############################################################################################################################################################################*/
+	
 
 	/*##############################################################################################################################################################################*/
 	///********************************* 200817 get merged triangle area ******************************************/
@@ -15038,7 +15053,7 @@ bool APLA::assert_segment_average(const vector<T>& const original_time_series_ve
 		average += original_time_series_vector[id_point];
 	}
 	average /= double(segment.rectangle_width);
-	assert(fabs(average - segment.apla.b)<0.0001);
+	assert(fabs(average - segment.apla.b) < 0.1);
 	return true;
 }
 
@@ -17469,13 +17484,15 @@ inline bool APLA::update_list_map_sub_left_is_merge(const vector<T>& const origi
 	}
 	/*==========================================================================================================================================================*/
 
-	const size_t original_split_left_right_endpoint = node_split_candidate._prev->_value.right_endpoint;
+	
 	const size_t original_split_left_rectangle_width = node_split_candidate._prev->_value.rectangle_width;
 	const double original_split_left_segment_area_difference = node_split_candidate._prev->_value.area_difference;
 	const double origianl_split_left_segment_density = node_split_candidate._prev->_value.right_subsegment->segment_density;
 	const double original_split_splited_segment_density = node_split_candidate._value.right_subsegment->segment_density;
 
 	node_split_candidate._prev->_value = temp_segment_splited_sub_left;
+	const size_t original_split_left_right_endpoint = node_split_candidate._prev->_value.right_endpoint;
+
 	node_split_candidate._value = temp_segment_splited_sub_right;
 
 	if (node_split_candidate._prev) {//middle node
@@ -19112,6 +19129,7 @@ void APLA::split_merge_optimization_segments_speed3(U& const input_argument, con
 #ifdef _DEBUG
 	typename TOOL::RESULT_RECORD result_record;
 	get_sum_deviation_no_ab(original_time_series_vector, doubly_linked_list, result_record);
+	assert_endpoint_a_b(original_time_series_vector, doubly_linked_list);
 	//cout << "After Initialization: <Sum deviation: " << result_record.sum_deviation << ">. max deviation: "<< result_record.max_deviation << "max deviation width: "<< result_record.max_deviation_multiple_width << "  <Sum upper bound: " << get_sum_upper_bound(doubly_linked_list) << endl;
 	long double min_sum_dev = INF;
 #endif
@@ -19121,18 +19139,24 @@ void APLA::split_merge_optimization_segments_speed3(U& const input_argument, con
 	/*===========================================  Split Iteration  =====================================*/
 	while (doubly_linked_list.size() < input_argument.point_dimension) {
 		/*................................................................................................................*/
-#ifdef _DEBUG
+
 		/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^     191124 for burst time series   ^^^^^^^^^^^^^^^^^^^^^^^^*/
 		if (split_area_difference_map.size() == 0) {
-			assert(0);
+			//assert(0);
 			assert(input_argument.point_dimension != INF);
 			/*--------- split burst ----------*/
 			split_burst_segment(original_time_series_vector, input_argument.point_dimension, doubly_linked_list);
 			/*--------------------------------*/
+			/*...................    210304    .........................*/
+#ifdef _DEBUG
+			assert_endpoint_a_b(original_time_series_vector, doubly_linked_list);
+#endif
+			/*..........................................................*/
+
 			break;
 		}
 		/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-#endif
+
 		/*................................................................................................................*/
 
 		/*---------------------------------------               Split Operation         ---------------------------------------*/
@@ -20066,6 +20090,22 @@ void APLA::initial_SAPLA_200706(U& const input_argument, const vector<T>& const 
 	get_right_endpoint_by_accumulation_area_no_split_merge(input_argument, original_time_series_vector, merge_segment_density_map, split_area_difference_map, doubly_linked_list, output_argument);
 	/***********************************************/
 
+	/*############################################################                one line time series         #####################################################################*/
+	if (doubly_linked_list.size() == 1) {
+		//assert(0);
+		//return;
+		/*..................................................................................................................*/
+#ifdef _DEBUG
+		assert(merge_segment_density_map.empty());
+#endif
+		/*..................................................................................................................*/
+
+		y_projection_merge_line(input_argument, original_time_series_vector, doubly_linked_list);
+
+		return;
+	}
+	/*##############################################################################################################################################################################*/
+
 	//210308 one line or two points
 	//get_SAPLA_by_one_line_or_two_points(input_argument, original_time_series_vector, merge_segment_density_map, split_area_difference_map, doubly_linked_list, output_argument);
 	//210301
@@ -20080,8 +20120,8 @@ void APLA::initial_SAPLA_200706(U& const input_argument, const vector<T>& const 
 	assert(doubly_linked_list.back().right_endpoint == original_time_series_vector.size() - 1);//&& doubly_linked_list.size() == input_argument.point_dimension);
 	//assert_minmax_value(original_time_series_vector, doubly_linked_list);
 	assert_bound(original_time_series_vector, doubly_linked_list);
-	assert_split_map_area_difference(split_area_difference_map);
-
+	assert_endpoint_a_b(original_time_series_vector, doubly_linked_list);
+	//get_apla_coefficients_segment(temp_segemnt);
 	/*:::::::::::::::::::::::::::::::: 201217 Find Example ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 	//vector<T> reconstruct_time_series_vector;
 	///*----------------     Print linked list  ----------------*/
@@ -23580,7 +23620,7 @@ double APLA::AdaptiveSearchIdPointDistance2(const vector<T>& const original_time
 // Method:get_intersection_point_by_segment
 // Qualifier: find the intersection point by endpoint at two side of one segment
 // date:200219
-// Notice: https://blog.csdn.net/cocoasprite/article/details/49841587
+// Notice:
 // Input:
 // Output:
 // author:
@@ -25943,7 +25983,7 @@ double APLA::find_split_point_by_min_density_fast(const vector<T>& const origina
 			split_coefficient_min_density_global = get_segment_min_density_global_id(original_time_series_vector, long_segment, min_density_segment_local, segments_density_vector);
 		}
 		else {
-			assert(0);
+			//assert(0);
 			split_coefficient_min_density_global = min_density_segment_local;
 		}
 
@@ -28422,6 +28462,12 @@ void APLA::split_burst_segment(DataType*& const original_time_series, const int&
 TEMPLATE
 template<typename T, typename Y>
 void APLA::split_burst_segment(const vector<T>& const original_time_series_vector, const int& const  point_dimension, DoublyLinkedList<Y>& const doubly_linked_list) {
+	
+#ifdef _DEBUG
+	assert_endpoint_a_b(original_time_series_vector, doubly_linked_list);
+	APLA::assertLinkedList(doubly_linked_list);
+#endif
+	
 	int segment_id = 0;
 
 	while (doubly_linked_list.size() < point_dimension) {
@@ -28435,7 +28481,7 @@ void APLA::split_burst_segment(const vector<T>& const original_time_series_vecto
 			Y& const left_segment = newElement->_value;
 
 			/*....................................*/
-			left_segment.area_difference = 0;
+			left_segment.area_difference = left_segment.bound.upper_bound_diff = left_segment.bound.upper_bound_area = 0;
 			/*....................................*/
 
 			/*............................................................................................................................*/
@@ -28463,31 +28509,34 @@ void APLA::split_burst_segment(const vector<T>& const original_time_series_vecto
 			/*-------------------------------------------------------------------------------------------*/
 			//200314 minmax point
 			/*------------------------------   210203    min&max point b            ----------------------------*/
-			/*if (left_segment.apla.a >= 0) {
-				left_segment.min_point.id = int(left_segment.right_endpoint - left_segment.rectangle_width + 1);
-				left_segment.max_point.id = left_segment.right_endpoint;
-				left_segment.min_point.value = left_segment.apla.b = original_time_series_vector[left_segment.min_point.id];
-				left_segment.max_point.value = original_time_series_vector[left_segment.max_point.id];
-
-				splited_node_segment.min_point.id = int(splited_node_segment.right_endpoint - splited_node_segment.rectangle_width + 1);
-				splited_node_segment.max_point.id = splited_node_segment.right_endpoint;
-				splited_node_segment.min_point.value = splited_node_segment.apla.b = original_time_series_vector[splited_node_segment.min_point.id];
-				splited_node_segment.max_point.value = original_time_series_vector[splited_node_segment.max_point.id];
+			if (left_segment.apla.a >= 0) {
+				left_segment.apla.b = original_time_series_vector[int(left_segment.right_endpoint - left_segment.rectangle_width + 1)];
+				splited_node_segment.apla.b = original_time_series_vector[int(splited_node_segment.right_endpoint - splited_node_segment.rectangle_width + 1)];
+				//left_segment.min_point.id = int(left_segment.right_endpoint - left_segment.rectangle_width + 1);
+				//left_segment.max_point.id = left_segment.right_endpoint;
+				//left_segment.min_point.value = left_segment.apla.b = original_time_series_vector[left_segment.min_point.id];
+				//left_segment.max_point.value = original_time_series_vector[left_segment.max_point.id];
+				//splited_node_segment.min_point.id = int(splited_node_segment.right_endpoint - splited_node_segment.rectangle_width + 1);
+				//splited_node_segment.max_point.id = splited_node_segment.right_endpoint;
+				//splited_node_segment.min_point.value = splited_node_segment.apla.b = original_time_series_vector[splited_node_segment.min_point.id];
+				//splited_node_segment.max_point.value = original_time_series_vector[splited_node_segment.max_point.id];
 			}
 			else if (left_segment.apla.a < 0) {
-				left_segment.max_point.id = int(left_segment.right_endpoint - left_segment.rectangle_width + 1);
+				left_segment.apla.b = original_time_series_vector[int(left_segment.right_endpoint - left_segment.rectangle_width + 1)];
+				splited_node_segment.apla.b = original_time_series_vector[int(splited_node_segment.right_endpoint - splited_node_segment.rectangle_width + 1) ];
+
+			/*	left_segment.max_point.id = int(left_segment.right_endpoint - left_segment.rectangle_width + 1);
 				left_segment.min_point.id = left_segment.right_endpoint;
 				left_segment.max_point.value = left_segment.apla.b = original_time_series_vector[left_segment.max_point.id];
 				left_segment.min_point.value = original_time_series_vector[left_segment.min_point.id];
-
 				splited_node_segment.max_point.id = int(splited_node_segment.right_endpoint - splited_node_segment.rectangle_width + 1);
 				splited_node_segment.min_point.id = splited_node_segment.right_endpoint;
 				splited_node_segment.max_point.value = splited_node_segment.apla.b = original_time_series_vector[splited_node_segment.max_point.id];
-				splited_node_segment.min_point.value = original_time_series_vector[splited_node_segment.min_point.id];
+				splited_node_segment.min_point.value = original_time_series_vector[splited_node_segment.min_point.id];*/
 			}
 			else {
 				assert(0);
-			}*/
+			}
 			/*-------------------------------------------------------------------------------------------*/
 			/*left_segment.min_point.value = left_segment.max_point.value = original_time_series_vector[int(left_segment.right_endpoint)];
 			left_segment.min_point.id = left_segment.right_endpoint - left_segment.rectangle_width + 1;
@@ -28509,6 +28558,9 @@ void APLA::split_burst_segment(const vector<T>& const original_time_series_vecto
 			/*left_segment.sum_value = left_segment.rectangle_width * left_segment.apla.b;
 			splited_node_segment.sum_value - left_segment.sum_value;*/
 			/*-------------------------------------------------------------------------*/
+
+			get_apla_coefficients_segment(left_segment);
+			get_apla_coefficients_segment(splited_node_segment);
 
 			/*========================================    Insert Node(copy) in LinkedList   ======================================*/
 			doubly_linked_list.insertNodeBeforeNode(*newElement, splited_node);
@@ -31026,6 +31078,12 @@ inline Y& APLA::get_ab_segment_by_accumulation(const T& const accumulate_point_v
 	//temp_coefficient.sum_value = last_segment.sum_value + original_time_series_vector[temp_coefficient.right_endpoint];// sum value
 
 	get_apla_coefficients_segment(temp_coefficient);
+
+	if (accumulate_point_value == last_segment.apla.b && last_segment.apla.a == 0) {
+		temp_coefficient.apla.a = 0;
+		temp_coefficient.apla.b = accumulate_point_value;
+		return temp_coefficient;
+	}
 
 
 	//double temp_length = temp_coefficient.rectangle_width + 1;//l + 1
@@ -40446,7 +40504,6 @@ void APLA::y_projection_merge_line(U& input_argument, const vector<T>& const ori
 
 	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 
-
 	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&                   Loop                        &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 	if (temp_segemnt.apla.a == 0) {
 
@@ -40454,7 +40511,7 @@ void APLA::y_projection_merge_line(U& input_argument, const vector<T>& const ori
 			//200314 minmax point
 			//temp_segemnt.right_endpoint = temp_segemnt.min_point.id = temp_segemnt.max_point.id = input_argument.segment_length_second * i_segment - 1;
 			temp_segemnt.right_endpoint = input_argument.segment_length_second * i_segment - 1;
-
+			get_apla_coefficients_segment(temp_segemnt);
 			doubly_linked_list.add(temp_segemnt);
 		}
 
@@ -40482,7 +40539,7 @@ void APLA::y_projection_merge_line(U& input_argument, const vector<T>& const ori
 			/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 			//temp_segemnt.max_point.value = original_time_series_vector[temp_segemnt.max_point.id]; 210203
 			/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
+			get_apla_coefficients_segment(temp_segemnt);
 			doubly_linked_list.add(temp_segemnt);
 		}
 
@@ -40509,7 +40566,7 @@ void APLA::y_projection_merge_line(U& input_argument, const vector<T>& const ori
 			/*+++++++++++++++++++++++++++++++      210203      value min point          ++++++++++++++++++++++++++++++++++*/
 			//temp_segemnt.min_point.value = original_time_series_vector[temp_segemnt.min_point.id];
 			/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
+			get_apla_coefficients_segment(temp_segemnt);
 			doubly_linked_list.add(temp_segemnt);
 		}
 	}
@@ -40528,7 +40585,7 @@ void APLA::y_projection_merge_line(U& input_argument, const vector<T>& const ori
 	//	temp_segemnt.min_point.id = temp_segemnt.max_point.id = temp_segemnt.right_endpoint;
 	//}
 
-	if (temp_segemnt.apla.a > 0) {
+	if (temp_segemnt.apla.a >= 0) {
 		//200314 minmax point
 		/*+++++++++++++++++++++++++++   210203           id max point          ++++++++++++++++++++++++++++++++++++++*/
 		//temp_segemnt.max_point.id = temp_segemnt.right_endpoint;
@@ -40566,15 +40623,14 @@ void APLA::y_projection_merge_line(U& input_argument, const vector<T>& const ori
 		//temp_segemnt.min_point.value = original_time_series_vector[temp_segemnt.min_point.id];
 		/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 	}
-	else {
-		assert(0);
-	}
 
+	get_apla_coefficients_segment(temp_segemnt);
 	doubly_linked_list.add(temp_segemnt);
 
 	/*.....................................................................................*/
 #ifdef _DEBUG
 	assert(doubly_linked_list.size() == input_argument.point_dimension);
+	assert_endpoint_a_b(original_time_series_vector, doubly_linked_list);
 #endif
 	/*.....................................................................................*/
 
@@ -42565,8 +42621,9 @@ void APLA::get_APLA_point_new_y_projection(U& input_argument, const vector<T>& c
 // author:
 //************************************
 TEMPLATE
-template<typename T>
-vector<T>& APLA::get_apla_projection(const vector<DataType>& const query_time_series_vector, const DoublyLinkedList<T>& const doubly_linked_list, vector<T>& const area_vector) {
+template<typename T, typename Y>
+vector<Y>& APLA::get_apla_projection(const vector<DataType>& const query_time_series_vector, const DoublyLinkedList<T>& const doubly_linked_list, vector<Y>& const area_vector) {
+	area_vector.resize(doubly_linked_list.size());
 #ifdef _DEBUG
 	assert(!query_time_series_vector.empty() && doubly_linked_list.size() == area_vector.size());
 #endif
@@ -42577,6 +42634,26 @@ vector<T>& APLA::get_apla_projection(const vector<DataType>& const query_time_se
 		au_vector->right_endpoint = au_list->right_endpoint;
 		au_vector->rectangle_width = au_list->rectangle_width;
 		getAAndBByPLA(query_time_series_vector, *au_vector);
+	}
+	return area_vector;
+}
+
+
+//211228 project APCA
+TEMPLATE
+template<typename T, typename Y>
+vector<Y>& APLA::get_apla_average_projection(const vector<DataType>& const query_time_series_vector, const DoublyLinkedList<T>& const doubly_linked_list, vector<Y>& const area_vector) {
+	area_vector.resize(doubly_linked_list.size());
+#ifdef _DEBUG
+	assert(!query_time_series_vector.empty() && doubly_linked_list.size() == area_vector.size());
+#endif
+	auto&& const au_list = doubly_linked_list.begin();
+	for (auto&& const au_vector = area_vector.begin(); au_vector != area_vector.end(); au_vector++, au_list++) {
+		//200316 sum value
+		//assert(au_list->sum_value != INF);
+		au_vector->right_endpoint = au_list->right_endpoint;
+		au_vector->rectangle_width = au_list->rectangle_width;
+		get_average_segment(query_time_series_vector, *au_vector);
 	}
 	return area_vector;
 }
@@ -42592,8 +42669,8 @@ vector<T>& APLA::get_apla_projection(const vector<DataType>& const query_time_se
 //************************************
 //191114 compue distance LB for two segments.
 TEMPLATE
-template<typename T>
-inline long double APLA::get_segment_distance_LB(const T& const segment_1, const T& const segment_2) {
+template<typename T, typename Y>
+inline long double APLA::get_segment_distance_LB(const T& const segment_1, const Y& const segment_2) {
 
 	/*................................................................................................................................................*/
 #ifdef _DEBUG
@@ -42621,6 +42698,8 @@ inline long double APLA::get_segment_distance_LB(const T& const segment_1, const
 
 	return distance_segment_pow;//^2
 }
+
+
 
 //************************************
 // Method:get_sqrt_distance_sapla_same_endpoints
@@ -42660,8 +42739,8 @@ long double APLA::get_sqrt_distance_sapla_same_endpoints(const DoublyLinkedList<
 // author:
 //************************************
 TEMPLATE
-template<typename T>
-double APLA::get_distance_LB(const DoublyLinkedList<T>& const doubly_linked_list, const vector<T>& const area_vector) {
+template<typename T, typename Y>
+double APLA::get_distance_LB(const DoublyLinkedList<T>& const doubly_linked_list, const vector<Y>& const area_vector) {
 #ifdef _DEBUG
 	assert(doubly_linked_list.size() == area_vector.size());
 #endif
@@ -42674,7 +42753,7 @@ double APLA::get_distance_LB(const DoublyLinkedList<T>& const doubly_linked_list
 	return std::sqrt(distance);
 }
 //************************************
-// Method:get_distance_LB
+// Method:get_distance_LB_by_series_apla
 // Qualifier: directly get distanceLB from query time series & original APLA point, combine(get_apla_projection, get_segment_distance_LB, get_distance_LB)
 // Notes: they have samne right endpoints
 // Input: two APLA points, one is original APLA point, other is projected APLA point, 
@@ -43415,8 +43494,8 @@ void APLA::get_distance_SAPLA_segments(const T4& const type_distance, const vect
 //210817 get segment distance by option
 TEMPLATE
 template<typename T, typename Y, typename U>
-inline long double APLA::get_distance_SAPLA_segment_by_option(const T& const option_distance, const Y& const segment_1, const U& const segment_2) {
-	switch (option_distance) {
+inline long double APLA::get_distance_SAPLA_segment_by_option(const T& const type_distance, const Y& const segment_1, const U& const segment_2) {
+	switch (type_distance) {
 	case 0:
 		return get_segment_distance_LB(segment_1, segment_2);//is ^2
 		break;
@@ -43783,9 +43862,9 @@ void APLA::get_distance_SAPLA_segments_210818(const T3& const option_struct, con
 	assert(segment_short_begin_current.right_endpoint - segment_short_begin_current.rectangle_width == segment_long.right_endpoint - segment_long.rectangle_width && segment_short_begin_current.right_endpoint <= segment_long.right_endpoint);
 	assert_adjacent_nodes_endpoint(node_long);
 	assert_segment_equal(segment_long, node_long._value);
-
-	switch (option_struct.option_method) {
-	case 1: {//APCA
+	assert(option_struct.type_representation > 1);
+	switch (option_struct.type_representation) {
+	case 3: {//APCA
 		assert_endpoint_average(original_time_series_long, doubly_linked_list_long);
 		break;
 	}
@@ -43825,8 +43904,8 @@ void APLA::get_distance_SAPLA_segments_210818(const T3& const option_struct, con
 				number_points += firt_width;
 			}
 
-			switch (option_struct.option_method) {
-			case 1: {//APCA
+			switch (option_struct.type_representation) {
+			case 3: {//APCA
 				getSubAAndBByPLA_average(original_time_series_long, segment_left, segment_right, segment_long);
 				break;
 			}
@@ -43835,7 +43914,7 @@ void APLA::get_distance_SAPLA_segments_210818(const T3& const option_struct, con
 				break;
 			}
 
-			distance_SAPLA += get_distance_SAPLA_segment_by_option(option_struct.option_distance, segment_left, segment_short_begin_current);
+			distance_SAPLA += get_distance_SAPLA_segment_by_option(option_struct.type_distance, segment_left, segment_short_begin_current);
 
 			segment_short_begin_next = segment_right;// sub right in long segment
 
@@ -43854,7 +43933,7 @@ void APLA::get_distance_SAPLA_segments_210818(const T3& const option_struct, con
 #endif
 			/*..........................................................................................................................................*/
 		
-			distance_SAPLA += get_distance_SAPLA_segment_by_option(option_struct.option_distance, segment_long, segment_short_begin_current);
+			distance_SAPLA += get_distance_SAPLA_segment_by_option(option_struct.type_distance, segment_long, segment_short_begin_current);
 			return;
 		}
 		/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -43917,8 +43996,8 @@ void APLA::get_distance_SAPLA_segments_210818(const T3& const option_struct, con
 #endif
 			/*....................................................................................*/
 
-			switch (option_struct.option_method) {
-			case 1: {//APCA
+			switch (option_struct.type_representation) {
+			case 3: {//APCA
 				getSubAAndBByPLA_average(original_time_series_long, segment_left, segment_right, segment_long);
 				break;
 			}
@@ -43939,7 +44018,7 @@ void APLA::get_distance_SAPLA_segments_210818(const T3& const option_struct, con
 #endif
 				/*....................................................................................*/
 
-				distance_SAPLA += get_distance_SAPLA_segment_by_option(option_struct.option_distance, segment_right, doubly_linked_list_short[id_segment_vector.back()]);
+				distance_SAPLA += get_distance_SAPLA_segment_by_option(option_struct.type_distance, segment_right, doubly_linked_list_short[id_segment_vector.back()]);
 				id_segment_vector.pop_back();
 			}
 
@@ -43968,8 +44047,8 @@ void APLA::get_distance_SAPLA_segments_210818(const T3& const option_struct, con
 #endif
 			/*.............................................................................................................................................................*/
 
-			switch (option_struct.option_method) {
-			case 1: {//APCA
+			switch (option_struct.type_representation) {
+			case 3: {//APCA
 				getSubAAndBByPLA_average(original_time_series_long, segment_left, segment_right, segment_long);
 				break;
 			}
@@ -43978,7 +44057,7 @@ void APLA::get_distance_SAPLA_segments_210818(const T3& const option_struct, con
 				break;
 			}
 
-			distance_SAPLA += get_distance_SAPLA_segment_by_option(option_struct.option_distance, segment_left, segment_short_begin_current);
+			distance_SAPLA += get_distance_SAPLA_segment_by_option(option_struct.type_distance, segment_left, segment_short_begin_current);
 
 			segment_short_begin_current = doubly_linked_list_short[id_segment_vector.front()];
 
@@ -44003,8 +44082,8 @@ void APLA::get_distance_SAPLA_segments_210818(const T3& const option_struct, con
 	assert_segment_equal(segment_long, node_long._value);
 	
 
-	switch (option_struct.option_method) {
-	case 1: {//APCA
+	switch (option_struct.type_representation) {
+	case 3: {//APCA
 		assert_endpoint_average(original_time_series_long, doubly_linked_list_long);
 		break;
 	}
@@ -44156,7 +44235,7 @@ long double APLA::get_distance_SAPLA(const vector<T>& const original_time_series
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 }
 
-// 210910 Lower bound distance between APCA (Approximation) average distance
+// 210910 // For APCA. Lower bound distance between APCA (Approximation) average distance
 TEMPLATE
 template<typename T, typename Y, typename U>
 long double APLA::get_distance_SAPLA_average(const vector<T>& const original_time_series_vector_1, const vector<T>& const original_time_series_vector_2, const DoublyLinkedList<Y>& const doubly_linked_list_1, const DoublyLinkedList<Y>& const doubly_linked_list_2, U& const number_points) {
@@ -44941,9 +45020,15 @@ long double APLA::get_same_partition_SAPLA_limit_only_move_1(const vector<T>& co
 #ifdef _DEBUG
 	assert(original_time_series_vector_1.size() == original_time_series_vector_2.size());
 	assert(option_struct.number_point == 0);
-	assert(option_struct.option_distance == 0); //0 LB distance; 1 SAPLA distance;
-	//assert(option_struct.option_method == 0); //0 SAPLA / APLA / PLA / PAA / PAALM / SAX / CHEBY, 1 APCA(average)
+	assert(option_struct.type_distance == 0); //0 LB distance; 1 SAPLA distance;
+	//assert(option_struct.type_representation == 0); //0 SAPLA / APLA / PLA / PAA / PAALM / SAX / CHEBY, 1 APCA(average)
 	//DoublyLinkedList<Y> doubly_linked_list_1_temp, doubly_linked_list_2_temp;
+	//TOOL::assert_option_tree(option_struct);
+
+	if (option_struct.type_representation == 6 || option_struct.type_representation == 8) {
+		assert_endpoint_a_b(original_time_series_vector_1, doubly_linked_list_1);
+		assert_endpoint_a_b(original_time_series_vector_2, doubly_linked_list_2);
+	}
 #endif
 	/*....................................................................................*/
 	const int width_min = 2;//minimal segment width >= limiation_width
@@ -44982,7 +45067,7 @@ long double APLA::get_same_partition_SAPLA_limit_only_move_1(const vector<T>& co
 #endif
 			/*.........................................................*/
 
-			distance_SAPLA += get_distance_SAPLA_segment_by_option(option_struct.option_distance, segment_begin_1, segment_begin_2);
+			distance_SAPLA += get_distance_SAPLA_segment_by_option(option_struct.type_distance, segment_begin_1, segment_begin_2);
 
 			if (segment_begin_1.right_endpoint == doubly_linked_list_1.back().right_endpoint) break;
 
@@ -45001,6 +45086,10 @@ long double APLA::get_same_partition_SAPLA_limit_only_move_1(const vector<T>& co
 			assert_segment_equal(segment_begin_1, doubly_linked_list_1[id_begin_1]);
 			assert_segment_equal(segment_begin_2, doubly_linked_list_2[id_begin_2]);
 			assert(id_begin_1 == id_begin_2);
+			if (option_struct.type_representation == 6 || option_struct.type_representation == 8) {
+				assert_endpoint_a_b(original_time_series_vector_1, doubly_linked_list_1);
+				assert_endpoint_a_b(original_time_series_vector_2, doubly_linked_list_2);
+			}
 #endif
 			/*.........................................................*/
 
@@ -45014,7 +45103,7 @@ long double APLA::get_same_partition_SAPLA_limit_only_move_1(const vector<T>& co
 				int width_difference = segment_begin_1.right_endpoint - doubly_linked_list_2[id_begin_2 - 1].right_endpoint;
 				if (width_difference < width_min && segment_begin_1.right_endpoint != end_value) {
 					id_begin_2--;
-					move_merge_long_segment_no_min_width(option_struct.option_method, original_time_series_vector_1, width_min, width_difference, id_begin_1, doubly_linked_list_1);
+					move_merge_long_segment_no_min_width(option_struct.type_representation, original_time_series_vector_1, width_min, width_difference, id_begin_1, doubly_linked_list_1);
 					segment_begin_1 = doubly_linked_list_1[id_begin_1];// short segment move or merged
 					if (id_segment_vector.empty()) { continue; }
 					else { id_segment_vector.pop_back();}
@@ -45028,11 +45117,13 @@ long double APLA::get_same_partition_SAPLA_limit_only_move_1(const vector<T>& co
 				get_distance_SAPLA_segments_210818(option_struct, original_time_series_vector_1, segment_begin_1.right_endpoint, doubly_linked_list_2, doubly_linked_list_1, doubly_linked_list_1.getNode(id_begin_1), id_segment_vector, segment_begin_1, segment_begin_2, segment_short_begin_next, distance_SAPLA, number_points_query);
 				/*.........................................................*/
 #ifdef _DEBUG
-				if (option_struct.option_method == 0)
-				assert_endpoint_a_b(original_time_series_vector_1, doubly_linked_list_1);
+				if (option_struct.type_representation == 6 || option_struct.type_representation == 8) {
+					assert_endpoint_a_b(original_time_series_vector_1, doubly_linked_list_1);
+					assert_endpoint_a_b(original_time_series_vector_2, doubly_linked_list_2);
+				}
 #endif
 				/*.........................................................*/
-				//get_distance_SAPLA_segments(option_struct.option_distance, original_time_series_vector_1, segment_begin_1.right_endpoint, doubly_linked_list_2, id_segment_vector, segment_begin_1, segment_begin_2, segment_short_begin_next, distance_SAPLA, number_points_query);
+				//get_distance_SAPLA_segments(option_struct.type_distance, original_time_series_vector_1, segment_begin_1.right_endpoint, doubly_linked_list_2, id_segment_vector, segment_begin_1, segment_begin_2, segment_short_begin_next, distance_SAPLA, number_points_query);
 
 				segment_begin_1 = segment_short_begin_next;// long segment -> short new segment
 				segment_begin_2 = doubly_linked_list_2[id_begin_2];// short segment -> long segment
@@ -45046,7 +45137,23 @@ long double APLA::get_same_partition_SAPLA_limit_only_move_1(const vector<T>& co
 				int width_difference = segment_begin_2.right_endpoint - doubly_linked_list_1[id_begin_1 - 1].right_endpoint;
 				if (width_difference < width_min && segment_begin_2.right_endpoint != end_value) {
 					id_begin_1--;
-					move_merge_short_segment_no_min_width(option_struct.option_method, original_time_series_vector_1, width_min, width_difference, id_begin_1, doubly_linked_list_1);
+					/*.........................................................*/
+#ifdef _DEBUG
+					if(option_struct.type_representation == 6 || option_struct.type_representation == 8) {
+						assert_endpoint_a_b(original_time_series_vector_1, doubly_linked_list_1);
+						assert_endpoint_a_b(original_time_series_vector_2, doubly_linked_list_2);
+					}
+#endif
+					/*.........................................................*/
+					move_merge_short_segment_no_min_width(option_struct.type_representation, original_time_series_vector_1, width_min, width_difference, id_begin_1, doubly_linked_list_1);
+					/*.........................................................*/
+#ifdef _DEBUG
+					if (option_struct.type_representation == 6 || option_struct.type_representation == 8) {
+						assert_endpoint_a_b(original_time_series_vector_1, doubly_linked_list_1);
+						assert_endpoint_a_b(original_time_series_vector_2, doubly_linked_list_2);
+					}
+#endif
+					/*.........................................................*/
 					if (id_segment_vector.empty()) {
 						segment_begin_1 = doubly_linked_list_1[id_begin_1];// short segment move or merged
 						continue;
@@ -45058,15 +45165,25 @@ long double APLA::get_same_partition_SAPLA_limit_only_move_1(const vector<T>& co
 				}
 
 				/*----------------------------------*/
+				/*.........................................................*/
+#ifdef _DEBUG
+				if (option_struct.type_representation == 6 || option_struct.type_representation == 8) {
+					assert_endpoint_a_b(original_time_series_vector_1, doubly_linked_list_1);
+					assert_endpoint_a_b(original_time_series_vector_2, doubly_linked_list_2);
+				}
+#endif
+				/*.........................................................*/
 
 				get_distance_SAPLA_segments_210818(option_struct, original_time_series_vector_2, segment_begin_2.right_endpoint, doubly_linked_list_1, doubly_linked_list_2, doubly_linked_list_2.getNode(id_begin_2), id_segment_vector, segment_begin_2, segment_begin_1, segment_short_begin_next, distance_SAPLA, option_struct.number_point);
 				/*.........................................................*/
 #ifdef _DEBUG
-				if(option_struct.option_method==0)
-				assert_endpoint_a_b(original_time_series_vector_2, doubly_linked_list_2);
+				if (option_struct.type_representation == 6 || option_struct.type_representation == 8) {
+					assert_endpoint_a_b(original_time_series_vector_1, doubly_linked_list_1);
+					assert_endpoint_a_b(original_time_series_vector_2, doubly_linked_list_2);
+				}
 #endif
 				/*.........................................................*/
-				//get_distance_SAPLA_segments(option_struct.option_distance, original_time_series_vector_2, segment_begin_2.right_endpoint, doubly_linked_list_1, id_segment_vector, segment_begin_2, segment_begin_1, segment_short_begin_next, distance_SAPLA, option_struct.number_point);
+				//get_distance_SAPLA_segments(option_struct.type_distance, original_time_series_vector_2, segment_begin_2.right_endpoint, doubly_linked_list_1, id_segment_vector, segment_begin_2, segment_begin_1, segment_short_begin_next, distance_SAPLA, option_struct.number_point);
 				segment_begin_1 = doubly_linked_list_1[id_begin_1];// short segment -> long segment
 				segment_begin_2 = segment_short_begin_next;// long segment -> short new segment
 				id_begin_2 = id_begin_1;// after insertion
@@ -45084,6 +45201,11 @@ long double APLA::get_same_partition_SAPLA_limit_only_move_1(const vector<T>& co
 	//assert_endpoint_a_b(original_time_series_vector_1, doubly_linked_list_1);
 	//assert_endpoint_a_b(original_time_series_vector_2, doubly_linked_list_2);
 
+	if (option_struct.type_representation == 6 || option_struct.type_representation == 8) {
+		assert_endpoint_a_b(original_time_series_vector_1, doubly_linked_list_1);
+		assert_endpoint_a_b(original_time_series_vector_2, doubly_linked_list_2);
+	}
+
 	assert_has_same_endpoints(doubly_linked_list_1, doubly_linked_list_2);//210622
 	assert(option_struct.number_point <= original_time_series_vector_1.size() * 2 && option_struct.number_point >= 0 && number_points_query <= original_time_series_vector_1.size() * 2 && number_points_query >= 0);
 
@@ -45093,7 +45215,7 @@ long double APLA::get_same_partition_SAPLA_limit_only_move_1(const vector<T>& co
 	//long double distance_SAPLA_evaluation = get_same_partition_SAPLA_debug(original_time_series_vector_1, original_time_series_vector_2, doubly_linked_list_1_temp, doubly_linked_list_2_temp);
 	//assert_has_same_endpoints(doubly_linked_list_1, doubly_linked_list_1_temp);
 
-	switch (option_struct.option_distance) {
+	switch (option_struct.type_distance) {
 	case 0:
 		assert(float(sqrtl(distance_SAPLA)) == float(distance_SAPLA_evaluation));
 		break;
@@ -45111,7 +45233,7 @@ long double APLA::get_same_partition_SAPLA_limit_only_move_1(const vector<T>& co
 	option_struct.number_point /= original_time_series_vector_1.size();
 
 	/*~~~~~~~~~~~~~~~~~~~~~  Return Distance ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-	switch (option_struct.option_distance) {
+	switch (option_struct.type_distance) {
 	case 0:
 		return sqrtl(distance_SAPLA);
 		break;
@@ -45125,6 +45247,13 @@ long double APLA::get_same_partition_SAPLA_limit_only_move_1(const vector<T>& co
 	}
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 }
+
+//2112228 Only change linked list 1, only move list 1 (query).
+//TEMPLATE
+//template<typename T, typename Y, typename U, typename T1, typename T2>
+//long double APLA::get_same_partition_SAPLA_limit_only_project(const vector<T>& const original_time_series_vector_1, const vector<T1>& const original_time_series_vector_2, DoublyLinkedList<Y>& const doubly_linked_list_1, DoublyLinkedList<T2>& const doubly_linked_list_2, U& const option_struct) {
+//	
+//}
 
 //***************************************************************
 	// Method:get_same_partition_SAPLA_debug
@@ -45374,10 +45503,11 @@ long double APLA::get_distance_SAPLA_pub(const vector<T>& const original_time_se
 //210901
 TEMPLATE
 template<typename T, typename Y, typename U, typename T1, typename T2, typename T3>
-void APLA::move_merge_short_segment_no_min_width(const T3& const option_method, const vector<T>& const original_time_series_short_vector, const Y&const width_min, const U& const width_difference, const T1 id_segment_short, DoublyLinkedList<T2>& const doubly_linked_list_short) {
+void APLA::move_merge_short_segment_no_min_width(const T3& const type_representation, const vector<T>& const original_time_series_short_vector, const Y&const width_min, const U& const width_difference, const T1 id_segment_short, DoublyLinkedList<T2>& const doubly_linked_list_short) {
 	/*.....................................................................*/
 #ifdef _DEBUG
 	assert(id_segment_short >= 0 && width_difference < width_min && width_difference > 0);
+	assert_endpoint_a_b(original_time_series_short_vector, doubly_linked_list_short);
 #endif
 	/*.....................................................................*/
 
@@ -45385,8 +45515,9 @@ void APLA::move_merge_short_segment_no_min_width(const T3& const option_method, 
 	T2& const segment_left = node_left._value;
 	T2& const segment_right = node_left._next->_value;
 	
-	switch (option_method) {
-	case 0:{// SAPLA, ICDE07. No equal method, beacuae no need partition
+	switch (type_representation) {
+	case 6: // ICDE07
+	case 8:{// SAPLA, . No equal method, beacuae no need partition
 		if (segment_right.rectangle_width >= width_min + width_difference) {// short segment increase right endpoint width_min-1 times
 			endpoint_increase_right_adjacent_segment(original_time_series_short_vector, width_difference, segment_left, segment_right);
 			/*.................................................*/
@@ -45413,7 +45544,7 @@ void APLA::move_merge_short_segment_no_min_width(const T3& const option_method, 
 		/*.........................................................*/
 		break;
 	}
-	case 1: {//APCA
+	case 3: {//APCA
 		if (segment_right.rectangle_width >= width_min + width_difference) {// short segment increase right endpoint width_min-1 times
 			endpoint_increase_right_adjacent_segment_average(original_time_series_short_vector, width_difference, segment_left, segment_right);
 			/*.........................................................*/
@@ -45432,7 +45563,11 @@ void APLA::move_merge_short_segment_no_min_width(const T3& const option_method, 
 			segment_right = segment_merged;
 			doubly_linked_list_short.removeNode(node_left);
 		}
-
+		/*.........................................................*/
+#ifdef _DEBUG
+		assert_endpoint_a_b(original_time_series_short_vector, doubly_linked_list_short);
+#endif
+		/*.........................................................*/
 		break;
 	}
 	default:
@@ -45443,7 +45578,7 @@ void APLA::move_merge_short_segment_no_min_width(const T3& const option_method, 
 //210901 long segment decrease right endpoint with width_difference, next sement increase left
 TEMPLATE
 template<typename T, typename Y, typename U, typename T1, typename T2, typename T3>
-void APLA::move_merge_long_segment_no_min_width(const T3& const option_method, const vector<T>& const original_time_series_long_vector, const Y& const width_min, const U& const width_difference, const T1 id_segment_long, DoublyLinkedList<T2>& const doubly_linked_list_long) {
+void APLA::move_merge_long_segment_no_min_width(const T3& const type_representation, const vector<T>& const original_time_series_long_vector, const Y& const width_min, const U& const width_difference, const T1 id_segment_long, DoublyLinkedList<T2>& const doubly_linked_list_long) {
 	/*.........................................................*/
 #ifdef _DEBUG
 	assert(id_segment_long >= 0 && width_difference < width_min && width_difference > 0);
@@ -45460,8 +45595,9 @@ void APLA::move_merge_long_segment_no_min_width(const T3& const option_method, c
 #endif
 	/*.........................................................*/
 
-	switch (option_method) {
-	case 0: {// SAPLA, ICDE07. No equal method, beacuae no need partition
+	switch (type_representation) {
+	case 6: // ICDE07
+	case 8: {// SAPLA, ICDE07. No equal method, beacuae no need partition
 		endpoint_decrease_right_adjacent_segment(original_time_series_long_vector, width_difference, segment_left, segment_right);
 		/*.........................................................*/
 #ifdef _DEBUG
@@ -45470,7 +45606,7 @@ void APLA::move_merge_long_segment_no_min_width(const T3& const option_method, c
 		/*.........................................................*/
 		break;
 	}
-	case 1: {//APCA
+	case 3: {//APCA
 		endpoint_decrease_right_adjacent_segment_average(original_time_series_long_vector, width_difference, segment_left, segment_right);
 		break;
 	}
@@ -45505,6 +45641,24 @@ void APLA::move_one_point_segment_mo_min_width_average(const vector<T>& const or
 			doubly_linked_list.removeNode(node_left);
 		}
 	}
+
+	//211217 For the last segment
+	//DoublyListNode<Y>*& const node_tail = doubly_linked_list.get_tail_node();
+	DoublyListNode<Y>*& const node_left = doubly_linked_list.get_tail_node()->_prev;
+	Y& const segment_left = node_left->_value;
+	Y& const segment_right = node_left->_next->_value;
+
+	if (segment_right.rectangle_width == 1) {
+		Y segment_merged;
+		segment_merged.rectangle_width = segment_left.rectangle_width + segment_right.rectangle_width;
+		segment_merged.right_endpoint = segment_right.right_endpoint;
+
+		getAAndBByPLAShortSegSpeed_average(segment_left, segment_right, segment_merged);
+		segment_right = segment_merged;
+		doubly_linked_list.removeNode(*node_left);
+	}
+
+	//211217 For the last segment
 	/*.........................................................*/
 #ifdef _DEBUG
 	assert_endpoint_average(original_time_series_vector, doubly_linked_list);
@@ -51205,7 +51359,7 @@ inline typename GEOMETRY::POINT& APLA::segmentsIntr(typename  GEOMETRY::POINT& c
 //************************************
 // Method:segmentsIntrArea
 // Qualifier:intersection of two lines
-// Link: //https://www.cnblogs.com/xpvincent/p/5208994.html
+// Link:
 // Notice: compute intersection point between line segment (point1, point2) and (point3, point4).
 // date:190528
 // author:
@@ -51218,7 +51372,7 @@ inline typename GEOMETRY::POINT& APLA::segmentsIntrArea(typename  GEOMETRY::POIN
 	// triangle abd 面积的2倍
 	long double area_abd = (point1.id - point4.id) * (point2.value - point4.value) - (point1.value - point4.value) * (point2.id - point4.id);
 
-	// 面积符号相同则两点在线段同侧,不相交 (对点在线段上的情况,本例当作不相交处理);
+	// No intersection point
 	if (area_abc * area_abd > 0) {//false
 		intersection_point.id = INF;
 		intersection_point.value = INF;
@@ -51230,13 +51384,15 @@ inline typename GEOMETRY::POINT& APLA::segmentsIntrArea(typename  GEOMETRY::POIN
 	// triangle cdb 面积的2倍
 	// 注意: 这里有一个小优化.不需要再用公式计算面积,而是通过已知的三个面积加减得出.
 	long double area_cdb = area_cda + area_abc - area_abd;
+
+	// No intersection point
 	if (area_cda * area_cdb >= 0) {//false
 		intersection_point.id = INF;
 		intersection_point.value = INF;
 		return intersection_point;
 	}
 
-	//计算交点坐标
+	//Has intersection point
 	long double t = area_cda / (area_abd - area_abc);
 	long double dx = t * (point2.id - point1.id);
 	long double dy = t * (point2.value - point1.value);
@@ -51256,7 +51412,7 @@ inline typename GEOMETRY::POINT& APLA::segmentsIntrArea(typename  GEOMETRY::POIN
 //************************************
 // Method:segmentsIntrArea
 // Qualifier:intersection of two lines
-// Link: //https://www.cnblogs.com/xpvincent/p/5208994.html
+// Link: 
 // Notice: compute intersection point between line segment (point1, point2) and (point3, point4).
 // date:210509
 // author:
@@ -52248,6 +52404,95 @@ inline double APLA::getLineSegmentTriangleAreaDensity(const T& const left_segmen
 	//return merged_segment.segment_density = merged_segment.area_difference;
 }
 
+//211007 get density of triangle area. If area > 0, segment 0 is top, segment 1 is down, else converse
+TEMPLATE
+template<typename T, typename Y>
+inline long double APLA::get_segment_top_down_area_difference(const T& const segment_0, const Y& const segment_1) {
+	/*......................................................................................................................*/
+#ifdef _DEBUG
+	assert(segment_0.right_endpoint == segment_1.right_endpoint && segment_0.rectangle_width == segment_1.rectangle_width);
+#endif
+	/*.......................................................................................................................*/
+
+	const long double order_end = segment_0.rectangle_width - 1;
+	//const long double ry0 = order_end * segment_0.apla.a + segment_0.apla.b;//b.y
+	//const long double ry1 = order_end * segment_1.apla.a + segment_1.apla.b;//c.y
+	//const long double& const ly0 = segment_0.apla.b;//a.y
+	//const long double& const ly1 = segment_1.apla.b;//d.y
+	const long double width_left = segment_0.apla.b - segment_1.apla.b;// triangle width
+	const long double width_right = order_end * (segment_0.apla.a - segment_1.apla.a) + width_left;// triangle width
+	
+	if (width_left * width_right >= 0) {// no intersectio point, is trapezoid
+		return (width_left + width_right) * order_end / 2.0;
+	}
+	else {// has intersectio point, is triangle
+
+		const long double area_0 = order_end * width_right;//abc
+		const long double area_1 = order_end * width_left;//abd
+
+		/*...................................................*/
+#ifdef _DEBUG
+		assert(area_0 * area_1 < 0);// has intersect point
+#endif
+		/*...................................................*/
+
+		const long double t = area_1 / (area_1 - area_0);
+		const long double intercept_x = t * order_end;// intercept point (x,)
+		//const long double intercept_y = intercept_x * segment_0.apla.a + segment_0.apla.b;// intercept point (,y)
+
+		/*...................................................*/
+#ifdef _DEBUG
+		assert(intercept_x > 0 && intercept_x < order_end);//  intersect point
+#endif
+		/*...................................................*/
+
+		return (width_left * intercept_x + width_right * (segment_0.rectangle_width - intercept_x)) / 2;
+	}
+}
+
+//211007 get list triangle area.
+TEMPLATE
+template<typename T, typename Y>
+long double APLA::get_top_down_area_difference(const DoublyLinkedList<T>& const doubly_linked_list_0, const DoublyLinkedList<Y>& const doubly_linked_list_1) {
+	/*...............................................................*/
+#ifdef _DEBUG
+	assert(doubly_linked_list_0.size() == doubly_linked_list_1.size());
+#endif
+	/*...............................................................*/
+	
+	const int size_list = doubly_linked_list_0.size();
+
+	long double area_list = 0;
+
+	for (int id_segment = 0; id_segment < size_list; id_segment++) {
+		area_list += get_segment_top_down_area_difference(doubly_linked_list_0[id_segment], doubly_linked_list_1[id_segment]);
+	}
+
+	return area_list;
+}
+
+//211012 get list triangle area. If area > 0, list 0 is top, list 1 is down, else converse
+TEMPLATE
+template<typename T, typename Y>
+void APLA::get_convex_top(const T& const segment_candidate, DoublyLinkedList<Y>& const doubly_linked_list) {
+	/*...................................................................................*/
+#ifdef _DEBUG
+	assert(segment_candidate.right_endpoint == doubly_linked_list.back().right_endpoint);
+#endif
+	/*....................................................................................*/
+
+	//const size_t size_list = doubly_linked_list.size();
+	const size_t endpoint = segment_candidate.right_endpoint;
+	T segment_temp = segment_candidate;
+	int position_in_segment = -1;
+	int id_seg = 0;
+	while (doubly_linked_list[id_seg].right_endpoint <= endpoint) {
+		segment_temp.right_endpoint = doubly_linked_list[id_seg].right_endpoint;
+		segment_temp.rectangle_width = doubly_linked_list[id_seg].rectangle_width;
+		position_in_segment += segment_temp.rectangle_width;
+	}
+}
+
 //************************************
 // Method:get_triangle_density_by_accumulate_segment
 // Qualifier:Increment Area, get density of triangle area from current segment & accumulates segment
@@ -52675,9 +52920,6 @@ inline long double APLA::get_line_segment_height_diference_from_accumulate(const
 	accumulate_segment.area_difference = accumulate_segment.bound.upper_bound_area = accumulate_segment.bound.upper_bound_diff * current_segment.rectangle_width;
 	//accumulate_segment.bound.upper_bound_area = accumulate_segment.bound.upper_bound_diff * accumulate_segment.rectangle_width;
 	//accumulate_segment.bound.upper_bound_area = accumulate_segment.bound.upper_bound_diff;
-
-
-
 
 	/*.......................................................................................................................................................................................................*/
 #ifdef _DEBUG

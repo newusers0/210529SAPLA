@@ -1,6 +1,9 @@
 ﻿#ifndef RTREE_H
 #define RTREE_H
 
+// NOTE This file compiles under MSVC 6 SP5 and MSVC .Net 2003 it may not work on other compilers without modification.
+
+// NOTE These next few lines may be win32 specific, you may need to modify them to compile on other platform
 //#include "stdafx.h"
 #include <stdio.h>
 #include <math.h>
@@ -14,6 +17,11 @@
 #include <limits>
 
 //#include "APCA.h"
+/*-----210618----------*/
+//#include "pch.h"
+//#include "lib/doublyLinkedList.h"
+//#include "CAPLA.h"
+/*---------------*/
 
 using namespace std;
 using std::vector;
@@ -28,12 +36,45 @@ using std::vector;
 #define Max std::max
 #endif //Max
 
+//int VOLUME_CHOOSE = DBL_MAX;// 181206 for representation option: PAA, APCA,PLA,CHEBY
+
+//unsigned int memory_account[20] = { 0 };
+
+//
+// RTree.h
+//
+
+//#define RTREE_TEMPLATE template<class DATATYPE, class ELEMTYPE, int NUMDIMS, class ELEMTYPEREAL, int TMAXNODES, int TMINNODES>
+//#define RTREE_QUAL RTree<DATATYPE, ELEMTYPE, NUMDIMS, ELEMTYPEREAL, TMAXNODES, TMINNODES>
+
 #define RTREE_TEMPLATE template<class DATATYPE, class ELEMTYPE, class ELEMTYPEREAL>
 #define RTREE_QUAL RTree<DATATYPE, ELEMTYPE, ELEMTYPEREAL>
-#define RTREE_DONT_USE_MEMPOOLS 
 
+#define RTREE_DONT_USE_MEMPOOLS // This version does not contain a fixed memory allocator, fill in lines with EXAMPLE to implement one.
+
+//#define RTREE_USE_APCA_SPHERICAL_VOLUME // Better split classification, may be slower on some systems
+
+
+// Fwd decl
 class RTFileStream;  // File I/O helper class, look below for implementation and notes.
+//******class RTree;
 
+/// class RTree
+/// Implementation of RTree, a multidimensional bounding rectangle tree.
+/// Example usage: For a 3-dimensional tree use RTree<Object*, float, 3> myTree;
+///
+/// This modified, templated C++ version by Greg Douglas at Auran (http://www.auran.com)
+///
+/// DATATYPE Referenced data, should be int, void*, obj* etc. no larger than sizeof<void*> and simple type
+/// ELEMTYPE Type of element such as int or float
+/// NUMDIMS Number of dimensions such as 2 or 3
+/// ELEMTYPEREAL Type of element that allows fractional and large values such as float or double, for use in volume calcs
+///
+/// NOTES: Inserting and removing data requires the knowledge of its constant Minimal Bounding Rectangle.
+///        This version uses new/delete for nodes, I recommend using a fixed size allocator for efficiency.
+///        Instead of using a callback function for returned results, I recommend an efficient pre-sized, grow-only memory
+///        array similar to MFC CArray or STL Vector for returning search query result.
+///
 template<class DATATYPE, class ELEMTYPE, class ELEMTYPEREAL = ELEMTYPE>
 class RTree
 {
@@ -47,6 +88,34 @@ public:
 	RTree(int NUMDIMS, int &TMAXNODESs, const int& representation_option);// 180916 for representation option: PAA, APCA,PLA,CHEBY
 
 public:
+
+	// These constant must be declared after Branch and before Node struct
+	// Stuck up here for MSVC 6 compiler.  NSVC .NET 2003 is much happier.
+	//enum
+	//{
+	//	TMAXNODES = TMAXNODES,                         ///< Max elements in node
+	//	TMINNODES = TMINNODES,                         ///< Min elements in node
+	//};
+
+	//210618 Rtree cover convex hull
+	//struct AREA_COEFFICIENT_RTREE_NODE {
+	//public:
+	//	long double right_endpoint = INF; //The right end point of segment;
+	//	long double rectangle_width = INF; //width of rectangle
+
+	//	APLA::APLA_COEFFICIENT apla;//a & b
+
+	//	AREA_COEFFICIENT_RTREE_NODE() {
+	//		right_endpoint = INF;
+	//		rectangle_width = INF;
+	//	}
+	//	~AREA_COEFFICIENT_RTREE_NODE() {
+	//		//right_endpoint = INF; //The right end point of segment;
+	//		//apla.~APLA_COEFFICIENT();
+	//	}
+	//};
+
+	/// Minimal bounding rectangle (n-dimensional)
 	struct Rect
 	{
 		//ELEMTYPE m_min[NUMDIMS];                      ///< Min dimensions of bounding box 
@@ -82,16 +151,16 @@ public:
 	struct Node
 	{
 		bool IsInternalNode() { return (m_level > 0); } // Not a leaf, but a internal node
-		bool IsLeaf() { return (m_level == 0); } // A leaf, contains data
-		int m_count = NULL;                                  ///< Count  : 191111 the number of sub nodes/ branches. <= MAX NODES Limits: TMAXNODESs
+		bool IsLeaf() { return (m_level == 0); } // A leaf, contains several entries
+		int m_count = NULL;                                  ///< Count  : 191111 the number of sub nodes / branches <= MAX NODES Limits: TMAXNODESs
 		int m_level = NULL;                                  ///< Leaf is zero, others positive
-		Branch* m_branch = nullptr;                    ///< Branch
+		Branch* m_branch = nullptr;                    ///< Branch.size == m_count
 	};
 
 
 public:
 
-	Node * m_root = nullptr;                                    ///< Root of tree
+	Node * m_root = nullptr;    ///< Root of tree. Initial level is 0
 	Node * pointer[10];
 	RTree();
 	RTree(const RTree& other);
@@ -127,6 +196,11 @@ public:
 	void RemoveAll();
 	/// Count the data elements in this container.  This is slow as no internal counter is maintained.
 	int Count();
+
+	//211215 Rtree size: internal node size. leaf node number.
+	template<typename T, typename Y>
+	void count_node_size(Node* a_node, T& const count_node_internal, Y& const count_node_leaf);
+
 	/// Load tree contents from file
 	bool Load(const char* a_fileName);
 	/// Load tree contents from stream
@@ -142,12 +216,16 @@ public:
 
 	void printRTree();// 180921
 
+	
+	template<typename T>
+	void print_tree(T& const node);
+
 	/// Iterator is not remove safe.
 	class Iterator
 	{
 	private:
 
-		enum { MAX_STACK = 256 }; //201031: 64  Max stack size. Allows almost n^32 where n is number of branches in node
+		enum { MAX_STACK = 1024 }; //201031: 64  Max stack size. Default is 32. Allows almost n^32 where n is number of branches in node
 
 		struct StackElement //: what is m_branchIndex mean???
 		{
@@ -281,7 +359,7 @@ public:
 		/// Push node and branch onto iteration stack (For internal use only)
 		void Push(Node* a_node, int a_branchIndex)
 		{
-			
+			//cout << "Push: id: "<< a_branchIndex <<endl;
 			m_stack[m_tos].m_node = a_node;
 			m_stack[m_tos].m_branchIndex = a_branchIndex;
 			++m_tos;
@@ -394,7 +472,7 @@ public:
 		int m_total;                       // the number of the rectangle/branches
 		int m_minFill;
 		int m_count[2];                    //  the number of notes in every group
-		Rect m_cover[2];
+		Rect m_cover[2];                    // 2 MBRS
 		ELEMTYPEREAL m_area[2];            //  the are of each two group
 
 		Branch *m_branchBuf;// = new Branch;
@@ -497,10 +575,6 @@ public:
 	//Node* m_root;                                    ///< Root of tree
 	ELEMTYPEREAL m_unitSphereVolume;                 ///< Unit sphere constant for required number of dimensions
 };
-
-
-
-
 
 // Because there is not stream support, this is a quick and dirty file I/O helper.
 // Users will likely replace its usage with a Stream implementation from their favorite API.
@@ -629,7 +703,7 @@ RTREE_TEMPLATE
 RTREE_QUAL::RTree(int NUMDIMS, int &TMAXNODESs) {//Defualt TMAXNODES=8 TMINNODES = TMAXNODES / 2
 	this->NUMDIMS = NUMDIMS;
 	TMAXNODES = TMAXNODESs;
-	TMINNODES = TMAXNODESs / 2;
+	TMINNODES = 2 ;//TMAXNODESs / 2;
 	ASSERT(TMAXNODES > TMINNODES);
 	ASSERT(TMINNODES > 0);
 	//cout << "RTREE: NUMDIMS = " << NUMDIMS << ", TMAXNODES = " << TMAXNODES << ", TMINNODES =" << TMINNODES << endl;
@@ -674,7 +748,7 @@ RTREE_TEMPLATE
 RTREE_QUAL::RTree(int NUMDIMS, int &TMAXNODESs,const int& representation_option) {//Defualt TMAXNODES=8 TMINNODES = TMAXNODES / 2
 	this->NUMDIMS = NUMDIMS;
 	TMAXNODES = TMAXNODESs;
-	TMINNODES = TMAXNODESs / 2;
+	TMINNODES = 2;// Default TMAXNODESs / 2;
 	this->representation_option = representation_option;
 	ASSERT(TMAXNODES > TMINNODES);
 	ASSERT(TMINNODES > 0);
@@ -714,7 +788,7 @@ RTREE_TEMPLATE
 void RTREE_QUAL::initialRTree(int NUMDIMS, int &TMAXNODESs, const int& representation_option) {// 180917 for other class to use
 	this->NUMDIMS = NUMDIMS;
 	TMAXNODES = TMAXNODESs;
-	TMINNODES = TMAXNODESs / 2;
+	TMINNODES = 2; //TMAXNODESs / 2;
 	this->representation_option = representation_option;
 	ASSERT(TMAXNODES > TMINNODES);
 	ASSERT(TMINNODES > 0);
@@ -773,6 +847,8 @@ void RTREE_QUAL::Insert(const ELEMTYPE a_min[], const ELEMTYPE a_max[], const DA
 		case 4:
 		case 5:
 		case 6:
+		case 7:
+		case 8:
 			if (index & 1 == 0) {//even
 				ASSERT(a_min[index] == a_max[index]);
 			}
@@ -847,6 +923,7 @@ void RTREE_QUAL::Insert(const vector<ELEMTYPE>& const a_min, const vector<ELEMTY
 	}
 #endif
 
+	/*~~~~~~ Inserted Approximation point ~~~~~~~~*/
 	Branch branch;
 	branch.m_rect.m_min = new ELEMTYPE[NUMDIMS];
 	branch.m_rect.m_max = new ELEMTYPE[NUMDIMS];
@@ -861,6 +938,8 @@ void RTREE_QUAL::Insert(const vector<ELEMTYPE>& const a_min, const vector<ELEMTY
 		branch.m_rect.m_min[axis] = a_min[axis];
 		branch.m_rect.m_max[axis] = a_max[axis];
 	}
+	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+	
 	//cout << endl;
 	InsertRect(branch, &m_root, 0);
 }
@@ -905,6 +984,11 @@ int RTREE_QUAL::Search(const ELEMTYPE a_min[], const ELEMTYPE a_max[], std::func
 
 	Rect rect;
 
+	/*----------210803--------------------*/
+	rect.m_min = new ELEMTYPE[NUMDIMS];
+	rect.m_max = new ELEMTYPE[NUMDIMS];
+	/*------------------------------------*/
+
 	for (int axis = 0; axis < NUMDIMS; ++axis)
 	{
 		rect.m_min[axis] = a_min[axis];
@@ -915,6 +999,14 @@ int RTREE_QUAL::Search(const ELEMTYPE a_min[], const ELEMTYPE a_max[], std::func
 
 	int foundCount = 0;
 	Search(m_root, &rect, foundCount, callback);
+
+
+	/*----------210803--------------------*/
+	delete[] rect.m_min;
+	rect.m_min = nullptr;
+	delete[] rect.m_max;
+	rect.m_max = nullptr;
+	/*------------------------------------*/
 
 	return foundCount;
 }
@@ -945,6 +1037,27 @@ void RTREE_QUAL::printRTree() {// 180921
 	cout << "Root Node : sub node number = " << m_root->m_count << " Root level = : " << m_root->m_level << "\n\nBegin to build a RTree:\n";
 	cout << "\n RTree conclusion\n The number of RTree Data Point = : " << Count() << endl;
 }
+
+RTREE_TEMPLATE
+template<typename T>
+void RTREE_QUAL::print_tree(T& const node) {
+	if (node.IsInternalNode()) {
+		cout << "Internal Node. Level: " << node.m_level << endl;
+		for (int id_branch = 0; id_branch < node.m_count; ++id_branch) {
+			cout << " Level: " << node.m_level << " sub branch " << id_branch << endl;
+			print_tree(*node.m_branch[id_branch].m_child);
+		}
+	}
+	else {
+		cout << "Leaf Node. Level: " << node.m_level << endl;
+		for (int id_branch = 0; id_branch < node.m_count; id_branch++) {
+			cout << "  branch id " << id_branch << " id:" << node.m_branch[id_branch].m_data;
+		}
+		cout << endl;
+	}
+
+}
+
 
 RTREE_TEMPLATE
 int RTREE_QUAL::Count()
@@ -984,6 +1097,28 @@ void RTREE_QUAL::CountRec(Node* a_node, int& a_count)           //  count the da
 			cout << a_count << endl;
 		}
 	}
+}
+
+//211215 Rtree size: internal node size. leaf node number.
+RTREE_TEMPLATE
+template<typename T, typename Y>
+void RTREE_QUAL::count_node_size(Node* a_node, T& const count_node_internal, Y& const count_node_leaf) {
+
+	if (a_node->IsInternalNode()) {  // not a leaf node
+		assert(a_node->m_level > 0);
+
+		if (a_node->m_level > 1 ) {
+			count_node_internal += a_node->m_count;
+		}
+		
+		for (int index = 0; index < a_node->m_count; ++index) {
+			count_node_size(a_node->m_branch[index].m_child, count_node_internal, count_node_leaf);
+		}
+	}
+	else { // A leaf node
+		count_node_leaf++;
+	}
+
 }
 
 //RTREE_TEMPLATE
@@ -1472,6 +1607,7 @@ bool RTREE_QUAL::InsertRect(const Branch& a_branch, Node** a_root, int a_level)
 		Node* newRoot = AllocNode();
 		pointer[2] = newRoot;
 		newRoot->m_level = (*a_root)->m_level + 1;
+
 		Branch branch;
 		AllocBranch(branch);
 
@@ -1479,8 +1615,9 @@ bool RTREE_QUAL::InsertRect(const Branch& a_branch, Node** a_root, int a_level)
 		//branch.m_rect = NodeCover(*a_root);
 		NodeCover(*a_root, branch.m_rect);
 		branch.m_child = *a_root;
-		AddBranch(&branch, newRoot, NULL);
+		bool is_split = AddBranch(&branch, newRoot, NULL);
 
+		assert(!is_split);
 		// add the split node as a child of the new root
 		//branch.m_rect = NodeCover(newNode);
 
@@ -1489,7 +1626,8 @@ bool RTREE_QUAL::InsertRect(const Branch& a_branch, Node** a_root, int a_level)
 
 		NodeCover(newNode, branch0.m_rect);
 		branch0.m_child = newNode;
-		AddBranch(&branch0, newRoot, NULL);
+		is_split = AddBranch(&branch0, newRoot, NULL);
+		assert(!is_split);
 
 		// set the new root as the root node
 		*a_root = newRoot;
@@ -1563,14 +1701,14 @@ bool RTREE_QUAL::AddBranch(const Branch* a_branch, Node* a_node, Node** a_newNod
 		a_node->m_branch[a_node->m_count] = *a_branch;
 		++a_node->m_count;
 
-		return false;
+		return false;//0
 	}
-	else
+	else//split node
 	{
 		ASSERT(a_newNode);
 		
 		SplitNode(a_node, a_branch, a_newNode);
-		return true;
+		return true;//1
 	}
 }
 
@@ -1600,7 +1738,7 @@ int RTREE_QUAL::PickBranch(const Rect* a_rect, Node* a_node)
 
 	bool firstTime = true;
 	ELEMTYPEREAL increase;
-	ELEMTYPEREAL bestIncr = (ELEMTYPEREAL)-1;
+	ELEMTYPEREAL bestIncr = (ELEMTYPEREAL) - 1;
 	ELEMTYPEREAL area;
 	ELEMTYPEREAL bestArea;
 	int best = 0;
@@ -1609,10 +1747,11 @@ int RTREE_QUAL::PickBranch(const Rect* a_rect, Node* a_node)
 	tempRect.m_min = new ELEMTYPE[NUMDIMS];
 	tempRect.m_max = new ELEMTYPE[NUMDIMS];
 
-	for (int index = 0; index < a_node->m_count; ++index)
+	for (int index = 0; index < a_node->m_count; ++index)//210618 for each child branch (node/point)
 	{
-		Rect* curRect = &a_node->m_branch[index].m_rect;
-		area = CalcRectVolume(curRect);
+		Rect* curRect = &a_node->m_branch[index].m_rect;// current MBR
+		area = CalcRectVolume(curRect);//current volume of MBR
+
 		//tempRect = CombineRect(a_rect, curRect);
 		CombineRect(a_rect, curRect, &tempRect);
 

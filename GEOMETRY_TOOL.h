@@ -24,6 +24,7 @@ public:
 
 	/*======================== Triangle ===================================*/
 	//200206
+	
 	inline long double get_abs_area_triangle(const typename GEOMETRY::POINT& const point1, const  typename GEOMETRY::POINT& const point2, const  typename GEOMETRY::POINT& const point3);
 	/*=====================================================================*/
 
@@ -98,7 +99,7 @@ public:
 	/////////////////////////////////////////////////////////////////////////
 
 	/************************ 190311 Area of Circle******************************/
-	//190311 https://www.cnblogs.com/Howe-Young/p/4477550.html
+	//190311 
 	int sgn(double x);
 	double get_distance(const POINT a, const POINT b);//两点之间的距离
 	POINT get_circle_center(const GEOMETRY::POINT a, const GEOMETRY::POINT b, const GEOMETRY::POINT c); //得到triangle外接圆的圆心
@@ -225,7 +226,6 @@ S& GEOMETRY::getAverage(const T& const original_array, S& const result_argu) {
 //200206
 //************************************
 // Method:get_abs_area_triangle
-// Qualifier://https://zhuanlan.zhihu.com/p/25793392
 // Input:
 // Output:
 // date:200206
@@ -807,8 +807,10 @@ double GEOMETRY::get2PointsDist(const GEOMETRY::POINT& const point_1, const GEOM
 
 	auto dist1 = sqrt((point_1.id - point_2.id) * (point_1.id - point_2.id) + (point_1.value - point_2.value) * (point_1.value - point_2.value));//distance1
 
+	//http://www.cplusplus.com/reference/cmath/hypot/
 	auto dist2 = std::hypot(point_1.id - point_2.id, point_1.value - point_2.value);//distance2
 
+	//https://www.boost.org/doc/libs/1_69_0/libs/geometry/doc/html/geometry/reference/algorithms/distance/distance_2.html
 	auto dist3 = boost::geometry::distance(p1, p2);//distance3
 
 	assert(dist1 == dist2 && dist2 == dist3 && dist1 == dist3);
@@ -944,6 +946,8 @@ void GEOMETRY::min_cover_circle(const std::vector<GEOMETRY::POINT>& const points
 	}
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///*********************************************************************************************************************************************************
 
 
 #endif

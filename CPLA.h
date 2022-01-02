@@ -84,6 +84,7 @@ public:
 	/*=================================================================================================================================================================*/
 
 
+	/*====================================================================Get a & b of one segment====================================================================================================*/
 	//190619
 	double& getAAndBByPLA(DataType*& const original_time_series, PLA& const temp_coefficient);//190619 return a;
 	double& computeParallelogram(DataType*& const original_time_series, PLA& const temp_coefficient);//190619
@@ -1543,7 +1544,6 @@ double& PLA_QUAL::getPLAMBRSegmentDistance(const typename TOOL::INPUT_ARGUMENT& 
 
 	assert(input_argument.point_dimension != INF && input_argument.segment_length_second != INF && input_argument.segment_length_first != INF);
 
-
 	POINT point;
 	double sqrt_segment_legngth = sqrt(double(input_argument.segment_length_second));//l^0.5
 	double perpendicular_b = (double(input_argument.segment_length_second) - 1.0) / 2.0; // (l-1)/2;  -b
@@ -2224,7 +2224,7 @@ long double PLA_QUAL::get_pla_sum_deviation(const T& const input_argument, const
 	result_collection.max_deviation = 0;
 	result_collection.max_deviation_multiple_width = 0;
 
-	vector<DataType> approximation(input_argument.time_series_length, INF);
+	vector<DataType> approximation(input_argument.time_series_length, INF);// reconstructed time series
 
 	for (int segment_id = 0; segment_id < input_argument.point_dimension; segment_id++) {
 		/*for (int interval_id = 0; interval_id < input_argument.segment_length_second; interval_id++) {

@@ -33,6 +33,9 @@
     <ClCompile Include="CCHEBYSHEV.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CDFT.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="CPLA.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -54,6 +57,15 @@
     <ClCompile Include="lib\chebyshev_polynomial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="lib\dtwrecoge.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\SmallestEnclosingCircle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CAPLA_PUB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="RTree_partition.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -72,6 +84,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CCHEBYSHEV.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CDFT.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CPLA.h">
@@ -98,16 +113,22 @@
     <ClInclude Include="lib\doublyLinkedList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="lib\dtwrecoge.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="lib\RTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lib\saxquantizer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RTree_partition.h">
+    <ClInclude Include="lib\SmallestEnclosingCircle.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="lib\SmallestEnclosingCircle.hpp">
+    <ClInclude Include="CAPLA_PUB.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RTree_partition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

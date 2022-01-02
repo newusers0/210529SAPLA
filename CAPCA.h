@@ -6,7 +6,14 @@
 #include "SHARE_TOOL.h"
 #include "./lib/doublyLinkedList.h"
 
-
+//***************************************************************
+// Class:APCA & PAA Approximation
+// Qualifier:
+// Input:
+// Output:
+// date:
+// author:
+//***************************************************************
 TEMPLATE
 class CAPCA : virtual public TOOL
 {
@@ -359,7 +366,12 @@ void APCA_QUAL::padZero(DataType*& const temp_original_array, const DataType& ol
 	copy(temp_original_array, temp_original_array + int(old_length), after_padding_array);
 }
 
-
+//************************************
+// Method:padZeroVector
+// Qualifier:190430 vector to instead Array
+// date:190430
+// author:
+//************************************
 TEMPLATE
 void APCA_QUAL::padZeroVector(DataType*& const temp_original_array, const DataType& old_length, const unsigned int& new_length, vector<DataType>& after_padding_array) {//190430
 	assert(new_length >= old_length);
@@ -372,7 +384,12 @@ void APCA_QUAL::padZeroVector(DataType*& const temp_original_array, const DataTy
 	}
 }
 
-
+//************************************
+// Method:padZeroVectorPreMemory
+// Qualifier:190611 vector to instead Array
+// date:190611
+// author:
+//************************************
 TEMPLATE
 void APCA_QUAL::padZeroVectorPreMemory(DataType*& const temp_original_array, const DataType& old_length, const unsigned int& new_length, vector<DataType>& after_padding_array) {//190611
 #ifdef _DEBUG
@@ -504,7 +521,13 @@ void APCA_QUAL::getHDWT(const unsigned int& length_power_of_2, const int& N, Dat
 	fd_temp = nullptr;
 }
 
-
+//Haar wavelet transformation
+//************************************
+// Method:getHDWTVector
+// Qualifier:190430 vector to instead Array
+// date:190430
+// author:
+//************************************
 TEMPLATE
 void APCA_QUAL::getHDWTVector(const unsigned int& length_power_of_2, const int& N, vector<DataType>& wavelet_transform_time_series, priority_queue<DataType>& fq_truncate_index) {//190430
 //cout << power_of_2 << endl;
@@ -610,7 +633,12 @@ void APCA_QUAL::reconstructApproximateAPCA(const DataType* wavelet_transform_tim
 	queue<DataType>().swap(temp_original_queue);
 }
 
-
+//************************************
+// Method:reconstructApproximateAPCAVector
+// Qualifier:190430 vector to instead Array
+// date:190430
+// author:
+//************************************
 TEMPLATE
 void APCA_QUAL::reconstructApproximateAPCAVector(const vector<DataType>& wavelet_transform_time_series, const unsigned int& length_power_of_2, const int& retained_coeffs_length, priority_queue<DataType>& fq_truncate_index, vector<APCA>& apca_presentation) {//190430
 	//DataType temp_apca_value = NULL;
@@ -657,7 +685,12 @@ void APCA_QUAL::reconstructApproximateAPCAVector(const vector<DataType>& wavelet
 	queue<DataType>().swap(temp_original_queue);
 }
 
-
+//************************************
+// Method:reconstructApproximateAPCAVectorPreMemory
+// Qualifier:190611 vector to instead Array, pre define memory
+// date:190611
+// author:
+//************************************
 TEMPLATE
 void APCA_QUAL::reconstructApproximateAPCAVectorPreMemory(const vector<DataType>& wavelet_transform_time_series, const unsigned int& length_power_of_2, const int& retained_coeffs_length, priority_queue<DataType>& fq_truncate_index, vector<APCA>& apca_presentation) {//190611
 	//DataType temp_apca_value = NULL;
@@ -915,7 +948,12 @@ bool APCA_QUAL::mergeSegmentsIteratorVector(vector<APCA>& const apca_presentatio
 	}
 }
 
-
+//************************************
+// Method:mergeSegmentsIteratorVectorPreMemory
+// Qualifier:190611 vector to instead Array, pre define memory
+// date:190611
+// author:
+//************************************
 TEMPLATE
 template<typename T>
 bool APCA_QUAL::mergeSegmentsIteratorLinkedList(vector<T>& const apca_presentation, const DataType& n, const int& N, DoublyLinkedList<T>& const italicC) {//191104 Use linked list ot instead vector
@@ -949,7 +987,12 @@ bool APCA_QUAL::mergeSegmentsIteratorLinkedList(vector<T>& const apca_presentati
 	}
 }
 
-
+//************************************
+// Method:mergeSegmentsIteratorVectorPreMemory
+// Qualifier:190611 vector to instead Array, pre define memory
+// date:190611
+// author:
+//************************************
 TEMPLATE
 bool APCA_QUAL::mergeSegmentsIteratorVectorPreMemory(vector<APCA>& const apca_presentation, const DataType& n, const int& N, vector<APCA>& const italicC) {//190611
 #ifdef _DEBUG
@@ -1031,7 +1074,12 @@ void APCA_QUAL::getAPCAPoint(DataType*& const original_time_series, const double
 	//cout << "APCA running Time: " << output_argument.run_time << endl;// compare percentage time
 }
 
-
+//************************************
+// Method:getAPCAPointVector
+// Qualifier:190430 vector to instead Array
+// date:190430
+// author:
+//************************************
 TEMPLATE
 void APCA_QUAL::getAPCAPointVector(DataType*& const original_time_series, const double& n, const int& N, vector<APCA>& const italicC) {//190430 vector to instead Array
 	assert(n > N);
@@ -1091,7 +1139,12 @@ void APCA_QUAL::getAPCAPointVector(DataType*& const original_time_series, const 
 	//cout << "APCA running Time: " << output_argument.run_time << endl;// compare percentage time
 }
 
-
+//************************************
+// Method:getAPCAPointLinkedList
+// Qualifier: Use Linked list to instead vector
+// date:191104
+// author:
+//************************************
 TEMPLATE
 template<typename T>
 void APCA_QUAL::getAPCAPointLinkedList(DataType*& const original_time_series, const double& n, const int& N, DoublyLinkedList<T>& const italicC) {//191104 Linked list to instead vector
@@ -1155,7 +1208,12 @@ void APCA_QUAL::getAPCAPointLinkedList(DataType*& const original_time_series, co
 
 }
 
-
+//************************************
+// Method:getAPCAPointVectorPreMemory
+// Qualifier:190611 vector to instead Array, Pre-define memory
+// date:190611
+// author:
+//************************************
 TEMPLATE
 void APCA_QUAL::getAPCAPointVectorPreMemory(DataType*& const original_time_series, const double& n, const int& N, vector<APCA>& const italicC) {//190611 Pre-define memory of vector
 #ifdef _DEBUG
@@ -1324,7 +1382,14 @@ void APCA_QUAL::get_PAA(const vector<T>& const original_time_series_vector, cons
 	}
 }
 
-
+//************************************
+// Method:getPAAPointVector
+// Qualifier:Use vector instead Array
+// Input:
+// Output:
+// date:190515
+// author:
+//************************************
 TEMPLATE
 void  APCA_QUAL::getPAAPointVector(const DataType* original_time_series, const DataType& n, const int& N, vector<APCA>& const italicC) {//190515 Only use vecter. Same with divideRemainderPAA()
 //printf("APCA divideRemainderAPCA()\n");
@@ -1395,7 +1460,14 @@ void  APCA_QUAL::getPAAPointVector(const DataType* original_time_series, const D
 }
 
 
-
+//************************************
+// Method:getPAAPointLinkedList
+// Qualifier:use Linked list to instead vector. Same with divideRemainderPAA()
+// Input:
+// Output:
+// date:191104
+// author:
+//************************************
 TEMPLATE
 template<typename T>
 void  APCA_QUAL::getPAAPointLinkedList(const DataType* original_time_series, const DataType& n, const int& N, DoublyLinkedList<T>& const italicC) {//
@@ -1466,7 +1538,14 @@ void  APCA_QUAL::getPAAPointLinkedList(const DataType* original_time_series, con
 	temp_paa.r = nullptr;*/
 }
 
-
+//************************************
+// Method:getPAAPointVectorPreMemory
+// Qualifier:Use vector instead Array, Pre-define memory
+// Input:
+// Output:
+// date:190611
+// author:
+//************************************
 TEMPLATE//approximate original function
 void APCA_QUAL::getPAAPointVectorPreMemory(const DataType* original_time_series, const DataType& n, const int& N, vector<APCA>& const italicC) {//190611 Only use vecter. Same with divideRemainderPAA(), pre-define memory
 	//printf("APCA divideRemainderAPCA()\n");
@@ -1557,7 +1636,15 @@ void APCA_QUAL::getPAAPointVectorPreMemory(const DataType* original_time_series,
 	temp_paa.r = nullptr;*/
 }
 
-
+//¡¶A New Pattern Representation Method for Time - series Data¡·
+//************************************
+// Method:getPAAPointVectorPreMemory
+// Qualifier:Use vector instead Array, Pre-define memory
+// Input:
+// Output:
+// date:190611
+// author:
+//************************************
 TEMPLATE
 template<typename T>//190515 use Linked list to instead vector. Same with divideRemainderPAA()
 void APCA_QUAL::get_paa_lagrangian(T& const italicC) {
@@ -1568,8 +1655,10 @@ void APCA_QUAL::get_paa_lagrangian(T& const italicC) {
 		assert(italicC.v[segment_id] != INF && italicC.r[segment_id] != INF);
 		square_sum += italicC.v[segment_id] * italicC.v[segment_id];
 	}
+
 	Lagrange_multiplier = sqrt(square_sum / 4.0);
 	Lagrange_multiplier = 1 / (Lagrange_multiplier * 2.0);
+
 	assert(Lagrange_multiplier != 0);
 
 	for (int segment_id = 0; segment_id < italicC.segmentNum; segment_id++) {
@@ -1649,7 +1738,14 @@ void  APCA_QUAL::initialAPCAArray(const typename TOOL::INPUT_ARGUMENT& input_arg
 	}
 }
 
-
+//***************************************************************
+// Method:initial_rect_vector
+// Qualifier:
+// Input:
+// Output:
+// date:191118
+// author:
+//***************************************************************
 TEMPLATE
 void APCA_QUAL::initial_rect_vector(const int& const point_number, const int& const point_dimension, vector<RTREE::Rect>& const rtree_rectangle_vector) {
 #ifdef _DEBUG
@@ -1714,7 +1810,15 @@ void APCA_QUAL::deleteAPCA(APCA& apca) {
 	apca.v = nullptr;
 }
 
-
+//***************************************************************
+// Method:delete_rect_vector
+// Qualifier: clear rectangle vector
+// Input:
+// Output: 
+// Note:
+// date: 191118 22:15
+// author:
+//***************************************************************
 TEMPLATE
 void APCA_QUAL::delete_rect_vector(vector<RTREE::Rect>& const rtree_rectangle_vector) {
 	for (auto au : rtree_rectangle_vector) {
@@ -1773,7 +1877,15 @@ typename APCA_QUAL::APCA& APCA_QUAL::getCmax(const double* C, const APCA& italic
 	return Cmax;
 }
 
-
+//***************************************************************
+// Method:get_minmax_original
+// Qualifier: get min max point of every segment, Use original MBR, not APCA paper
+// Input:
+// Output: Approximated time series
+// Note:
+// date: 191118 22:15
+// author:
+//***************************************************************
 TEMPLATE
 template<typename T, typename Y>
 Y& APCA_QUAL::get_minmax_original(const vector<DataType>& const time_series_vector, const int& const dimension_id, const T& const italicC, Y& const rtree_rectangle) {
@@ -1823,7 +1935,15 @@ Y& APCA_QUAL::get_minmax_original(const vector<DataType>& const time_series_vect
 	return rtree_rectangle;
 }
 
-
+//***************************************************************
+// Method:get_minmax_apca
+// Qualifier: get min max point of every segment, Use original MBR, not APCA paper
+// Input: 
+// Output: Approximated time series APCA paper. MBR min id == max id
+// Note:
+// date: 191126 16:15
+// author:
+//***************************************************************
 TEMPLATE
 template<typename T, typename Y>
 Y& APCA_QUAL::get_minmax_apca(const vector<DataType>& const time_series_vector, const int& const dimension_id, const T& const italicC, Y& const rtree_rectangle) {
@@ -1887,7 +2007,15 @@ Y& APCA_QUAL::get_minmax_apca(const vector<DataType>& const time_series_vector, 
 	return rtree_rectangle;
 }
 
-
+//***************************************************************
+// Method:get_minmax_apca
+// Qualifier: get min max point of every segment, Use original MBR, not APCA paper
+// Input: 
+// Output: Approximated time series APCA paper. MBR min id == max id
+// Note:
+// date: 191126 16:15
+// author:
+//***************************************************************
 TEMPLATE
 template<typename T, typename Y>
 Y& APCA_QUAL::get_minmax_apca(const vector<DataType>& const time_series_vector, const T& const italicC, Y& const rtree_rectangle) {

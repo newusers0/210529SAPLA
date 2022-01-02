@@ -11,25 +11,35 @@ class SHARE_TOOL {
 public:
 	/*#################################################      All Homogenous Data set Address      ##########################################################*/
 
-	/*::::::::::::::::::::::::::::::::::::::::::::::::::::                    ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+	/*::::::::::::::::::::::::::::::::::::::::::::::::::::            200831 24 files            ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 	const string file_address_24 = "./191202DataSet/SingleDataAddress200103/AllFiles24/DataAddress181218.txt"; // Has all 24 files
 	const string single_file_number_address_24 = "./191202DataSet/SingleDataAddress200103/AllFiles24/DataNumberLine200103.txt";// Has all 24 files
 	const string single_file_length_address_24 = "./191202DataSet/SingleDataAddress200103/AllFiles24/DataLength200103.txt";// Has all 24 files
 	/*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 
-	/*::::::::::::::::::::::::::::::::::::::::::::::::::::         :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+	/*::::::::::::::::::::::::::::::::::::::::::::::::::::       211220 UCR2018 128 91 files      :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+	const string file_address_UCR2018_128_91 = "./191202DataSet/SingleDataAddress200103/Single128UCR2018/DataAddressUCR211219.txt"; // Has all UCR2018 91 files
+	const string file_address_UCR2018_128_91_TRAIN = "./191202DataSet/SingleDataAddress200103/Single128UCR2018/DataAddressUCR211219_TRAIN.txt"; // Has all UCR2018 91 files
+
+	const string single_file_number_address_UCR2018_128_91 = "./191202DataSet/SingleDataAddress200103/Single128UCR2018/DataNumberLineUCR211219.txt";// Has all UCR2018 41 files
+	const string single_file_number_address_UCR2018_128_91_TRAIN = "./191202DataSet/SingleDataAddress200103/Single128UCR2018/DataNumberLineUCR211219_TRAIN.txt";
+
+	const string single_file_length_address_UCR2018_128_91 = "./191202DataSet/SingleDataAddress200103/Single128UCR2018/DataLengthUCR211219.txt";// Has all UCR2018 41 files
+	/*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+
+	/*::::::::::::::::::::::::::::::::::::::::::::::::::::       201016 UCR2018 512 41 files      :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 	const string file_address_UCR2018_512_41 = "./191202DataSet/SingleDataAddress200103/Single512UCR2018/DataAddressUCR201014.txt"; // Has all UCR2018 41 files
 	const string single_file_number_address_UCR2018_512_41 = "./191202DataSet/SingleDataAddress200103/Single512UCR2018/DataNumberLineUCR201014.txt";// Has all UCR2018 41 files
 	const string single_file_length_address_UCR2018_512_41 = "./191202DataSet/SingleDataAddress200103/Single512UCR2018/DataLengthUCR201014.txt";// Has all UCR2018 41 files
 	/*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 
-	/*::::::::::::::::::::::::::::::::::::::::::::::::::::      :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+	/*::::::::::::::::::::::::::::::::::::::::::::::::::::       201019 UCR2018 1024 21 files      ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 	const string file_address_UCR2018_1024_21 = "./191202DataSet/SingleDataAddress200103/Single1024UCR2018/DataAddress1024UCR2018201016.txt"; // 201019 Has all UCR2018 21 files
 	const string single_file_number_address_UCR2018_1024_21 = "./191202DataSet/SingleDataAddress200103/Single1024UCR2018/DataNumberLine1024UCR2018201016.txt";// 201019 Has all UCR2018 21 files
 	const string single_file_length_address_UCR2018_1024_21 = "./191202DataSet/SingleDataAddress200103/Single1024UCR2018/DataLength1024UCR2018201016.txt";// 201019 Has all UCR2018 21 files
 	/*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 
-	/*::::::::::::::::::::::::::::::::::::::::::::::::::::           ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+	/*::::::::::::::::::::::::::::::::::::::::::::::::::::       201104 UCR2018 1024 15 files      ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 	const string file_address_UCR2018_1024_15 = "./191202DataSet/SingleDataAddress200103/Single15File1024UCR2018/DataAddress15File1024UCR2018201016.txt"; // 201019 In UCR2018 21 files length >= 1024, now choose 15files except 5 10 11 12 18
 	const string single_file_number_address_UCR2018_1024_15 = "./191202DataSet/SingleDataAddress200103/Single15File1024UCR2018/DataNumberLine15File1024UCR2018201016.txt";// 201019 In UCR2018 21 files length >= 1024, now choose 15files except 5 10 11 12 18
 	const string single_file_length_address_UCR2018_1024_15 = "./191202DataSet/SingleDataAddress200103/Single15File1024UCR2018/DataLength15File1024UCR2018201016.txt";// 201019  In UCR2018 21 files length >= 1024, now choose 15files except 5 10 11 12 18
@@ -55,6 +65,7 @@ public:
 	/*####################################################################################################################################################################################*/
 
 	/*---------------------------------------------- No burst time series Homogenous Data set Address. size = 17---------------------------------------------------------------*/
+	//No burst time series: size = 17 . No file 6, 12, 13, 15, 16, 17 and 22. 
 	/*..................................................        200330       ..............................................................*/
 	const string no_burst_single_file_address = "./191202DataSet/SingleDataAddress200103/NoBurstTimeSeries200130/NoBurstDataAddress200130.txt";
 	const string no_burst_single_file_number_address = "./191202DataSet/SingleDataAddress200103/NoBurstTimeSeries200130/NoBurstDataNumberLine200130.txt";// No burst time series : No file 6, 12, 13, 15, 16, 17 and 22. 
@@ -80,6 +91,10 @@ public:
 	const string write_single_to_multi_file_address = "./191202DataSet/SingleToMulti191229/WriteMultiDataAddress191229.txt";//191229
 	/*--------------------------------------------------------------------------------------------------------------*/
 
+	// 211007 option in tree, representation option, tree type option
+	template<typename T, typename Y, typename U>
+	struct OPTION_TREE;
+
 	//191201 manipute data, real dataset, single data set, mixed data set
 	struct DATA_SOURCE;
 
@@ -89,6 +104,21 @@ public:
 
 	//200902 include sum deviation, approximation time.
 	struct RESULT_RECORD;
+
+	//211206 For Multi query time series, include KNN time....
+	template<typename T>
+	struct RESULT_RECORD_KNN;
+
+	// 211223 arguments for Evaluation
+	template<typename T>
+	struct EVALUATION_ARGUMENT;
+
+	template<typename T>//211215
+	inline void initial_argument_index(T& const INDEX_ARGUMENT);
+
+	//211215 For Index Argument. Tree size intrnal node and leaf ndoe
+	template<typename T>
+	struct INDEX_ARGUMENT;
 
 	struct Y_PROJECTION_ARGUMENT;//191030 For burst time series, Y_Projection_Method
 
@@ -116,6 +146,12 @@ public:
 
 	template<typename T, typename Y, typename U>// 210906 first segment width, second segment width, remainder.
 	struct SEGMENT_WIDTH_STRUCTRE;
+
+	template<typename T>// 211202 Evaluation parameters 
+	struct LINEAR_SCAN_STRUCTURE;
+	
+	template<typename T, typename Y, typename U, typename T1, typename T2, typename T3>//211010
+	inline void initial_option_tree(const T type_tree, const Y type_representation, const U type_distance, const T1 type_volume, const T2 number_point, T3& const option_tree);
 
 	template<typename T>//for NULL
 	void initialArray(T*& const test_array, const int& array_length);
@@ -193,6 +229,10 @@ public:
 	//210603 read datas from one, normalize, and write
 	template<typename T, typename Y, typename T1, typename  T2, typename  T3>
 	void get_normalize_write_one_file(const Y& const file_name, const T& const data_id, const T1& const g_time_series_length, const T2& const row_number, const T3& const write_file_name);
+
+	//211230
+	template<typename T, typename Y>
+	void mannually_normalize_write_one_file(Y& const data_source, const T& const data_id);
 
 	//miss first point normalized 210603
 	//void getFileStreamByRow(const string& const file_name, const int& const g_time_series_length, const int& const row_number, vector<vector<double>>& const original_time_series);
@@ -302,8 +342,8 @@ public:
 	double& distanceEUC(const T& const input_argument, DataType*& const Q, DataType*& const C, double& const distance_euc);
 
 	//191129 Euclidean distance.
-	template<typename T>//For sum deviation
-	long double distanceEUC(const vector<T>& const time_series_vector1, const vector<T>& const time_series_vector2);
+	template<typename T, typename Y>//For sum deviation
+	long double distanceEUC(const vector<T>& const time_series_vector1, const vector<Y>& const time_series_vector2);
 
 	/*========================================================= Get Deviation ==============================================================================================*/
 	template<typename T, typename Y>//For sum deviation 181214
@@ -336,6 +376,31 @@ public:
 	//191223 For multi dimension dataset. Vector instead pointer. Normalized time series
 	template<typename T, typename Y, typename U>
 	multiset<pair<U, int>>& SimpleBaseKNNSearchMulti(const T& const data_source, const vector<Y>& const query_time_series_vector, multiset<pair<U, int>>& const knn_result_set);
+	
+	//211202 Add linear scan evaluation parameter
+	template<typename T, typename Y, typename U, typename T1>
+	multiset<pair<U, int>>& SimpleBaseKNNSearchMulti(const T& const data_source, const vector<Y>& const query_time_series_vector, multiset<pair<U, int>>& const knn_result_set, T1& const linear_scan_struct);
+	
+	//211205 Add linear scan evaluation parameter
+	template<typename T, typename Y, typename U, typename T1>
+	void SimpleBaseKNNSearchMulti(const T& const data_source, const vector<vector<Y>>& const query_series_vector_vector, vector<multiset<pair<U, int>>>& const knn_result_set_vector, T1& const linear_scan_struct);
+	
+	//211205 Add linear scan evaluation parameter
+	template<typename T, typename Y, typename U>
+	void linear_scan(T& const input_argument, const Y& const data_source, const vector<U>& const query_series_vector);
+
+	//211202
+	template<typename T>
+	inline void initial_evaluation_input(T& const input_argument);
+	//211202
+	template<typename T>
+	inline void initial_evaluation_output(T& const output_argument);
+	//211202
+	template<typename T, typename Y>
+	inline void initial_evaluation_in_output(T& const input_argument, Y& const output_argument);
+	//211202
+	template<typename T, typename Y, typename U>
+	inline void initial_evaluation_linear_scan(T& const input_argument, Y& const output_argument, U& const linear_scan_struct);
 	/*==============================================================================================================================================================================*/
 
 	/*------------------------------------          get Random Value     --------------------------------------------------------------*/
@@ -344,8 +409,8 @@ public:
 	//191119 [0, max_value - 1]
 	int get_random_max(const int& const max_value);
 	//200108
-	template<typename T>
-	void get_random_vector(const int& const vector_size, const int& const scale, vector<T>& const time_series_vector);
+	template<typename T, typename Y, typename U>
+	void get_random_vector(const T& const vector_size, const Y& const scale, vector<U>& const time_series_vector);
 	/*---------------------------------------------------------------------------------------------------------------------------------*/
 
 	template<typename T> //Get mean vlaue between two value 181113
@@ -531,8 +596,35 @@ public:
 	vector<T>& read_normalized_multi_time_series(const DATA_SOURCE& const data_source, const int& const time_series_id, vector<T>& const normalized_time_series_vector);
 	/*====================================================================================================================================*/
 
+	/*====================     Copy knn record result structure   =====================================*/
+	template<typename T>//211206
+	inline void assert_knn_result(const T& const record_knn_struct);
+
+	template<typename T, typename Y>//211206 For multi query time series. record_knn_struct accumulate copy from input_argument
+	inline void copy_accumulate_input_to_KNN_result(const T& const input_argument, Y& const record_knn_struct);
+
+	template<typename T, typename Y>//211206 For multi query time series. input_argument copy from record_knn_struct
+	inline void copy_KNN_result_to_input(const T& const record_knn_struct, Y& const input_argument);
+	/**================================================================================================*/
+
 	template<typename T, typename Y>
 	bool assert_same_vector(const T& const vector_0, const Y& const vector_1);
+
+	template<typename T>
+	inline bool assert_option_tree(const T& const option_tree);
+
+	//211202 asser parameter of linear scan
+	template<typename T>
+	inline bool assert_linear_scan(const T& const linear_scan_struct);
+
+	//2112 No -1 in vector
+	template<typename T>
+	bool assert_not_minus_one_vector(const T& const test_vector);
+
+	//211230 no INF in vector
+	template<typename T>
+	bool assert_no_INF_vector(const T& const test_vector);
+
 };
 
 //TEMPLATE
@@ -916,6 +1008,7 @@ public:
 //************************************
 TEMPLATE
 struct TOOL::DATA_SOURCE {
+	/*###########################################################################################################################*/
 	int data_type = INF; //0 manipulate data set; 1 real data set, homogenous(single) data; 2 real data set, heterogeneous(mixed) data. 3 multi single data. 4 multi mixed data
 
 	/***    0 has burst data 21 / 1 no burst data 17  ***/
@@ -927,9 +1020,11 @@ struct TOOL::DATA_SOURCE {
 	int single_file_number = INF;// number of file data
 	int single_point_number = INF;// number of time series in single file
 	double single_time_series_length = INF;// length of time series length
-	string file_address_all;// all file address 210603
+	string file_address_all;// all TEST file address 210603
+	string file_address_all_TRAIN;// all file TRAIN FILE address 211228
 	const string* file_name_pointer = nullptr;//data file name
-	vector<string> file_address_vector;//191222 vector of string file name 
+	vector<string> file_address_vector;//191222 vector of string TEST file name 
+	vector<string> file_address_TRAIN_vector;//210603 vector of string TAIN file name 
 
 	int bigger_account = 0;
 
@@ -944,8 +1039,10 @@ struct TOOL::DATA_SOURCE {
 	double multi_single_time_series_length = INF;//191223
 	/*-----------------------------------------------------*/
 
-	vector<int> time_series_length_vector;
-	vector<int> time_series_number_vector;
+	vector<int> time_series_length_vector;// The length of time series in each TEST and TRAIN files
+	vector<int> time_series_number_vector;// number of time series in TEST file
+	vector<int> time_series_number_TRAIN_vector;//21128 number of time series in Train file
+	/*###########################################################################################################################*/
 
 	DATA_SOURCE() {};
 	DATA_SOURCE(const int& const data_type, const int& const time_series_dimension, const vector<size_t>& const data_list, const int& const single_file_number, const int& const single_point_number, const int& const single_time_series_length, const string& const data_file_name) : data_type(data_type), time_series_dimension(time_series_dimension), data_list(data_list), single_file_number(single_file_number), single_point_number(single_point_number), single_time_series_length(single_time_series_length), file_name_pointer(&data_file_name) {}
@@ -990,10 +1087,13 @@ struct TOOL::INPUT_ARGUMENT {
 	int point_id = INF;
 
 	int remainder = INF;
-	int segment_length_first = INF;//l=n/m+1
-	int segment_length_second = INF;//l=n/m
+	int segment_length_first = INF; //l=n/m+1
+	int segment_length_second = INF; //l=n/m
 
-	int query_time_series_id = INF;//191119 for KNN
+	int query_time_series_id = INF; //191119 for KNN
+	vector<int> id_query_series_vector; //211220 id of query time series vector
+	vector<vector<DataType>> query_series_vector_vector; //211220 id of query time series vector
+
 	int rtree_max_nodes = INF;
 	int K = INF;
 	string read_file_name;
@@ -1023,6 +1123,8 @@ struct TOOL::INPUT_ARGUMENT {
 	/*------   191204 KNN time   ------*/
 	double representation_time = INF;
 	double build_rtree_time = INF;
+	double time_ingest_data = INF;
+	double knn_CPU_time = INF;//211206
 	double knn_total_time = INF;
 	double knn_total_time_has_IO = INF;//210606
 	double whole_run_time = INF;
@@ -1045,7 +1147,10 @@ struct TOOL::INPUT_ARGUMENT {
 	/*------------------------------------------------------------------*/
 
 	/*------------------------ 210618 Tree  ----------------------------*/
-	int option_tree = INF;
+	//int option_tree = INF;
+	OPTION_TREE<int, int, int> option_tree_struct;
+
+	INDEX_ARGUMENT<double> argument_index_struct;//211215
 	/*------------------------------------------------------------------*/
 
 	/*-------------          200225 Split ID Option        -------------*/
@@ -1133,8 +1238,10 @@ struct TOOL::INPUT_ARGUMENT {
 
 		/*....191204 KNN time.......*/
 		representation_time = INF;
-		option_tree = INF;
+		//option_tree = INF;
 		build_rtree_time = INF;
+		time_ingest_data = INF;
+		knn_CPU_time = INF;
 		knn_total_time = INF;
 		knn_total_time_has_IO = INF;
 		whole_run_time = INF;
@@ -1147,6 +1254,9 @@ struct TOOL::INPUT_ARGUMENT {
 
 		read_file_name.clear();
 		read_file_name.shrink_to_fit();
+
+		id_query_series_vector.clear();
+		id_query_series_vector.shrink_to_fit();
 
 		/*write_file_name.clear();
 		write_file_name.shrink_to_fit();*/
@@ -1174,6 +1284,7 @@ struct TOOL::INPUT_ARGUMENT {
 		//for Chebyshev
 		degree_m = INF;
 		representation_option = INF;
+		option_tree_struct.~OPTION_TREE();
 		/*=========================== Y-Projection =====================================*/
 		//190730 distinguish use y proejction method
 		change_file = true;
@@ -1284,6 +1395,142 @@ struct TOOL::RESULT_RECORD {
 		max_deviation_multiple_width = INF;
 		sum_deviation = INF;
 		representation_time = INF;
+	}
+};
+
+//211206 For Multi query time series, include KNN time....
+TEMPLATE
+template<typename T>
+struct TOOL::RESULT_RECORD_KNN {
+	T pruning_power = INF;
+	T result_accuracy = INF;
+	T knn_total_time = INF;// KNN CPU time
+	T knn_total_time_has_IO = INF;//KNN wall clock time
+	T whole_run_time = INF;// Bulid + KNN CPU
+	T whole_run_time_has_IO; // Bulid + KNN clock time
+	T IO_cost = INF;// measure I/O cost
+	T run_time = INF;
+	T knn_CPU_time = INF;
+
+	RESULT_RECORD_KNN() {
+		pruning_power = 0;
+		result_accuracy = 0;
+		knn_total_time = 0;// KNN CPU time
+		knn_total_time_has_IO = 0;//KNN wall clock time
+		whole_run_time = 0;// Bulid + KNN CPU
+		whole_run_time_has_IO = 0; // Bulid + KNN clock time
+		IO_cost = 0;// measure I/O cost
+		run_time = 0;
+		knn_CPU_time = 0;
+	}
+
+	~RESULT_RECORD_KNN() {
+		pruning_power = INF;
+		result_accuracy = INF;
+		knn_total_time = INF;// KNN CPU time
+		knn_total_time_has_IO = INF;//KNN wall clock time
+		whole_run_time = INF;// Bulid + KNN CPU
+		whole_run_time_has_IO = INF; // Bulid + KNN clock time
+		IO_cost = INF;// measure I/O cost
+		run_time = INF;
+		knn_CPU_time = INF;
+	}
+
+};
+
+// 211223 arguments for Evaluation
+TEMPLATE
+template<typename T>
+struct TOOL::EVALUATION_ARGUMENT {
+	string str_suffix;//0
+	T tree_type = INF;//1
+	T option_homogenous_data_type = INF;//2
+	T size_file = INF;//3
+	T file_id_begin = INF;//4
+	T size_query_time_series = INF;//5
+	T n = INF;//6
+	T initial_N = INF;//default 12//7
+	T final_N = INF;//8
+	T initial_K = INF;//9
+	T final_K = INF;//10
+	T point_number = INF;//default number: 50//11
+	T max_node = INF;//12
+	vector<T> representation_option_vector;//13
+
+	EVALUATION_ARGUMENT() {
+		str_suffix = "";
+		tree_type = INF;
+		option_homogenous_data_type = INF;
+		size_file = INF;
+		file_id_begin = INF;
+		size_query_time_series = INF;
+		n = INF;
+		initial_N = INF;//default 12
+		final_N = INF;
+		initial_K = INF;
+		final_K = INF;
+		point_number = INF;//default number: 50
+		max_node = INF;
+		representation_option_vector.clear();
+	}
+
+	EVALUATION_ARGUMENT(string str_suffix, T tree_type, T option_homogenous_data_type, T size_file, T file_id_begin, 
+		T size_query_time_series, T n, T initial_N, T final_N, T initial_K, 
+		T final_K, T point_number, T max_node, vector<T> representation_option_vector) : str_suffix(str_suffix), tree_type(tree_type), option_homogenous_data_type(option_homogenous_data_type), size_file(size_file), file_id_begin(file_id_begin),
+		size_query_time_series(size_query_time_series), n(n), initial_N(initial_N), final_N(final_N), initial_K(initial_K), final_K(final_K), 
+		point_number(point_number), max_node(max_node), representation_option_vector(representation_option_vector) {}
+
+
+	~EVALUATION_ARGUMENT() {
+		str_suffix = "";
+		tree_type = INF;
+		option_homogenous_data_type = INF;
+		size_file = INF;
+		file_id_begin = INF;
+		size_query_time_series = INF;
+		n = INF;
+		initial_N = INF;//default 12
+		final_N = INF;
+		initial_K = INF;
+		final_K = INF;
+		point_number = INF;//default number: 50
+		max_node = INF;
+		representation_option_vector.clear();
+		representation_option_vector.shrink_to_fit();
+	}
+};
+
+TEMPLATE
+template<typename T>//211215
+inline void TOOL::initial_argument_index(T& const INDEX_ARGUMENT) {
+	INDEX_ARGUMENT.count_node_internal = 0;
+	INDEX_ARGUMENT.count_node_leaf = 0;
+	INDEX_ARGUMENT.count_node_total = 0;
+	INDEX_ARGUMENT.height_index = 0;
+}
+
+
+//211215 For Index Argument. Tree size intrnal node and leaf ndoe
+TEMPLATE
+template<typename T>
+struct TOOL::INDEX_ARGUMENT {
+	T count_node_internal = INF;
+	T count_node_leaf = INF;
+	T count_node_total = INF;
+	T height_index = INF;
+
+	INDEX_ARGUMENT() {
+		count_node_internal = 0;
+	    count_node_leaf = 0;
+		count_node_total = 0;
+		height_index = 0;
+	}
+
+	~INDEX_ARGUMENT() {
+		count_node_internal = INF;
+		count_node_leaf = INF;
+		count_node_total = INF;
+		height_index = INF;
 	}
 };
 
@@ -1558,7 +1805,7 @@ struct TOOL::RECTANGLE {//191127 for Rtree insersion. get min&max id value of re
 TEMPLATE
 template<typename T, typename Y, typename U>// 210906 first segment width, second segment width, remainder.
 struct TOOL::SEGMENT_WIDTH_STRUCTRE {
-	T  remainder = INF;
+	T remainder = INF;
 	Y segment_length_first = INF;
 	U segment_length_second = INF;
 
@@ -1583,7 +1830,76 @@ struct TOOL::SEGMENT_WIDTH_STRUCTRE {
 
 };
 
+// 211202 Linear Evaluation parameters 
+TEMPLATE
+template<typename T>
+struct TOOL::LINEAR_SCAN_STRUCTURE {
+	
+	T time_linear_scan_CPU = INF;
+	T time_linear_scan_wall_clock = INF;
+	//T page_size = INF; //byte
+	T IO_linear_scan = INF;
+
+	LINEAR_SCAN_STRUCTURE() {
+		time_linear_scan_CPU = INF;
+		time_linear_scan_wall_clock = INF;
+		//page_size = INF; //byte
+		IO_linear_scan = INF;
+	}
+
+	LINEAR_SCAN_STRUCTURE(T time_linear_scan_CPU, T time_linear_scan_wall_clock, T IO_linear_scan) :
+		time_linear_scan_CPU(time_linear_scan_CPU), time_linear_scan_wall_clock(time_linear_scan_wall_clock), IO_linear_scan(IO_linear_scan){}
+
+	~LINEAR_SCAN_STRUCTURE() {
+		time_linear_scan_CPU = INF;
+		time_linear_scan_wall_clock = INF;
+		//page_size = INF; //byte
+		IO_linear_scan = INF;
+	}
+};
+
+TEMPLATE
+template<typename T, typename Y, typename U>// 211007 option in tree, representation option, tree type option
+struct TOOL::OPTION_TREE {
+	T type_tree = -1;// 0 R-tree, 1 distance tree, 2 MBR_SAPLA tree
+	Y type_representation = -1; // Default: SAPLA/APLA/PLA/PAA/PAALM/SAX/CHEBY, 3 APCA(average)
+	U type_distance = -1;// 0 SAPLA Eucliden, 1 triangle area
+	T type_volume = -1;//Type of volume. 0:global distance
+	T number_point = INF;// point number to scan in original time series.
+
+	OPTION_TREE() {
+		type_tree = -1;
+		type_representation = -1;
+		type_distance = -1;
+		type_volume = -1;
+		number_point = INF;
+	}
+
+	OPTION_TREE(T type_tree, Y type_representation, U type_distance, T type_volume, T number_point) :
+		type_tree(type_tree), type_representation(type_representation), type_distance(type_distance), type_volume(type_volume), number_point(number_point){}
+
+	~OPTION_TREE() {
+		type_tree = -1;
+		type_representation = -1;
+		type_distance = -1;
+		type_volume = -1;
+		number_point = INF;
+	}
+};
+
 /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
+
+TEMPLATE
+template<typename T, typename Y, typename U, typename T1, typename T2, typename T3>//211010
+inline void TOOL::initial_option_tree(const T type_tree, const Y type_representation, const U type_distance, const T1 type_volume, const T2 number_point, T3& const option_tree) {
+	
+	option_tree.type_tree = type_tree;
+	option_tree.type_representation = type_representation;
+	option_tree.type_distance = type_distance;
+	option_tree.type_volume = type_volume;
+	option_tree.number_point = number_point;
+	
+}
 
 TEMPLATE
 template<typename T>//for NULL
@@ -2352,15 +2668,26 @@ void TOOL::getFileStreamByRow(const string& const file_name, const int& const g_
 
 		stringstream sstr(fs_row_string);
 		int string_id = -1;
+		int count_nan = 0;
 		while (getline(sstr, fs_row_number, delimiter) && string_id < g_time_series_length) {
 			if (string_id > -1) {
-				original_time_series[row_id][string_id] = stod(fs_row_number);
-				assert(original_time_series[row_id][string_id] != INF);
+				long double value_point = stod(fs_row_number);
+				if(!isnan(value_point)){
+					original_time_series[row_id][string_id] = stod(fs_row_number);
+					assert(original_time_series[row_id][string_id] != INF && !isnan(original_time_series[row_id][string_id]));
+				}
+				else {// not number
+					original_time_series[row_id][string_id] = 0;
+					count_nan++;
+				}
 			}
 			string_id++;
 		}
 
 		fs_row_string.clear();
+
+		//if (g_time_series_length / 2 < count_nan) assert(0);
+
 		/*==============210603 normalized =====================*/
 		TOOL::normalizeStandard(original_time_series[row_id]);
 		/*=====================================================*/
@@ -2499,6 +2826,233 @@ void TOOL::get_normalize_write_one_file(const Y& const file_name, const T& const
 	}
 }
 
+//211230
+TEMPLATE
+template<typename T, typename Y>
+void TOOL::mannually_normalize_write_one_file(Y& const data_source, const T& const data_id) {
+	TOOL::clearTXTFile_no_txt(data_source.read_file_address);//210603
+
+	int point_number_user = data_source.single_point_number;
+	int time_series_length_user = data_source.single_time_series_length;
+
+	string address_file_TEST = getStringByID(data_source.file_address_all, data_id);
+	string address_file_TRAIN = getStringByID(data_source.file_address_all_TRAIN, data_id);
+	string address_write = data_source.read_file_address;
+	int time_series_length = data_source.time_series_length_vector[data_id];
+
+	int point_number_TEST = data_source.time_series_number_vector[data_id];
+	int point_number_TRAIN = data_source.time_series_number_TRAIN_vector[data_id];
+	int sum_number = point_number_TEST + point_number_TRAIN;
+
+	if (time_series_length > time_series_length_user) {// time series length is long
+		if (point_number_TEST > point_number_user) {
+
+			//DataType original_time_series[row_number][g_time_series_length];
+			vector<vector<long double>> time_series_vvector_TEST(point_number_user, vector<long double>(time_series_length_user, INF));//210603 miss first point
+
+			/*------------------  Read & Write  ------------------------------*/
+			//miss first point, so length is length +1, normalize 
+			getFileStreamByRow(address_file_TEST, time_series_length_user, point_number_user, time_series_vvector_TEST);
+			for (int row_id = 0; row_id < point_number_user; row_id++) {
+				assert_no_INF_vector(time_series_vvector_TEST[row_id]);
+				writeResultNoCover_no_txt(address_write, time_series_vvector_TEST[row_id]);
+			}
+			/*----------------------------------------------------------------*/
+		}
+		else if (point_number_TRAIN > point_number_user) {
+
+			//DataType original_time_series[row_number][g_time_series_length];
+			vector<vector<long double>> time_series_vvector_TRAIN(point_number_user, vector<long double>(time_series_length_user, INF));//210603 miss first point
+
+			/*------------------  Read & Write  ------------------------------*/
+			//miss first point, so length is length +1, normalize 
+			getFileStreamByRow(address_file_TRAIN, time_series_length_user, point_number_user, time_series_vvector_TRAIN);
+			for (int row_id = 0; row_id < point_number_user; row_id++) {
+				assert_no_INF_vector(time_series_vvector_TRAIN[row_id]);
+				writeResultNoCover_no_txt(address_write, time_series_vvector_TRAIN[row_id]);
+			}
+			/*----------------------------------------------------------------*/
+
+		}
+		else if (sum_number >= point_number_user) {
+
+			vector<vector<long double>> time_series_vvector_TEST(point_number_TEST, vector<long double>(time_series_length_user, INF));//210603 miss first point
+			getFileStreamByRow(address_file_TEST, time_series_length_user, point_number_TEST, time_series_vvector_TEST);
+			for (int row_id = 0; row_id < point_number_TEST; row_id++) {
+				assert_no_INF_vector(time_series_vvector_TEST[row_id]);
+				writeResultNoCover_no_txt(address_write, time_series_vvector_TEST[row_id]);
+			}
+
+			vector<vector<long double>> time_series_vvector_TRAIN(point_number_TRAIN, vector<long double>(time_series_length_user, INF));//210603 miss first point
+			getFileStreamByRow(address_file_TRAIN, time_series_length_user, point_number_TRAIN, time_series_vvector_TRAIN);
+			int rest_point_number = point_number_user - point_number_TEST;
+
+			for (int row_id = 0; row_id < rest_point_number; row_id++) {
+				assert_no_INF_vector(time_series_vvector_TRAIN[row_id]);
+				writeResultNoCover_no_txt(address_write, time_series_vvector_TRAIN[row_id]);
+			}
+		}
+		else {// point numebr is fewer sum_number < point_number_user
+			assert(point_number_user < sum_number * 2);
+
+			vector<vector<long double>> time_series_vvector_TEST(point_number_TEST, vector<long double>(time_series_length, INF));//210603 miss first point
+			getFileStreamByRow(address_file_TEST, time_series_length, point_number_TEST, time_series_vvector_TEST);
+			for (int row_id = 0; row_id < point_number_TEST; row_id++) {
+				assert_no_INF_vector(time_series_vvector_TEST[row_id]);
+				writeResultNoCover_no_txt(address_write, time_series_vvector_TEST[row_id]);
+			}
+
+			vector<vector<long double>> time_series_vvector_TRAIN(point_number_TRAIN, vector<long double>(time_series_length, INF));//210603 miss first point
+			getFileStreamByRow(address_file_TRAIN, time_series_length, point_number_TRAIN, time_series_vvector_TRAIN);
+			for (int row_id = 0; row_id < point_number_TRAIN; row_id++) {
+				assert_no_INF_vector(time_series_vvector_TRAIN[row_id]);
+				writeResultNoCover_no_txt(address_write, time_series_vvector_TRAIN[row_id]);
+			}
+
+			int rest_point_number = point_number_user - sum_number;
+			assert(rest_point_number < sum_number);
+
+			for (int row_id = 0; row_id < rest_point_number; row_id++) {
+				if (point_number_TEST >= row_id) {
+					vector<long double> temp_time_series_vector;
+					temp_time_series_vector.assign(time_series_vvector_TEST[row_id].rbegin(), time_series_vvector_TEST[row_id].rbegin() + time_series_length_user);
+					assert_no_INF_vector(temp_time_series_vector);
+					writeResultNoCover_no_txt(address_write, temp_time_series_vector);
+					temp_time_series_vector.clear();
+					temp_time_series_vector.shrink_to_fit();
+				}
+				else {
+					int od_in_TRAIN = row_id - point_number_TEST;
+					vector<long double> temp_time_series_vector(time_series_vvector_TRAIN[od_in_TRAIN].rbegin(), time_series_vvector_TRAIN[od_in_TRAIN].rbegin() + time_series_length_user);
+					assert_no_INF_vector(temp_time_series_vector);
+					writeResultNoCover_no_txt(address_write, temp_time_series_vector);
+					temp_time_series_vector.clear();
+					temp_time_series_vector.shrink_to_fit();
+				}
+			}
+		}
+
+	}
+	else {// time series is short
+
+		if (sum_number >= point_number_user) {
+
+			int number_to_connect = double(time_series_length_user) / double(time_series_length) + 1;
+
+			vector<vector<long double>> time_series_vvector_TEST(point_number_TEST, vector<long double>(time_series_length, INF));//210603 miss first point
+			getFileStreamByRow(address_file_TEST, time_series_length, point_number_TEST, time_series_vvector_TEST);
+
+			vector<vector<long double>> time_series_vvector_TRAIN(point_number_TRAIN, vector<long double>(time_series_length, INF));//210603 miss first point
+			getFileStreamByRow(address_file_TRAIN, time_series_length, point_number_TRAIN, time_series_vvector_TRAIN);
+
+			vector<vector<long double>> time_series_vvector_TEST_TRAIN(point_number_TEST, vector<long double>(time_series_length, INF));
+			getFileStreamByRow(address_file_TEST, time_series_length, point_number_TEST, time_series_vvector_TEST_TRAIN);
+
+			assert(time_series_vvector_TEST_TRAIN[0].size() == time_series_vvector_TRAIN[0].size());
+
+			time_series_vvector_TEST_TRAIN.insert(time_series_vvector_TEST_TRAIN.end(), time_series_vvector_TRAIN.begin(), time_series_vvector_TRAIN.end());
+
+			assert(time_series_vvector_TEST_TRAIN.size() == sum_number);
+
+			vector<vector<long double>> time_series_vvector_write(time_series_vvector_TRAIN.begin(), time_series_vvector_TRAIN.end());
+			time_series_vvector_write.insert(time_series_vvector_write.end(), time_series_vvector_TEST.begin(), time_series_vvector_TEST.end());
+
+			/*------------------  Read & Write  ------------------------------*/
+			for (int row_id = 0; row_id < point_number_user; row_id++) {
+
+				for (int row_id_connect = 1; row_id_connect <= number_to_connect; row_id_connect++) {
+					int id_connect = (row_id + row_id_connect) % sum_number;
+					assert(id_connect < time_series_vvector_TEST_TRAIN.size());
+
+					time_series_vvector_write[row_id].insert(time_series_vvector_write[row_id].end(), time_series_vvector_TEST_TRAIN[id_connect].begin(), time_series_vvector_TEST_TRAIN[id_connect].end());
+				}
+				assert(time_series_vvector_write[row_id].size() >= time_series_length_user);
+
+				vector<long double> temp_time_series_vector(time_series_vvector_write[row_id].begin(), time_series_vvector_write[row_id].begin() + time_series_length_user);
+				assert_no_INF_vector(temp_time_series_vector);
+				writeResultNoCover_no_txt(address_write, temp_time_series_vector);
+
+				temp_time_series_vector.clear();
+				temp_time_series_vector.shrink_to_fit();
+			}
+			/*----------------------------------------------------------------*/
+		}
+		else {// point numebr is fewer sum_number < point_number_user And is shorter
+
+			assert(point_number_user < sum_number * 3);
+
+			int number_to_connect = double(time_series_length_user) / double(time_series_length) + 1;
+
+			vector<vector<long double>> time_series_vvector_TEST(point_number_TEST, vector<long double>(time_series_length, INF));//210603 miss first point
+			getFileStreamByRow(address_file_TEST, time_series_length, point_number_TEST, time_series_vvector_TEST);
+
+			vector<vector<long double>> time_series_vvector_TRAIN(point_number_TRAIN, vector<long double>(time_series_length, INF));//210603 miss first point
+			getFileStreamByRow(address_file_TRAIN, time_series_length, point_number_TRAIN, time_series_vvector_TRAIN);
+
+			vector<vector<long double>> time_series_vvector_TEST_TRAIN(point_number_TEST, vector<long double>(time_series_length, INF));
+			getFileStreamByRow(address_file_TEST, time_series_length, point_number_TEST, time_series_vvector_TEST_TRAIN);
+
+			assert(time_series_vvector_TEST_TRAIN[0].size() == time_series_vvector_TRAIN[0].size());
+
+			time_series_vvector_TEST_TRAIN.insert(time_series_vvector_TEST_TRAIN.end(), time_series_vvector_TRAIN.begin(), time_series_vvector_TRAIN.end());
+
+			assert(time_series_vvector_TEST_TRAIN.size() == sum_number);
+
+			vector<vector<long double>> time_series_vvector_write(time_series_vvector_TRAIN.begin(), time_series_vvector_TRAIN.end());
+			time_series_vvector_write.insert(time_series_vvector_write.end(), time_series_vvector_TEST.begin(), time_series_vvector_TEST.end());
+
+			/*------------------  Connnect enought length  ------------------------------*/
+			for (int row_id = 0; row_id < sum_number; row_id++) {
+
+				for (int row_id_connect = 1; row_id_connect <= number_to_connect; row_id_connect++) {
+					int id_connect = (row_id + row_id_connect) % sum_number;
+					assert(id_connect < time_series_vvector_TEST_TRAIN.size());
+
+					time_series_vvector_write[row_id].insert(time_series_vvector_write[row_id].end(), time_series_vvector_TEST_TRAIN[id_connect].begin(), time_series_vvector_TEST_TRAIN[id_connect].end());
+				}
+
+				vector<long double> temp_time_series_vector(time_series_vvector_write[row_id].begin(), time_series_vvector_write[row_id].begin() + time_series_length_user);
+				assert_no_INF_vector(temp_time_series_vector);
+				writeResultNoCover_no_txt(address_write, temp_time_series_vector);
+
+				temp_time_series_vector.clear();
+				temp_time_series_vector.shrink_to_fit();
+			}
+			/*----------------------------------------------------------------*/
+
+
+			int rest_point_number = point_number_user - sum_number;
+			//assert(rest_point_number < sum_number);
+			int add_number = min(rest_point_number, sum_number);
+			for (int row_id = 0; row_id < add_number; row_id++) {
+
+				vector<long double> temp_time_series_vector(time_series_vvector_write[row_id].rbegin(), time_series_vvector_write[row_id].rbegin() + time_series_length_user);
+				writeResultNoCover_no_txt(address_write, temp_time_series_vector);
+				temp_time_series_vector.clear();
+				temp_time_series_vector.shrink_to_fit();
+			}
+
+			rest_point_number -= sum_number;
+			
+			while (rest_point_number > 0) {
+				int id_first = rand() % sum_number;
+				int id_second = (id_first + 5) % sum_number;
+				int length_first = time_series_length_user / 2;
+				int length_second = time_series_length_user - length_first;
+				vector<long double> temp_time_series_vector(time_series_vvector_write[id_first].rbegin(), time_series_vvector_write[id_first].rbegin() + length_first);
+				temp_time_series_vector.insert(temp_time_series_vector.end(), time_series_vvector_write[id_second].begin(), time_series_vvector_write[id_second].begin() + length_second);
+				assert(temp_time_series_vector.size() >= time_series_length_user);
+				writeResultNoCover_no_txt(address_write, temp_time_series_vector);
+				temp_time_series_vector.clear();
+				temp_time_series_vector.shrink_to_fit();
+
+				rest_point_number--;
+			}
+		}
+	}
+
+}
+
 //************************************
 // Stuct:get_write_multi_files
 // Qualifier:get stream from several files and write to single file normalized 210603
@@ -2585,6 +3139,7 @@ string TOOL::getStringByID(const string& const file_name, const int& const row_n
 	{
 		row_id++;
 	}
+	cout << "File Address: " << file_address << endl;
 	return file_address;
 }
 
@@ -2781,7 +3336,7 @@ void TOOL::writeInputArgument(INPUT_ARGUMENT& input_argument, const string& writ
 
 	outfile << endl << dt << "read file:" << input_argument.read_file_name << "; write file: " << write_file_name << endl;;
 	/*outfile << dimension_reduction_name[PAA_or_APCA] << " n = " << mg_file_time_series_length << ", N = " << mg_APCA_point_dimension << ", number = " << mg_d_index_point_number << ", K = " << K << ", MAXNODES = " << mg_max_nodes << endl;*/
-	outfile << " n = " << input_argument.time_series_length << ", N = " << input_argument.point_dimension <<  input_argument.point_number << ", K = " << input_argument.K << endl;
+	outfile << " n = " << input_argument.time_series_length << ", N = " << input_argument.point_dimension << ", dimension = " << input_argument.arity_d << ", point number = " << input_argument.point_number << ", K = " << input_argument.K << ", MAXNODES = " << input_argument.rtree_max_nodes << ", degree = " << input_argument.degree_m << endl;
 	/*outfile << "  count apca point = " << g_n_account_apca_point << " times, p= " << g_n_account_apca_point / double(input_argument.point_number) << endl;
 	outfile << "  APCA Memory = " << memory_account[0] + memory_account[1] + memory_account[2] + memory_account[3] << "  RTree Memeory = " << memory_account[4] + memory_account[5] + memory_account[6] + memory_account[7] + memory_account[8] << "  KNN Memory = " << memory_account[9] << endl;*/
 
@@ -3094,8 +3649,8 @@ double& TOOL::distanceEUC(const T& const input_argument, DataType*& const Q, Dat
 
 //191129 Euclidean distance.
 TEMPLATE
-template<typename T>//For sum deviation
-long double TOOL::distanceEUC(const vector<T>& const time_series_vector1, const vector<T>& const time_series_vector2) {
+template<typename T, typename Y>//For sum deviation
+long double TOOL::distanceEUC(const vector<T>& const time_series_vector1, const vector<Y>& const time_series_vector2) {
 #ifdef _DEBUG
 	assert(time_series_vector1.size() == time_series_vector2.size());//n is even
 #endif
@@ -3357,7 +3912,7 @@ multiset<pair<double, int>>& TOOL::SimpleBaseKNNSearch(const T& const data_sourc
 //191223 For multi dimension dataset. Vector instead pointer. Normalized time series
 //**********************************************************************************************************************************
 // Method:SimpleBaseKNNSearchMulti
-// Qualifier: For multi dimension dataset get KNN by squencial scan  vector instead pointer
+// Qualifier: For multi dimension dataset get KNN by linear scan vector instead pointer
 // Input: Normalized time series and query time series
 // Output:Y is data struct
 // date:191223
@@ -3368,24 +3923,286 @@ template<typename T, typename Y, typename U>
 multiset<pair<U, int>>& TOOL::SimpleBaseKNNSearchMulti(const T& const data_source, const vector<Y>& const query_time_series_vector, multiset<pair<U, int>>& const knn_result_set) {
 	assert(data_source.point_number != INF && data_source.point_number > 0 && data_source.time_series_dimension * data_source.single_time_series_length == query_time_series_vector.size() && data_source.multi_single_time_series_length == query_time_series_vector.size() && knn_result_set.empty());
 	assert(data_source.read_file_address_vector.size() == data_source.time_series_dimension);
-	vector<Y> normalized_time_series_vector;
+
+	const long double page_size = 4096; //byte
+	long double IO_linear_scan = data_source.point_number * data_source.single_time_series_length * sizeof(Y) / page_size;
+	long double time_linear_scan_CPU = 0;
+	long double time_linear_scan_wall_clock = 0;
+
+	vector<Y> normalized_time_series_vector;// So far Y is double
 	long double distance_euc = INF;
+	TOOL::recordStartTime(TOOL::time_record[1]);
+
 	for (int point_id = 0; point_id < data_source.point_number; point_id++) {
 		/*=========================================get normalized data set==========================================================*/
 		//already normalized
 		TOOL::getMultiFoldToSingleByID(data_source.read_file_address_vector, data_source.time_series_dimension, data_source.single_time_series_length, point_id, normalized_time_series_vector);
 		assert(normalized_time_series_vector.size() == data_source.single_time_series_length * data_source.time_series_dimension && data_source.multi_single_time_series_length == normalized_time_series_vector.size());
 		/*====================================================================================================================*/
+		TOOL::recordStartTime(TOOL::time_record[0]);//CPU Distance time
+
 		distance_euc = distanceEUC(query_time_series_vector, normalized_time_series_vector);
 		knn_result_set.emplace(make_pair(distance_euc, point_id));
+
+		time_linear_scan_CPU += TOOL::recordFinishTime(TOOL::time_record[0]);
+		
+
 		assert(point_id != INF && distance_euc != INF && point_id >= 0 && distance_euc >= 0);
 	}
+
+	time_linear_scan_wall_clock = TOOL::recordFinishTime(TOOL::time_record[1]);
+
 	assert(!knn_result_set.empty() && knn_result_set.size() == data_source.point_number);
 	normalized_time_series_vector.clear();
 	normalized_time_series_vector.shrink_to_fit();
 	return knn_result_set;
 }
 
+//211202 Add linear scan evaluation parameter
+TEMPLATE
+template<typename T, typename Y, typename U, typename T1>
+multiset<pair<U, int>>& TOOL::SimpleBaseKNNSearchMulti(const T& const data_source, const vector<Y>& const query_time_series_vector, multiset<pair<U, int>>& const knn_result_set, T1& const linear_scan_struct) {
+	assert(data_source.point_number != INF && data_source.point_number > 0 && data_source.time_series_dimension * data_source.single_time_series_length == query_time_series_vector.size() && data_source.multi_single_time_series_length == query_time_series_vector.size() && knn_result_set.empty());
+	assert(data_source.read_file_address_vector.size() == data_source.time_series_dimension);
+
+	const long double page_size = 4096; //byte
+	linear_scan_struct.IO_linear_scan = data_source.point_number * data_source.single_time_series_length * sizeof(Y) / page_size;
+	linear_scan_struct.IO_linear_scan = data_source.point_number;
+	linear_scan_struct.time_linear_scan_CPU = 0;
+	linear_scan_struct.time_linear_scan_wall_clock = 0;
+
+	vector<Y> normalized_time_series_vector;// So far Y is double
+	long double distance_euc = INF;
+	TOOL::recordStartTime(TOOL::time_record[1]);
+
+	for (int point_id = 0; point_id < data_source.point_number; point_id++) {
+		/*=========================================get normalized data set==========================================================*/
+		//already normalized
+		TOOL::getMultiFoldToSingleByID(data_source.read_file_address_vector, data_source.time_series_dimension, data_source.single_time_series_length, point_id, normalized_time_series_vector);
+		assert(normalized_time_series_vector.size() == data_source.single_time_series_length * data_source.time_series_dimension && data_source.multi_single_time_series_length == normalized_time_series_vector.size());
+		/*====================================================================================================================*/
+		TOOL::recordStartTime(TOOL::time_record[0]);//CPU Distance time
+
+		distance_euc = distanceEUC(query_time_series_vector, normalized_time_series_vector);
+		knn_result_set.emplace(make_pair(distance_euc, point_id));
+
+		linear_scan_struct.time_linear_scan_CPU += TOOL::recordFinishTime(TOOL::time_record[0]);
+
+
+		assert(point_id != INF && distance_euc != INF && point_id >= 0 && distance_euc >= 0);
+	}
+
+	linear_scan_struct.time_linear_scan_wall_clock = TOOL::recordFinishTime(TOOL::time_record[1]);
+
+	TOOL::assert_linear_scan(linear_scan_struct);
+	assert(!knn_result_set.empty() && knn_result_set.size() == data_source.point_number);
+	normalized_time_series_vector.clear();
+	normalized_time_series_vector.shrink_to_fit();
+	return knn_result_set;
+}
+
+//211205 Add linear scan evaluation parameter
+TEMPLATE
+template<typename T, typename Y, typename U, typename T1>
+void TOOL::SimpleBaseKNNSearchMulti(const T& const data_source, const vector<vector<Y>>& const query_series_vector_vector, vector<multiset<pair<U, int>>>& const knn_result_set_vector, T1& const linear_scan_struct) {
+	assert(data_source.point_number != INF && data_source.point_number > 0);
+	assert(data_source.read_file_address_vector.size() == data_source.time_series_dimension && query_series_vector_vector.size() == knn_result_set_vector.size());
+	const int size_query = query_series_vector_vector.size();
+
+	const long double page_size = 4096; //byte
+	linear_scan_struct.IO_linear_scan = size_query * data_source.point_number * data_source.single_time_series_length * sizeof(Y) / page_size;
+	linear_scan_struct.IO_linear_scan = size_query * data_source.point_number;
+	linear_scan_struct.time_linear_scan_CPU = 0;
+	linear_scan_struct.time_linear_scan_wall_clock = 0;
+	
+	vector<Y> normalized_time_series_vector;// So far Y is double
+	long double distance_euc = INF;
+	TOOL::recordStartTime(TOOL::time_record[1]);
+
+	for (int od_query = 0; od_query < size_query; od_query++) {// multi query time series
+		assert(knn_result_set_vector[od_query].empty() && data_source.time_series_dimension * data_source.single_time_series_length == query_series_vector_vector[od_query].size() && data_source.multi_single_time_series_length == query_series_vector_vector[od_query].size());
+		
+		for (int point_id = 0; point_id < data_source.point_number; point_id++) {
+
+			/*=========================================get normalized data set====================================================*/
+			//already normalized
+			TOOL::getMultiFoldToSingleByID(data_source.read_file_address_vector, data_source.time_series_dimension, data_source.single_time_series_length, point_id, normalized_time_series_vector);
+			assert(normalized_time_series_vector.size() == data_source.single_time_series_length * data_source.time_series_dimension && data_source.multi_single_time_series_length == normalized_time_series_vector.size());
+			/*====================================================================================================================*/
+
+			TOOL::recordStartTime(TOOL::time_record[0]);//CPU Distance time
+
+			distance_euc = distanceEUC(query_series_vector_vector[od_query], normalized_time_series_vector);
+			knn_result_set_vector[od_query].emplace(make_pair(distance_euc, point_id));
+
+			linear_scan_struct.time_linear_scan_CPU += TOOL::recordFinishTime(TOOL::time_record[0]);
+
+			assert(point_id != INF && distance_euc != INF && point_id >= 0 && distance_euc >= 0);
+		}
+		assert(knn_result_set_vector[od_query].size() == data_source.point_number);
+	}// multi query time series
+
+	linear_scan_struct.time_linear_scan_wall_clock = TOOL::recordFinishTime(TOOL::time_record[1]);
+
+
+	TOOL::assert_linear_scan(linear_scan_struct);
+	normalized_time_series_vector.clear();
+	normalized_time_series_vector.shrink_to_fit();
+}
+
+
+//211205 Add linear scan evaluation parameter
+TEMPLATE
+template<typename T, typename Y, typename U>
+void TOOL::linear_scan(T& const input_argument, const Y& const data_source, const vector<U>& const query_series_vector) {
+	TOOL::recordStartTime(TOOL::time_record[1]);
+	vector<vector<long double>> original_time_series_vector_vector(data_source.point_number, vector<long double>(data_source.single_time_series_length, INF));
+	
+	for (int point_id = 0; point_id < data_source.point_number; point_id++) {
+		/*=========================================get normalized data set====================================================*/
+		TOOL::getMultiFoldToSingleByID(data_source.read_file_address_vector, data_source.time_series_dimension, data_source.single_time_series_length, point_id, original_time_series_vector_vector[point_id]);
+		/*====================================================================================================================*/
+	}
+
+	TOOL::recordStartTime(TOOL::time_record[0]);//CPU Distance time
+	vector<long double> distance_min_vector;
+	vector<int> id_min_vector;
+	
+	while (distance_min_vector.size() < input_argument.K) {
+		assert(distance_min_vector.size() == id_min_vector.size());
+
+		long double distance_min = INF;
+		int id_min = 0;
+
+		for (int point_id = 0; point_id < data_source.point_number; point_id++) {
+			
+			long double distance_euc = distanceEUC(query_series_vector, original_time_series_vector_vector[point_id]);
+
+			bool already_has = false;
+			if (distance_min > distance_euc) {
+				if (!distance_min_vector.empty()) {
+					int max_distance = -INF;
+					for (int id_vec = 0; id_vec< distance_min_vector.size(); id_vec++) {
+						if (distance_min_vector[id_vec] >= max_distance) {
+							max_distance = distance_min_vector[id_vec];
+						}
+					}
+
+					if (max_distance >= distance_euc) {
+						for (int id_vec = 0; id_vec < id_min_vector.size(); id_vec++) {
+							if (id_min_vector[id_vec] == point_id) {
+								already_has = true;
+							}
+						}
+					}
+				}
+
+				if (already_has == false) {
+					distance_min = distance_euc;
+					id_min = point_id;
+				}
+				
+			}
+		}
+
+		distance_min_vector.push_back(distance_min);
+		id_min_vector.push_back(id_min);
+	}
+	assert(distance_min_vector.size() == id_min_vector.size());
+	input_argument.IO_cost = input_argument.query_series_vector_vector.size() * data_source.point_number;
+	input_argument.knn_total_time_has_IO = input_argument.whole_run_time_has_IO = TOOL::recordFinishTime(TOOL::time_record[1]);
+	input_argument.knn_total_time = input_argument.knn_CPU_time = input_argument.whole_run_time = TOOL::recordFinishTime(TOOL::time_record[0]);
+}
+
+TEMPLATE
+template<typename T>
+inline void TOOL::initial_evaluation_input(T& const input_argument) {
+	input_argument.option_tree_struct.type_tree = 0;
+	input_argument.number_point_max_deviation_true = 0;
+	input_argument.number_point_max_deviation_false = 0;
+	input_argument.number_not_smaller_than_sum_deviation = 0;
+	input_argument.number_smaller_than_sum_deviation = 0;
+	input_argument.number_not_smaller_than_sum_deviation_pow = 0;
+	input_argument.number_smaller_than_sum_deviation_pow = 0;
+	input_argument.result_accuracy = 0;
+
+	/*--------     for KNN      ---------*/
+	input_argument.prune_power_combine = 0;// prune power combine 201221
+	input_argument.pruning_power = 0;
+	input_argument.sum_distance_euc = 0;
+	/*-----------------------------------*/
+
+	//for time
+	input_argument.approximation_query_time = 0;
+	input_argument.knn_rest_part_time = 0;
+
+	/*------   191204 KNN time   ------*/
+	input_argument.representation_time = 0;
+	input_argument.build_rtree_time = 0;
+	input_argument.time_ingest_data = 0;
+	input_argument.knn_CPU_time = 0;
+	input_argument.knn_total_time = 0;
+	input_argument.knn_total_time_has_IO = 0;//210606
+	input_argument.whole_run_time = 0;
+	input_argument.whole_run_time_has_IO = 0;//210606
+	/*---------------------------------*/
+
+	//three part time
+	input_argument.navigate_index_time = 0;// navigate time
+	input_argument.distance_lowbound_time = 0; // distance chebyshev, PLA, APCA time
+	input_argument.distance_euc_time = 0;// distance euclidean time
+	//I/O cost
+	input_argument.IO_cost = 0;
+}
+
+TEMPLATE
+template<typename T>
+inline void TOOL::initial_evaluation_output(T& const output_argument) {
+	output_argument.max_deviation = 0;
+	output_argument.max_deviation_multiple_width = 0;
+	output_argument.sum_deviation = 0;
+
+	output_argument.max_deviation = 0;
+	output_argument.max_deviation_av = 0;
+	output_argument.sum_deviation = 0;
+	output_argument.run_time = 0;
+	output_argument.density_max_id = 0;
+	output_argument.density_min_id = 0;
+	output_argument.same_deviation_id_count = 0;//190515
+	output_argument.diff_deviation_id_count = 0;//190515
+
+	output_argument.sum_area = 0;//190619
+	output_argument.sum_density = 0;//190619
+	output_argument.sum_area0 = 0;//190619
+	output_argument.sum_density0 = 0;//190619
+
+	output_argument.max_deviation_multiple_width = 0;
+
+	output_argument.sum_deviation_icde07 = 0;
+	output_argument.max_deviation_icde07 = 0;
+	output_argument.max_deviation_av_icde07 = 0;
+	
+}
+
+TEMPLATE
+template<typename T, typename Y>
+inline void TOOL::initial_evaluation_in_output(T& const input_argument, Y& const output_argument) {
+	initial_evaluation_input(input_argument);
+	initial_evaluation_output(output_argument);
+}
+
+//211202
+TEMPLATE
+template<typename T, typename Y, typename U>
+inline void TOOL::initial_evaluation_linear_scan(T& const input_argument, Y& const output_argument, U& const linear_scan_struct) {
+	TOOL::assert_linear_scan(linear_scan_struct);
+	initial_evaluation_in_output(input_argument, output_argument);
+	input_argument.knn_total_time = linear_scan_struct.time_linear_scan_CPU;
+	input_argument.knn_CPU_time = linear_scan_struct.time_linear_scan_CPU;
+	input_argument.knn_total_time_has_IO = linear_scan_struct.time_linear_scan_wall_clock;
+	input_argument.IO_cost = linear_scan_struct.IO_linear_scan;
+}
+/*=======================================================================================================================================*/
 
 //**********************************************************************************************************************************
 // Method:getRandomPoint
@@ -3431,13 +4248,17 @@ int TOOL::get_random_max(const int& const max_value) {
 // Qualifier:get random value from [0, max_value - 1]
 // Input: length ,scale
 // Output: randomw value
-// date:200108
+// date:211204 200108
 // author:
 //**********************************************************************************************************************************
 //200108
 TEMPLATE
-template<typename T>
-void TOOL::get_random_vector(const int& const vector_size, const int& const scale, vector<T>& const time_series_vector) {
+template<typename T,typename Y,typename U>
+void TOOL::get_random_vector(const T& const vector_size, const Y& const scale, vector<U>& const time_series_vector) {
+
+	time_series_vector.clear();
+	time_series_vector.shrink_to_fit();
+
 	srand((unsigned)time(NULL) * vector_size);//seed
 
 	for (int i = 0; i < vector_size; i++) {
@@ -3445,9 +4266,14 @@ void TOOL::get_random_vector(const int& const vector_size, const int& const scal
 		time_series_vector.emplace_back(rand() % scale);
 	}
 
+	assert(time_series_vector.size() == vector_size);
 	//TOOL::normalizeStandard(array_length, original_array);
 	//print_vector(time_series_vector);
 	//return getNormalArray(originalArray, pointNumber);
+
+	for (auto&& au : time_series_vector) {
+		assert(au >=0 && au < scale);
+	}
 }
 
 TEMPLATE
@@ -3552,7 +4378,7 @@ double& TOOL::getVariance(T*& const original_array, const int& const array_lengt
 	}
 
 	variance = sqrt(sum / double(array_length - 1));
-	assert(variance != 0);
+	//assert(variance != 0);
 	//cout << "variance: " << variance << endl;
 	return variance;
 }
@@ -3582,7 +4408,7 @@ double& TOOL::getVariance(vector<T>& const original_array, const int& const arra
 	variance = sqrt(sum / double(original_array.size() - 1));
 
 #ifdef _DEBUG
-	assert(variance != 0 && variance != INF);
+	assert(variance != INF);
 #endif
 	//cout << "variance: " << variance << endl;
 	return variance;
@@ -3674,6 +4500,9 @@ vector<T>& TOOL::normalizeStandard(vector<T>& const normalized_array) {
 #ifdef _DEBUG
 	assert(average != INF && variance != INF);
 #endif
+
+	if (variance == 0) return normalized_array;
+
 	for (int array_id = 0; array_id < normalized_array.size(); array_id++) {
 		normalized_array[array_id] = (copy_array[array_id] - average) / variance;
 #ifdef _DEBUG
@@ -4049,7 +4878,7 @@ void TOOL::printOSPageSize() {
 TEMPLATE
 template<typename T>
 inline void TOOL::printInputArgument(const T& const input_argument) {
-	cout << "Tree: " << input_argument.option_tree << " K : " << input_argument.K << " n : " << input_argument.time_series_length << " N : " << input_argument.point_dimension << endl;// << " read file name : " << input_argument.read_file_name << endl;
+	cout << "Tree: " << input_argument.option_tree_struct.type_tree << " K : " << input_argument.K << " n : " << input_argument.time_series_length << " N : " << input_argument.point_dimension  << " point number : " << input_argument.point_number << " Max nodes : " << input_argument.rtree_max_nodes << " dimension : " << input_argument.arity_d << " degree : " << input_argument.degree_m << endl;// << " read file name : " << input_argument.read_file_name << endl;
 	//cout << "prunning power: " << input_argument.pruning_power << ", I/O cost: " << input_argument.IO_cost << endl;
 }
 
@@ -4062,6 +4891,9 @@ inline void TOOL::print_input_argument_KNN_result(const T& const input_argument)
 	cout << "Total KNN time : " << input_argument.knn_total_time << " us" << endl;
 
 	cout << "pruning power: " << input_argument.pruning_power << endl;
+
+	cout << "I/O cost: " << input_argument.IO_cost << endl;
+	
 }
 
 TEMPLATE
@@ -4092,9 +4924,9 @@ void TOOL::printArray(vector<T>& const test_array, const int& array_length) {//1
 TEMPLATE
 template<typename T>
 void TOOL::print_vector(vector<T>& const time_series_vector) {//190501
-	cout << endl;
+	//cout << endl;
 	for (auto&& au : time_series_vector) {
-		cout << au << ",";
+		cout << au << ", ";
 	}
 	cout << endl;
 }
@@ -4121,7 +4953,39 @@ template<typename T>
 inline void TOOL::print_split_coefficients(const vector<T>& const local_total_split_id_sum_deviation, const vector<T>& const local_total_split_id_shift, const vector<T>& const local_total_split_id_time, const vector<T>& const global_total_approximation_sum_deviation, const vector<T>& const global_total_approximation_time) {
 	assert(local_total_split_id_sum_deviation.size() == local_total_split_id_shift.size() && local_total_split_id_time.size() == global_total_approximation_sum_deviation.size() && global_total_approximation_sum_deviation.size() == global_total_approximation_time.size());
 
-	
+	/*.............200219 split id evaluation..............*/
+	cout << "  <- Local Total split id method Sum Deviation ->\n";
+	cout << "MinDensity | Binary | Intersection | Middle | Best\n";
+	for (auto&& au : local_total_split_id_sum_deviation) {
+		cout << au << ",  ";
+	}
+	cout << endl;
+
+	cout << "  <- Golbal Total split id method Sum Deviation ->\n";
+	cout << "MinDensity | Binary | Intersection | Middle | Best\n";
+	for (auto&& au : global_total_approximation_sum_deviation) {
+		cout << au << ",  ";
+	}
+	cout << endl;
+
+	cout << "  <- Local Total split id method time ->\n";
+	cout << "MinDensity | Binary | Intersection | Middle | Best\n";
+	for (auto&& au : local_total_split_id_time) {
+		cout << au << ",  ";
+	}
+	cout << endl;
+	cout << "  <- Global Total split id method time ->\n";
+	cout << "MinDensity | Binary | Intersection | Middle | Best\n";
+	for (auto&& au : global_total_approximation_time) {
+		cout << au << ",  ";
+	}
+	cout << endl;
+
+	cout << "  <- Local Total split id shift ->\n";
+	cout << "MinDensity | Binary | Intersection | Middle | Best\n";
+	for (auto&& au : local_total_split_id_shift) {
+		cout << au << ",  ";
+	}
 	cout << endl;
 	/*.....................................................*/
 }
@@ -4140,7 +5004,48 @@ template<typename T>
 inline void TOOL::print_split_coefficients(const vector<T>& const local_total_split_id_sum_deviation, const vector<T>& const local_total_split_id_shift, const vector<T>& const local_total_split_id_time, const vector<T>& const global_total_approximation_sum_deviation, const vector<T>& const global_total_approximation_time, const vector<T>& const global_total_knn_prune_power) {
 	assert(local_total_split_id_sum_deviation.size() == local_total_split_id_shift.size() && local_total_split_id_time.size() == global_total_approximation_sum_deviation.size() && global_total_approximation_sum_deviation.size() == global_total_approximation_time.size() && global_total_approximation_time.size() == global_total_knn_prune_power.size());
 
-	
+	/*.............200219 split id evaluation..............*/
+	cout << "  <- Local Total split id method Sum Deviation ->\n";
+	cout << "MinDensity | Binary | Intersection | Middle | Best\n";
+	for (auto&& au : local_total_split_id_sum_deviation) {
+		cout << au << ",  ";
+	}
+	cout << endl;
+
+	cout << "  <- Golbal Total split id method Sum Deviation ->\n";
+	cout << "MinDensity | Binary | Intersection | Middle | Best\n";
+	for (auto&& au : global_total_approximation_sum_deviation) {
+		cout << au << ",  ";
+	}
+	cout << endl;
+
+	cout << "  <- Local Total split id method time ->\n";
+	cout << "MinDensity | Binary | Intersection | Middle | Best\n";
+	for (auto&& au : local_total_split_id_time) {
+		cout << au << ",  ";
+	}
+	cout << endl;
+	cout << "  <- Global Total split id method time ->\n";
+	cout << "MinDensity | Binary | Intersection | Middle | Best\n";
+	for (auto&& au : global_total_approximation_time) {
+		cout << au << ",  ";
+	}
+	cout << endl;
+
+	cout << "  <- Local Total split id shift ->\n";
+	cout << "MinDensity | Binary | Intersection | Middle | Best\n";
+	for (auto&& au : local_total_split_id_shift) {
+		cout << au << ",  ";
+	}
+	cout << endl;
+
+	cout << "  <- Golbal Total pruning power ->\n";
+	cout << "MinDensity | Binary | Intersection | Middle | Best\n";
+	for (auto&& au : global_total_knn_prune_power) {
+		cout << au << ",  ";
+	}
+	cout << endl;
+	/*.....................................................*/
 
 }
 
@@ -4159,7 +5064,47 @@ template<typename T>
 inline void TOOL::print_initial_N_coefficients(const vector<T>& const  approximation_initial_N_vector, const vector<T>& const  total_initial_N_prune_power_vector, const vector<T>& const  total_initial_N_sum_deviation_vector, const vector<T>& const total_initial_N_run_time_vector, const vector<T>& const total_initial_N_approximation_time_vector, const vector<T>& const total_initial_N_knn_time_vector) {
 	assert(total_initial_N_prune_power_vector.size() == total_initial_N_sum_deviation_vector.size() && total_initial_N_sum_deviation_vector.size() == total_initial_N_run_time_vector.size() && total_initial_N_run_time_vector.size() == total_initial_N_approximation_time_vector.size() && total_initial_N_approximation_time_vector.size() == total_initial_N_knn_time_vector.size());
 
-	
+	/*.............200219 split id evaluation..............*/
+
+	cout << "  <- Initial_N segment number ->\n";
+	for (auto&& au : approximation_initial_N_vector) {
+		cout << au << " | ";
+	}
+	cout << endl;
+
+	cout << "  <- Initial_N prune power ->\n";
+	cout << "0 | 1 | 3 | 4 | 5\n";
+	for (auto&& au : total_initial_N_prune_power_vector) {
+		cout << au << ",  ";
+	}
+	cout << endl;
+
+	cout << "  <- Initial_N sum deviation ->\n";
+	cout << "0 | 1 | 3 | 4 | 5\n";
+	for (auto&& au : total_initial_N_sum_deviation_vector) {
+		cout << au << ",  ";
+	}
+	cout << endl;
+
+	cout << "  <- Initial_N whole run time ->\n";
+	cout << "0 | 1 | 3 | 4 | 5\n";
+	for (auto&& au : total_initial_N_run_time_vector) {
+		cout << au << ",  ";
+	}
+	cout << endl;
+
+	cout << "  <- Initial_N approximation run time ->\n";
+	cout << "0 | 1 | 3 | 4 | 5\n";
+	for (auto&& au : total_initial_N_approximation_time_vector) {
+		cout << au << ",  ";
+	}
+	cout << endl;
+
+	cout << "  <- Initial_N knn run time ->\n";
+	cout << "0 | 1 | 3 | 4 | 5\n";
+	for (auto&& au : total_initial_N_knn_time_vector) {
+		cout << au << ",  ";
+	}
 	cout << endl;
 	/*.....................................................*/
 }
@@ -4593,6 +5538,24 @@ void TOOL::initial_data_source(DATA_SOURCE& const data_source) {
 			TOOL::getFileStreamByID0Vector(TOOL::single_file_number_address_UCR2018_512_41, 0, data_source.time_series_number_vector);
 			TOOL::getFileStreamByID0Vector(TOOL::single_file_length_address_UCR2018_512_41, 0, data_source.time_series_length_vector);
 			/*=====================================================================================================================================*/
+		case 7:// 211219 UCR2018 94 files; get all 94 files n <= 128
+			/*==============================    get all time series: size = Adaptive, length = Adaptive   =========================================*/
+			data_source.file_address_all = TOOL::file_address_UCR2018_128_91;//210603
+			data_source.file_address_all_TRAIN = TOOL::file_address_UCR2018_128_91_TRAIN;//210603
+
+			get_all_string_by_row(TOOL::file_address_UCR2018_128_91, data_source.file_address_vector);
+			get_all_string_by_row(TOOL::file_address_UCR2018_128_91_TRAIN, data_source.file_address_TRAIN_vector);
+
+			TOOL::getFileStreamByID0Vector(TOOL::single_file_number_address_UCR2018_128_91, 0, data_source.time_series_number_vector);
+			TOOL::getFileStreamByID0Vector(TOOL::single_file_number_address_UCR2018_128_91_TRAIN, 0, data_source.time_series_number_TRAIN_vector);
+
+			TOOL::getFileStreamByID0Vector(TOOL::single_file_length_address_UCR2018_128_91, 0, data_source.time_series_length_vector);
+			/*=====================================================================================================================================*/
+
+			assert(data_source.file_address_vector.size() == data_source.file_address_TRAIN_vector.size());
+			assert(data_source.time_series_number_vector.size() == data_source.time_series_number_TRAIN_vector.size());
+			assert(data_source.time_series_number_vector.size() == data_source.time_series_length_vector.size());
+
 			break;
 		default:
 			assert(0);
@@ -4801,15 +5764,14 @@ vector<T>& TOOL::read_normalized_multi_time_series(const DATA_SOURCE& const data
 		}
 		cout << endl;
 	}*/
-	for (int array_id = 0; array_id < normalized_time_series_vector.size(); array_id++) {
-		//cout << "================================\n";
-		//cout << original_time_series_vector[array_id] << endl;
-		//cout << original_time_series[array_id] << endl;
+
+
+	/*for (int array_id = 0; array_id < normalized_time_series_vector.size(); array_id++) {
 		if (miss_first_piont)
 			assert(float(normalized_time_series_vector[array_id]) == float(original_time_series[array_id]));
 		else
 			assert(fabs(float(normalized_time_series_vector[array_id]) - float(original_time_series_vector_evaluation[array_id])) < 0.01);
-	}
+	}*/
 
 	delete[] original_time_series;
 	original_time_series = nullptr;
@@ -4821,6 +5783,46 @@ vector<T>& TOOL::read_normalized_multi_time_series(const DATA_SOURCE& const data
 	return normalized_time_series_vector;
 }
 
+/*====================     Copy knn record result structure   =====================================*/
+
+TEMPLATE
+template<typename T>//211206
+inline void TOOL::assert_knn_result(const T& const record_knn_struct) {
+	assert(record_knn_struct.pruning_power != INF && record_knn_struct.result_accuracy != INF && record_knn_struct.knn_total_time != INF && record_knn_struct.knn_total_time_has_IO != INF &&
+	record_knn_struct.whole_run_time != INF && record_knn_struct.whole_run_time_has_IO != INF && record_knn_struct.IO_cost != INF);
+}
+
+TEMPLATE
+template<typename T, typename Y>//211206 For multi query time series
+inline void TOOL::copy_accumulate_input_to_KNN_result(const T& const input_argument, Y& const record_knn_struct) {
+
+	record_knn_struct.pruning_power += input_argument.pruning_power;
+	record_knn_struct.result_accuracy += input_argument.result_accuracy;
+	record_knn_struct.knn_total_time += input_argument.knn_total_time;// KNN CPU time
+	record_knn_struct.knn_total_time_has_IO += input_argument.knn_total_time_has_IO;//KNN wall clock time
+	record_knn_struct.whole_run_time += input_argument.whole_run_time;// Bulid + KNN CPU
+	record_knn_struct.whole_run_time_has_IO += input_argument.whole_run_time_has_IO; // Bulid + KNN clock time
+	record_knn_struct.IO_cost += input_argument.IO_cost;// measure I/O cost
+	//record_knn_struct.run_time += input_argument.run_time;
+	record_knn_struct.knn_CPU_time += input_argument.knn_CPU_time;
+
+}
+
+TEMPLATE
+template<typename T, typename Y>//211206 For multi query time series. input_argument copy from record_knn_struct
+inline void TOOL::copy_KNN_result_to_input(const T& const record_knn_struct, Y& const input_argument) {
+
+	input_argument.pruning_power = record_knn_struct.pruning_power;
+	input_argument.result_accuracy = record_knn_struct.result_accuracy;
+	input_argument.knn_total_time = record_knn_struct.knn_total_time;// KNN CPU time
+	input_argument.knn_total_time_has_IO = record_knn_struct.knn_total_time_has_IO;//KNN wall clock time
+	input_argument.whole_run_time = record_knn_struct.whole_run_time;// Bulid + KNN CPU
+	input_argument.whole_run_time_has_IO = record_knn_struct.whole_run_time_has_IO; // Bulid + KNN clock time
+	input_argument.IO_cost = record_knn_struct.IO_cost;// measure I/O cost
+	//input_argument.run_time = record_knn_struct.run_time;
+	input_argument.knn_CPU_time = record_knn_struct.knn_CPU_time;
+}
+/**================================================================================================*/
 
 //210823 two vectors have same value and size
 TEMPLATE
@@ -4833,7 +5835,51 @@ bool TOOL::assert_same_vector(const T& const vector_0, const Y& const vector_1) 
 	return true;
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//211008 assert option tree
+TEMPLATE
+template<typename T>
+inline bool TOOL::assert_option_tree(const T& const option_tree) {
+
+	if (option_tree.type_tree != -1 && option_tree.type_representation > 0 && option_tree.type_distance != -1 && option_tree.type_volume != -1) {
+		return true;
+	}
+	assert(0);
+	return false;
+}
+
+//211202 asser parameter of linear scan
+TEMPLATE
+template<typename T>
+inline bool TOOL::assert_linear_scan(const T& const linear_scan_struct) {
+	assert(linear_scan_struct.time_linear_scan_CPU != INF && linear_scan_struct.time_linear_scan_wall_clock != INF && linear_scan_struct.IO_linear_scan != INF);
+	assert(linear_scan_struct.time_linear_scan_CPU != 0 && linear_scan_struct.time_linear_scan_wall_clock != 0 && linear_scan_struct.IO_linear_scan != 0);
+	return true;
+}
+
+//2112 No -1 in vector
+TEMPLATE
+template<typename T>
+bool TOOL::assert_not_minus_one_vector(const T& const test_vector) {
+
+	for (auto&& au : test_vector) {
+		assert(au != -1);
+	}
+
+	return true;
+}
+
+//211230 no INF in vector
+TEMPLATE
+template<typename T>
+bool TOOL::assert_no_INF_vector(const T& const test_vector) {
+	for (auto&& au : test_vector) {
+		assert(au != INF);
+	}
+
+	return true;
+}
+
 /**************************************************************************************************************************************************************/
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

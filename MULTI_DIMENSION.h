@@ -85,6 +85,10 @@ public:
 	//191111 ICDE07 vector
 	std::vector<DoublyLinkedList<APLA::AREA_COEFFICIENT_SPEED>> icde_array_vector;//for leaf node distance LB
 
+
+	//211227 vector of original time series
+	std::vector<vector<DataType>> normal_time_series_vector_vector;//for leaf node distance LB
+
 	/*----------------------------------------Strcuture initialize--------------------------------------------------------------------------------*/
 	/*
 	Notice, the N of different approximation method should be different
@@ -93,7 +97,7 @@ public:
 	MULTI_DIMENSION(const int& const n, const int& const N, const int& const file_id, const int& const d, const int& const point_number, const int& const query_time_series_id, const int& const rtree_max_nodes, const int& const K, const int& const representation_option, string*& const multi_file_name, string*& const write_file_name);
 	//add initial_N for y projection method. 191201  Add DATA_SROUCCE STRUCT, for mixed data set.
 	template<typename T>
-	MULTI_DIMENSION(const typename TOOL::DATA_SOURCE& const data_source, const int& const n, const int& const N, const double& const initial_N, const int& const file_id, const bool& const change_file, const int& const d, const int& const point_number, const int& const query_time_series_id, const int& const rtree_max_nodes, const int& const K, const int& const representation_option, string*& const multi_file_name, string*& const write_file_name, const T& const option_tree);
+	MULTI_DIMENSION(const typename TOOL::DATA_SOURCE& const data_source, const int& const n, const int& const N, const double& const initial_N, const int& const file_id, const bool& const change_file, const int& const d, const int& const point_number, const int& const query_time_series_id, const int& const rtree_max_nodes, const int& const K, const int& const representation_option, string*& const multi_file_name, string*& const write_file_name, const T& const option_tree_struct);
 
 	~MULTI_DIMENSION();
 	/*---------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -149,6 +153,15 @@ public:
 	template<typename T, typename Y>
 	void project_multi_to_single(vector<Y>& const multi_y_projection_argument, vector<DoublyLinkedList<T>>& const multi_all_linked_list, vector<DoublyLinkedList<T>>& const multi_cluster_linked_list);
 
+	template<typename T, typename Y>//211210
+	inline void initial_evaluation_input_in_build_index(T& const input_argument, Y& const output_argument);
+
+	template<typename T, typename Y, typename U>//211210
+	inline void initial_evaluation_input_LS_in_build_index(T& const input_argument, Y& const output_argument, U& const result_record);
+
+	template<typename T, typename Y, typename U>//211210
+	inline void print_evaluation_input_single_in_build_index(T& const input_argument, Y& const output_argument, U& const result_record);
+
 	//191128 optimization of above projectMultiToSingle()
 	template<typename T, typename Y>
 	void all_approximation_build_rtree(vector<T>& const multi_y_projection_argument, vector<DoublyLinkedList<Y>>& const multi_all_linked_list, vector<DoublyLinkedList<Y>>& const multi_cluster_linked_list);
@@ -166,6 +179,13 @@ public:
 	template<typename T, typename Y, typename U>
 	void all_knn(typename TOOL::DATA_SOURCE& const data_source, const vector<T>& const query_time_series_vector, T*& query_time_series, const vector<Y>& const multi_y_projection_argument, const std::multiset<pair<U, int>>& const squential_scan_result_set);
 
+	template<typename T>
+	inline void print_knn_evaluation_result(const T& const input_argument);
+
+	//211205 Add multi query time series vector and multi squential_scan_result_set vector
+	template<typename T, typename Y, typename U, typename T1>
+	void all_knn(typename TOOL::DATA_SOURCE& const data_source, T1& const input_argument, const vector<vector<T>>& const query_series_vector_vector, const vector<Y>& const multi_y_projection_argument, const vector<multiset<pair<U, int>>>& const knn_result_set_vector);
+
 	/*============================================================KNN for APLA==================================================================================================*/
 	//************************************
 	// Method:apla_knn_multi
@@ -181,19 +201,27 @@ public:
 	//191128 KNN structure for PAA, APCA, APLA, ICDE07
 	template<typename T, typename Y, typename U>
 	std::multiset<pair<double, int>>  all_knn_multi(typename TOOL::DATA_SOURCE& const data_source, typename TOOL::INPUT_ARGUMENT& const input_argument, const vector<Y>& const multi_y_projection_argument, DataType*& g_query_time_series, const U& const apcaRTree, T& const approximation_array);
-	
+
 	//210511 Evaluate SAPLA distance. Add input_argument.IO_cost++; in leaf node computation
 	template<typename T, typename Y, typename U>
 	std::multiset<pair<double, int>>  all_knn_multi_210511(typename TOOL::DATA_SOURCE& const data_source, typename TOOL::INPUT_ARGUMENT& const input_argument, const vector<Y>& const multi_y_projection_argument, DataType*& g_query_time_series, const U& const apcaRTree, T& const approximation_array);
-	
+
 	//210618 RTree Partition. Evaluate SAPLA distance. Add input_argument.IO_cost++; in leaf node computation
 	template<typename T, typename Y, typename U>
 	std::multiset<pair<double, int>>  all_knn_multi_210618(typename TOOL::DATA_SOURCE& const data_source, typename TOOL::INPUT_ARGUMENT& const input_argument, const vector<Y>& const multi_y_projection_argument, DataType*& g_query_time_series, const U& const apcaRTree, T& const approximation_array);
 
+	//211207 set of the temp and result vector
+	template<typename T, typename Y, typename U>
+	std::multiset<pair<double, int>>  all_knn_multi_211207(typename TOOL::DATA_SOURCE& const data_source, typename TOOL::INPUT_ARGUMENT& const input_argument, const vector<Y>& const multi_y_projection_argument, DataType*& g_query_time_series, const U& const apcaRTree, T& const approximation_array);
+
+	//211227 for convex hull index
+	template<typename T, typename Y, typename U>
+	std::multiset<pair<double, int>>  all_knn_multi_211227(typename TOOL::DATA_SOURCE& const data_source, typename TOOL::INPUT_ARGUMENT& const input_argument, const vector<Y>& const multi_y_projection_argument, DataType*& g_query_time_series, const U& const apcaRTree, T& const approximation_array);
+
 	//210512 Evaluate SAPLA distance. Add  1 input_argument.IO_cost++; 2 Euclidean distance; in leaf node computation 
 	template<typename T, typename Y, typename U>
 	std::multiset<pair<double, int>>  all_knn_multi_210512(typename TOOL::DATA_SOURCE& const data_source, typename TOOL::INPUT_ARGUMENT& const input_argument, const vector<Y>& const multi_y_projection_argument, DataType*& g_query_time_series, const U& const apcaRTree, T& const approximation_array);
-	
+
 	//191117 for original Rtree MBR, max id != min id (int APCA paper, min id == max id)
 	//APCA_KNN_QUAL::REGION& get_region_G_original(const RTREE::Rect& MBR, APCA_KNN_QUAL::REGION& G);
 
@@ -204,6 +232,10 @@ public:
 	//200930 Optimization KNN. Add APLA & ICDE07 
 	template<typename T, typename Y, typename U, typename U1, typename U2>
 	void print_result_each_time_series(const U& const input_argument, const vector<T>& const original_time_series_vector, const Y& const doubly_linked_list, const U1& const output_argument, const U2& const result_record);
+
+	//211206 asser parameter of linear scan
+	template<typename T, typename Y, typename U>
+	void assert_multi_series_vector_vector(const T& const size_time_series, const Y& const length_time_series, const U& const time_series_vector_vector);
 };
 
 //#include "MULTI_DIMENSION.cpp"
@@ -296,7 +328,7 @@ TEMPLATE
 MULTI::MULTI_DIMENSION(const int& const n, const int& const N, const int& const file_id, const int& const d, const int& const point_number, const int& const query_time_series_id, const int& const rtree_max_nodes, const int& const K, const int& const representation_option, string*& const multi_file_name, string*& const write_file_name) {
 #ifdef _DEBUG
 	assert(representation_option != INF && representation_option > 0 && point_number >= K && file_id != INF && d > 0 && N > 0 && input_argument.time_series_length % 2 == 0 && query_time_series_id > -1 && query_time_series_id < point_number&& point_number != INF);//n is even
-	cout << "============ File id: " << file_id + 1 << ", representation option: " << representation_option << ", K: " << K << endl;
+	cout << "============ File id: " << file_id + 1 << ", representation option: " << representation_option << ", n: " << n << ", Original N: " << N << ", K: " << K << ", point number: " << point_number << ", query time series id: " << query_time_series_id << ", Rtree max sub node number: " << rtree_max_nodes << "============================" << endl;
 #endif
 	input_argument.representation_option = representation_option;
 	/*====================================   inital N   =============================================*/
@@ -381,12 +413,12 @@ MULTI::MULTI_DIMENSION(const int& const n, const int& const N, const int& const 
 //***************************************************************
 TEMPLATE
 template<typename T>
-MULTI::MULTI_DIMENSION(const typename TOOL::DATA_SOURCE& const data_source, const int& const n, const int& const N, const double& const initial_N, const int& const file_id, const bool& const change_file, const int& const d, const int& const point_number, const int& const query_time_series_id, const int& const rtree_max_nodes, const int& const K, const int& const representation_option, string*& const multi_file_name, string*& const write_file_name, const T& const option_tree) {
-
-	assert(representation_option != INF && representation_option > 0 && point_number >= K && file_id != INF && file_id >= 0 && data_source.time_series_dimension == d && d > 0 && N > 0 && query_time_series_id > -1 && query_time_series_id < point_number&& point_number != INF && option_tree != -INF);//n is even
+MULTI::MULTI_DIMENSION(const typename TOOL::DATA_SOURCE& const data_source, const int& const n, const int& const N, const double& const initial_N, const int& const file_id, const bool& const change_file, const int& const d, const int& const point_number, const int& const query_time_series_id, const int& const rtree_max_nodes, const int& const K, const int& const representation_option, string*& const multi_file_name, string*& const write_file_name, const T& const option_tree_struct) {
+	TOOL::assert_option_tree(option_tree_struct);
+	assert(representation_option != INF && representation_option > 0 && point_number >= K && file_id != INF && file_id >= 0 && data_source.time_series_dimension == d && d > 0 && N > 0 && query_time_series_id > -1 && query_time_series_id < point_number&& point_number != INF);//n is even
 	assert(query_time_series_id < point_number&& query_time_series_id >= 0);
 	assert(data_source.data_list.size() == data_source.single_file_number && data_source.data_type != INF && !data_source.data_list.empty() && data_source.single_file_number != INF && data_source.single_point_number != INF && data_source.single_time_series_length != INF);
-	assert(data_source.single_time_series_length == n && data_source.point_number == point_number && query_time_series_id < data_source.point_number&& K < data_source.point_number&& file_id <= data_source.file_operation_number);
+	assert(data_source.single_time_series_length == n && data_source.point_number == point_number && query_time_series_id < data_source.point_number&& K < data_source.point_number);
 
 	input_argument.change_file = change_file;
 	this->data_source = data_source;
@@ -394,7 +426,7 @@ MULTI::MULTI_DIMENSION(const typename TOOL::DATA_SOURCE& const data_source, cons
 	input_argument.time_series_length = n;
 	input_argument.file_id = file_id;
 	input_argument.arity_d = d;//dimension of time series, >0, 1 or 3
-	input_argument.option_tree = option_tree;//210828 0 R-Tree, 1 Partition Tree
+	input_argument.option_tree_struct = option_tree_struct;//210828 0 R-Tree, 1 Partition Tree
 
 	/*====================================   inital N   =============================================*/
 	switch (input_argument.representation_option) {
@@ -417,6 +449,11 @@ MULTI::MULTI_DIMENSION(const typename TOOL::DATA_SOURCE& const data_source, cons
 	case 7: //PAALM
 	case 5: //Cheby
 	case 9: {//SAX
+		input_argument.point_dimension = N;
+		break;
+	}
+	case 10:
+	case 11: {//Linear Scan
 		input_argument.point_dimension = N;
 		break;
 	}
@@ -549,10 +586,14 @@ MULTI::MULTI_DIMENSION(const typename TOOL::DATA_SOURCE& const data_source, cons
 	case 9://SAX
 		cout << "############################################  Begin SAX  ############################################\n";
 		break;
+	case 10:
+	case 11://Linear Scan
+		cout << "############################################  Begin Linear Scan  ############################################\n";
+		break;
 	default: assert(0);
 		break;
 	}
-	cout << "File id: " << input_argument.file_id + 1 <<", Tree: " << input_argument.option_tree << ", K: " << K  << endl;
+	cout << "File id: " << input_argument.file_id + 1 << ", Tree: " << input_argument.option_tree_struct.type_tree << ", K: " << K << ", Original  N: " << N << ", representation option: " << input_argument.representation_option << ", n: " << input_argument.point_multi_single_length << ", point number: " << input_argument.point_number << ", query time series id: " << query_time_series_id << ", Rtree max sub node number: " << rtree_max_nodes << ", change file: " << input_argument.change_file << endl;
 
 }
 
@@ -570,25 +611,34 @@ MULTI::~MULTI_DIMENSION() {
 	input_argument.time_series_length = INF;
 	input_argument.degree_m = INF;//point_dimension for APCA & PLA n=m+1
 	input_argument.arity_d = INF;
-	deleteMultiDimension();
-
+	
+	
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~  Tree  ~~~~~~~~~~~~~~~~~~~*/
-	switch (input_argument.option_tree) {
+	switch (input_argument.option_tree_struct.type_tree) {
 	case 0:// R-Tree
 		RTree.RemoveAll();
 		break;
 	case 1:// Partition Tree
-		
+
 		/*--------- 210618 RTree_partition ---------*/
 		RTree_partition_object.RemoveAll();
 		/*------------------------------------------*/
-	
+
+		break;
+	case 2:// Partition Tree
+
+		/*--------- 210618 RTree_partition ---------*/
+		RTree_partition_object.RemoveAll();
+		/*------------------------------------------*/
+
 		break;
 	default:
 		assert(0);
 		break;
 	}
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+	deleteMultiDimension();
+	
 }
 
 //***************************************************************
@@ -603,7 +653,8 @@ TEMPLATE
 void MULTI::initialMultiDimension() {
 	/*............................................................................................*/
 #ifdef _DEBUG
-	assert(input_argument.representation_option != NULL && input_argument.segment_length_second > 1 && input_argument.point_multi_single_dimension > 0 && input_argument.point_number != INF && input_argument.option_tree != INF);
+	TOOL::assert_option_tree(input_argument.option_tree_struct);
+	assert(input_argument.representation_option != NULL && input_argument.segment_length_second > 1 && input_argument.point_multi_single_dimension > 0 && input_argument.point_number != INF && input_argument.option_tree_struct.type_tree != -1);
 #endif
 	/*............................................................................................*/
 
@@ -618,6 +669,14 @@ void MULTI::initialMultiDimension() {
 	output_argument.sum_deviation = 0;
 	/*----------------------------------*/
 
+	//type_tree = -1;// 0 R-tree, 1 distance tree, 2 MBR_SAPLA tree
+	//type_representation = -1; // 0 SAPLA/APLA/PLA/PAA/PAALM/SAX/CHEBY, 3 APCA(average)
+	//type_distance = -1;// 0 SAPLA Eucliden, 1 triangle area
+	//type_volume = -1;//Type of volume. 0:global distance
+	//number_point = INF;// point number to scan in original time series.
+
+	normal_time_series_vector_vector.resize(input_argument.point_number);
+
 	switch (input_argument.representation_option) {//1 MSPLA  2 PLA  3 APCA   4 PAA  5 CHEBY  6  ICDE07
 	case 1://MSPLA
 	case 6: //ICDE07
@@ -625,18 +684,19 @@ void MULTI::initialMultiDimension() {
 		/*=============================================  APLA & ICDE07 ==============================================================================*/
 		//cout << "Begin APLA & ICDE07 representation: " << endl;
 
-		switch (input_argument.option_tree) {
+		switch (input_argument.option_tree_struct.type_tree) {
 		case 0:// R-Tree
 			RTree.initialRTree(input_argument.point_multi_single_dimension * 2, input_argument.rtree_max_nodes, input_argument.representation_option);
 			break;
 		case 1:// Partition Tree
+		case 2:// SAPLA MBR
 			/*--------------------------210618 Partition tree-------------------------------------*/
 			/*------------------------------------------ 210618 RTree_partition ------------------------------------------------------------------------------*/
-			RTree_partition_object.initialRTree(input_argument.point_multi_single_dimension * 2, input_argument.rtree_max_nodes, input_argument.representation_option);
+			RTree_partition_object.initialRTree(input_argument.point_multi_single_dimension * 2, input_argument.rtree_max_nodes, input_argument.option_tree_struct);
 			/*------------------------------------------------------------------------------------------------------------------------------------------------*/
 			/*------------------------------------------------------------------------------------*/
 			break;
-		default: 
+		default:
 			assert(0);
 			break;
 		}
@@ -658,13 +718,14 @@ void MULTI::initialMultiDimension() {
 		//cout << "Begin PLA representation: " << endl;
 
 		/*~~~~~~~~~~~~~~~~~~~~~~~~~  Tree  ~~~~~~~~~~~~~~~~~~~*/
-		switch (input_argument.option_tree) {
+		switch (input_argument.option_tree_struct.type_tree) {
 		case 0:// R-Tree
 			RTree.initialRTree(input_argument.point_multi_single_dimension * 2, input_argument.rtree_max_nodes, input_argument.representation_option);
 			break;
 		case 1:// Partition Tree
+		case 2:// SAPLA MBR
 			/*--------------------------210618 Partition tree-------------------------------------*/
-			RTree_partition_object.initialRTree(input_argument.point_multi_single_dimension * 2, input_argument.rtree_max_nodes, input_argument.representation_option);
+			RTree_partition_object.initialRTree(input_argument.point_multi_single_dimension * 2, input_argument.rtree_max_nodes, input_argument.option_tree_struct);
 			/*------------------------------------------------------------------------------------*/
 			break;
 		default:
@@ -681,13 +742,14 @@ void MULTI::initialMultiDimension() {
 	case 4: {//PAA
 		//cout << "Begin PAA & APCA representation: " << endl;
 		/*~~~~~~~~~~~~~~~~~~~~~~~~~  Tree  ~~~~~~~~~~~~~~~~~~~*/
-		switch (input_argument.option_tree) {
+		switch (input_argument.option_tree_struct.type_tree) {
 		case 0:// R-Tree
 			RTree.initialRTree(input_argument.point_multi_single_dimension * 2, input_argument.rtree_max_nodes, input_argument.representation_option);
 			break;
 		case 1:// Partition Tree
+		case 2:// SAPLA MBR
 			/*--------------------------210618 Partition tree-------------------------------------*/
-			RTree_partition_object.initialRTree(input_argument.point_multi_single_dimension * 2, input_argument.rtree_max_nodes, input_argument.representation_option);
+			RTree_partition_object.initialRTree(input_argument.point_multi_single_dimension * 2, input_argument.rtree_max_nodes, input_argument.option_tree_struct);
 			/*------------------------------------------------------------------------------------*/
 			break;
 		default:
@@ -705,13 +767,14 @@ void MULTI::initialMultiDimension() {
 		//cout << "Begin CHEBY representation: " << endl;
 
 		/*~~~~~~~~~~~~~~~~~~~~~~~~~  Tree  ~~~~~~~~~~~~~~~~~~~*/
-		switch (input_argument.option_tree) {
+		switch (input_argument.option_tree_struct.type_tree) {
 		case 0:// R-Tree
 			RTree.initialRTree(input_argument.point_multi_single_dimension, input_argument.rtree_max_nodes, input_argument.representation_option);
 			break;
 		case 1:// Partition Tree
+		case 2:// SAPLA MBR
 			/*--------------------------210618 Partition tree-------------------------------------*/
-			RTree_partition_object.initialRTree(input_argument.point_multi_single_dimension, input_argument.rtree_max_nodes, input_argument.representation_option);
+			RTree_partition_object.initialRTree(input_argument.point_multi_single_dimension, input_argument.rtree_max_nodes, input_argument.option_tree_struct);
 			/*------------------------------------------------------------------------------------*/
 			break;
 		default:
@@ -722,6 +785,10 @@ void MULTI::initialMultiDimension() {
 		CHEBYSHEV_QUAL::initialCHEBYSHEVArray(input_argument.point_number, input_argument.time_series_length, input_argument.point_multi_single_dimension, chebyshev_array);
 		CHEBYSHEV_QUAL::initialCHEBYSHEV_SHARE(input_argument, chebyshev_share);
 		CHEBYSHEV_QUAL::getCHEBYSHEV_SHARE(input_argument, chebyshev_share);
+		break;
+	}
+	case 10:
+	case 11: {// Linear Scan
 		break;
 	}
 	default:
@@ -751,11 +818,11 @@ void MULTI::deleteMultiDimension() {
 		//APCA_QUAL::deleteAPCAArray(input_argument.point_number, apca_array);
 		/*--------------------------------*/
 		APCA_QUAL::delete_rect_vector(rtree_rectangle_vector);
-		for (auto&& au : apla_array_vector) {
-			au.clear();
-		}
-		apla_array_vector.clear();
-		apla_array_vector.shrink_to_fit();
+		//for (auto&& au : apla_array_vector) {
+		//	au.clear();
+		//}
+		//apla_array_vector.clear();
+		//apla_array_vector.shrink_to_fit();
 		/*--------------------------------*/
 		APCA_QUAL::deleteAPCAArray(input_argument.point_number, apca_MBR);
 		cout << endl;
@@ -774,9 +841,10 @@ void MULTI::deleteMultiDimension() {
 				}
 			}
 			au.clear();
+			au.~DoublyLinkedList();
 		}
 		apla_array_vector.clear();
-		apla_array_vector.shrink_to_fit();
+		//apla_array_vector.shrink_to_fit();
 		/*--------------------------------*/
 		APCA_QUAL::deleteAPCAArray(input_argument.point_number, apca_MBR);
 		cout << endl;
@@ -804,6 +872,10 @@ void MULTI::deleteMultiDimension() {
 		CHEBYSHEV_QUAL::deleteCHEBYSHEV_SHARE(chebyshev_share);
 		CHEBYSHEV_QUAL::deleteCHEBYSHEVArray(input_argument.point_number, chebyshev_array);
 		cout << endl;
+		break;
+	}
+	case 10:
+	case 11: {
 		break;
 	}
 	default:
@@ -1048,7 +1120,7 @@ template<typename T, typename Y, typename U>
 void MULTI::transfer_pla_to_sapla(const T& const width_segment_equal_structure, const Y& const pla, DoublyLinkedList<U>& const linked_list) {
 	U segment;
 
-	for (int id_segment = 0; id_segment< pla.segmentNum; id_segment++) {
+	for (int id_segment = 0; id_segment < pla.segmentNum; id_segment++) {
 
 		segment.apla.a = pla.a[id_segment];
 		segment.apla.b = pla.b[id_segment];
@@ -1427,6 +1499,7 @@ void MULTI::projectMultiToSingle() {
 		}
 	}
 
+	cout << "representation time: " << input_argument.representation_time << " us" << endl;
 	file_stream.close();
 	row_string.clear();
 	row_string.shrink_to_fit();
@@ -1770,6 +1843,7 @@ void MULTI::project_multi_to_single(vector<Y>& const multi_y_projection_argument
 		}
 	}
 
+	cout << "representation time: " << input_argument.representation_time << " us" << endl;
 	file_stream.close();
 
 	/*cout << "Root Node : sub node number = " << RTree.m_root->m_count << " Root level = : " << RTree.m_root->m_level << "\n\nBegin to build a RTree:\n";
@@ -1783,6 +1857,56 @@ void MULTI::project_multi_to_single(vector<Y>& const multi_y_projection_argument
 	original_time_series = nullptr;
 	normalized_series_vector.clear();
 	normalized_series_vector.shrink_to_fit();
+}
+
+TEMPLATE//211210
+template<typename T, typename Y>
+inline void MULTI::initial_evaluation_input_in_build_index(T& const input_argument, Y& const output_argument) {
+	/*-----------------   Time Evaluation   -------------------*/
+	input_argument.representation_time = 0;
+	input_argument.build_rtree_time = 0;
+	input_argument.time_ingest_data = 0;//211210
+	input_argument.whole_run_time = 0;
+	input_argument.whole_run_time_has_IO = 0;//210606
+	output_argument.sum_deviation = 0;
+	output_argument.max_deviation = 0;
+	output_argument.max_deviation_multiple_width = 0;
+	/*--------------------------------------------------------*/
+}
+
+TEMPLATE//211210
+template<typename T, typename Y, typename U>
+inline void MULTI::initial_evaluation_input_LS_in_build_index(T& const input_argument, Y& const output_argument, U& const result_record) {
+	
+	input_argument.option_tree_struct.type_tree = 0;
+	input_argument.representation_time = 0;
+	input_argument.build_rtree_time = 0;
+	input_argument.time_ingest_data = 0;
+	input_argument.whole_run_time = 0;
+	input_argument.whole_run_time_has_IO = 0;
+
+	output_argument.max_deviation = 0;
+	output_argument.max_deviation_multiple_width = 0;
+	output_argument.sum_deviation = 0;
+
+	result_record.representation_time = 0;
+	result_record.max_deviation_multiple_width = 0;
+	result_record.max_deviation = 0;
+	result_record.sum_deviation = 0;
+	
+} 
+
+TEMPLATE
+template<typename T, typename Y, typename U>//211210
+inline void MULTI::print_evaluation_input_single_in_build_index(T& const input_argument, Y& const output_argument, U& const result_record) {
+	
+	cout << "!!!!!!!!!!!!!!!!!!!!!!   After Build Index !!!!!!!!!!!!!!!!!!!!!! Tree Type" << input_argument.option_tree_struct.type_tree << endl;
+	cout << "Sum Deviation : " << output_argument.sum_deviation << ", Max Deviation : " << output_argument.max_deviation << endl;
+	cout << "representation time: " << input_argument.representation_time << " us, build rtree time: " << input_argument.build_rtree_time << " us" << endl;
+	cout <<	"data ingest time: " << input_argument.time_ingest_data << " us, whole time: " << input_argument.whole_run_time << " us" << endl;
+	cout <<	"tree height: " << input_argument.argument_index_struct.height_index << ", internal node number: " << input_argument.argument_index_struct.count_node_internal << endl;
+	cout <<	"leaf node number: " << input_argument.argument_index_struct.count_node_leaf << ", toal node number: " << input_argument.argument_index_struct.count_node_total << endl;
+	cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! " << endl;
 }
 
 //***************************************************************
@@ -1804,14 +1928,19 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 #endif
 	/*..........................................................................................................................................................*/
 	/*-----------------   Time Evaluation   -------------------*/
-	input_argument.representation_time = 0;
-	input_argument.build_rtree_time = 0;
-	input_argument.whole_run_time = 0;
-	input_argument.whole_run_time_has_IO = 0;//210606
-	output_argument.sum_deviation = 0;
-	output_argument.max_deviation = 0;
-	output_argument.max_deviation_multiple_width = 0;
+	//input_argument.representation_time = 0;
+	//input_argument.build_rtree_time = 0;
+	//input_argument.time_ingest_data = 0;//211210
+	//input_argument.whole_run_time = 0;
+	//input_argument.whole_run_time_has_IO = 0;//210606
+	//output_argument.sum_deviation = 0;
+	//output_argument.max_deviation = 0;
+	//output_argument.max_deviation_multiple_width = 0;
 	/*--------------------------------------------------------*/
+
+	/*-----------------   Time Evaluation 0  -------------------*/
+	initial_evaluation_input_in_build_index(input_argument, output_argument);
+	/*----------------------------------------------------------*/
 
 	DataType* original_time_series = new DataType[input_argument.time_series_length];
 	vector<DataType> normalized_series_vector(input_argument.time_series_length, INF);
@@ -1833,12 +1962,12 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 		/*..........................................*/
 
 		fill_n(original_time_series, input_argument.time_series_length, INF);
-
+		TOOL::recordStartTime(TOOL::time_record[2]);// ingest data time
 		/*========================================= Read dataset from file; get normalized data set ==========================================================*/
 		//already normalized and store in new file, no need skip first point
 		TOOL::getMultiFoldToSingleByID(data_source.read_file_address_vector, data_source.time_series_dimension, data_source.single_time_series_length, point_id, normalized_series_vector);
 		copy_n(normalized_series_vector.begin(), normalized_series_vector.size(), original_time_series);
-
+		normal_time_series_vector_vector[point_id].assign(normalized_series_vector.begin(), normalized_series_vector.end());
 		/*==============================================     200901 Print each time series results     ==================================================*/
 		/*if (input_argument.print_each_result == true) {
 			cout << point_id << " Normalized Time Series: \n";
@@ -1863,9 +1992,10 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 		/*=====================================================================Approximation===========================================================================================*/
 
 		/*-------------------------Time Evaluation---------------------------------*/
-		TOOL::recordStartTime(TOOL::time_record[14]);
-		TOOL::recordStartTime(TOOL::time_record[0]);//representation time
-		TOOL::recordStartTime(TOOL::time_record[16]);
+		TOOL::recordStartTime(TOOL::time_record[14]);// whole_run_time with CPU
+		TOOL::recordStartTime(TOOL::time_record[0]);// representation time
+		
+		TOOL::recordStartTime(TOOL::time_record[16]);// whole_run_time has IO
 		/*-------------------------------------------------------------------------*/
 
 		/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  SAPLA & ICDE07  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
@@ -1876,8 +2006,6 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 			assert(input_argument.point_number == apla_array_vector.size() && rtree_rectangle_vector.size() == input_argument.point_number);
 #endif
 			/*...........................................................................................................................*/
-
-			typename TOOL::RECTANGLE rectangle_insertion(input_argument.point_dimension << 1);
 
 			switch (input_argument.representation_option) {
 			case 1: {//MSPLA
@@ -1914,6 +2042,7 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 				break;
 			}
 			case 8: {//initial 200706
+
 				/*++++++++++++++++++++++++++++++++++++++++++         Get initial 200706 approximation       +++++++++++++++++++++++++++++++++++++++++++++++++++*/
 				APLA::initial_SAPLA_200706(input_argument, normalized_series_vector, apla_array_vector[point_id], output_argument);
 				//apla_array_vector[point_id].resize(input_argument.point_dimension);
@@ -1928,7 +2057,7 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 				assert(0);
 				break;
 			}
-
+			TOOL::recordStartTime(TOOL::time_record[1]);// build tree
 			/*.................................................................................*/
 #ifdef _DEBUG
 			/*for (auto&& au : apla_array_vector[point_id]) { 210203
@@ -1939,6 +2068,7 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 			/*.................................................................................*/
 
 			/*===================================================================        RTree Insertion     ========================================================================================*/
+			typename TOOL::RECTANGLE rectangle_insertion(input_argument.point_dimension << 1);
 			/*-------------------------------- APCA version: Initial RTree insertion coefficient -------------------------------------------*/
 			//typename APCA_QUAL::APCA CminParameter, CmaxParameter, MBRParameter; //Temp MBR
 			//APCA_QUAL::initialAPCA(apca, input_argument.point_dimension);
@@ -1952,9 +2082,7 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 			/*------------------------------------------Original version: Get Segment Min&Max point Cmin Cmax---------------------------------------------*/
 			//get_cmin_cmax(input_argument.time_series_length, dimension_id, apla_array_vector[point_id],  CminParameter, CmaxParameter);
 			/*---------------------------------------------------------------------------------------------------------------------------------------------*/
-			/*------------------------------------------191127 APCA version: Get Segment Min&Max point Cmin Cmax-------------------------------------------*/
-			get_cmin_cmax_apca(normalized_series_vector, apla_array_vector[point_id], rectangle_insertion);
-			/*---------------------------------------------------------------------------------------------------------------------------------------------*/
+			
 			/*------------------------------------------191129 APCA version: PLA version-------------------------------------------------------------------*/
 			//get_cmin_cmax_pla(input_argument.time_series_length, apla_array_vector[point_id], rectangle_insertion);
 			/*---------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -1968,32 +2096,51 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 			//copy_n(MBRParameter.v, MBRParameter.segmentNum, apca_MBR[point_id].v + MBRParameter.segmentNum * dimension_id);
 			/*-----------------------------------------------------------------------------------------------------------------------------------*/
 
-			/*.........................................................................................................*/
-#ifdef _DEBUG
-			assert(rectangle_insertion.m_min.size() == input_argument.point_dimension << 1);
-			for (int segment_id = 0; segment_id < input_argument.point_dimension << 1; segment_id++) {
-				//cout << apca_MBR[point_id].r[segment_id] << " " << apca_MBR[point_id].r[segment_id] << endl;
-				assert(rectangle_insertion.m_min[segment_id] != INF && rectangle_insertion.m_max[segment_id] != INF);
-			}
-#endif
-			/*.........................................................................................................*/
+			
 
 			/*TOOL::printArray(apca_MBR[point_id].r, apca_MBR[point_id].segmentNum);
 			TOOL::printArray(apca_MBR[point_id].v, apca_MBR[point_id].segmentNum);*/
 			/*-------------------------Time Evaluation-----------------------------------*/
-			result_record.representation_time = TOOL::recordFinishTime(TOOL::time_record[0]);
+			result_record.representation_time = TOOL::recordFinishTime(TOOL::time_record[0]);// result_record for single result, not accumulation result
 			input_argument.representation_time += result_record.representation_time;
 			/*---------------------------------------------------------------------------*/
+
 			/*------------------------------Rtree inserion-------------------------------*/
-			TOOL::recordStartTime(TOOL::time_record[1]);
+			
 			/*=================================== 210816 ==============================================================*/
-			switch (input_argument.option_tree) { //0 R-Tree, 1 Partition Tree
+			long double temp_build_time = 0;
+			switch (input_argument.option_tree_struct.type_tree) { //0 R-Tree, 1 Partition Tree
 			case 0:// R-Tree
+				/*------------------------------------------191127 APCA version: Get Segment Min&Max point Cmin Cmax-------------------------------------------*/
+				get_cmin_cmax_apca(normalized_series_vector, apla_array_vector[point_id], rectangle_insertion);
+				/*---------------------------------------------------------------------------------------------------------------------------------------------*/
+
+				/*.........................................................................................................*/
+#ifdef _DEBUG
+				assert(rectangle_insertion.m_min.size() == input_argument.point_dimension << 1);
+				for (int segment_id = 0; segment_id < input_argument.point_dimension << 1; segment_id++) {
+					//cout << apca_MBR[point_id].r[segment_id] << " " << apca_MBR[point_id].r[segment_id] << endl;
+					assert(rectangle_insertion.m_min[segment_id] != INF && rectangle_insertion.m_max[segment_id] != INF);
+				}
+#endif
+				/*.........................................................................................................*/
+
 				RTree.Insert(rectangle_insertion.m_min, rectangle_insertion.m_max, point_id);
+				
 				break;
 			case 1:// Partition Tree
+				/*------------------------------------------191127 APCA version: Get Segment Min&Max point Cmin Cmax-------------------------------------------*/
+				get_cmin_cmax_apca(normalized_series_vector, apla_array_vector[point_id], rectangle_insertion);
+				/*---------------------------------------------------------------------------------------------------------------------------------------------*/
 				/*--------------------------210618 Partition tree-------------------------------------*/
 				RTree_partition_object.Insert(rectangle_insertion.m_min, rectangle_insertion.m_max, point_id, apla_array_vector[point_id], normalized_series_vector);
+				/*------------------------------------------------------------------------------------*/
+				break;
+			case 2:// SAPLA MBR
+				/*--------------------------211010 SAPLA,APLA-------------------------------------*/
+		        //RTree_partition_object.Insert(rectangle_insertion.m_min, rectangle_insertion.m_max, point_id, apla_array_vector[point_id], normalized_series_vector);
+				RTree_partition_object.Insert(point_id, apla_array_vector[point_id], normalized_series_vector);
+				// TOOL::recordFinishTime(TOOL::time_record[1]);
 				/*------------------------------------------------------------------------------------*/
 				break;
 			default: assert(0);
@@ -2001,8 +2148,9 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 			}
 			/*========================================================================================================*/
 			input_argument.build_rtree_time += TOOL::recordFinishTime(TOOL::time_record[1]);
+			input_argument.time_ingest_data += TOOL::recordFinishTime(TOOL::time_record[2]);
 			/*------------------------- Time Evaluation ---------------------------------*/
-			input_argument.whole_run_time += TOOL::recordFinishTime(TOOL::time_record[14]);
+			input_argument.whole_run_time += TOOL::recordFinishTime(TOOL::time_record[14]);// whole run time CPU
 			input_argument.whole_run_time_has_IO += TOOL::recordFinishTime(TOOL::time_record[16]);
 			/*---------------------------------------------------------------------------*/
 
@@ -2053,14 +2201,15 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 			PLA_QUAL::getPLA(input_argument, original_time_series, pla_array[point_id]);
 			//PLA_QUAL::getPLA(input_argument, original_time_series, pla);
 			/*-------------------------------------------------------------------------------*/
-			
+
+			TOOL::recordStartTime(TOOL::time_record[1]);
 			/*------------------------------------get MBR------------------------------------*/
 			PLA_QUAL::getPLAMBR(pla_array[point_id], pla_MBR);
 			/*-------------------------------------------------------------------------------*/
 
 			/*-----------------------------210906 transfer PLA in partition tree--------------*/
 			typename TOOL::template SEGMENT_WIDTH_STRUCTRE<long double, long double, long double> equal_segment_width_struct(input_argument.time_series_length, input_argument.point_multi_single_dimension);
-			DoublyLinkedList<typename APLA::template AREA_COEFFICIENT_RTREE_NODE<long double, long double>> temp_list;
+			DoublyLinkedList<APLA::AREA_COEFFICIENT_SPEED_NO_MINMAX> temp_list;
 			transfer_pla_to_sapla(equal_segment_width_struct, pla_array[point_id], temp_list);
 #ifdef _DEBUG
 			assert(temp_list.back().right_endpoint == normalized_series_vector.size() - 1);
@@ -2071,19 +2220,13 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 				assert(temp_list[id_segment].apla.b == pla_array[point_id].b[id_segment]);
 			}
 #endif
-
 			vector<long double> a_min(pla_MBR.segmentNum, INF);
 			copy(pla_MBR.a, pla_MBR.a + int(pla_MBR.segmentNum), a_min.begin());
 			vector<long double> a_max(pla_MBR.segmentNum, INF);
 			copy(pla_MBR.b, pla_MBR.b + int(pla_MBR.segmentNum), a_max.begin());
 			/*-------------------------------------------------------------------------------*/
 
-#ifdef _DEBUG
-			for (int i = 0; i < pla_MBR.segmentNum; i++) {
-				//cout << pla_MBR.a[i] << ""<< pla_MBR.b[i] <<endl;
-				assert(pla_MBR.a[i] == pla_MBR.b[i] && pla_MBR.b[i] != INF);
-			}
-#endif
+
 			//(pla.a, pla.segmentNum, pla_array[point_id].a + input_argument.point_dimension * dimension_id);
 			//copy_n(pla.b, pla.segmentNum, pla_array[point_id].b + input_argument.point_dimension * dimension_id);
 			/*-------------------------Time Evaluation---------------------------------*/
@@ -2091,10 +2234,18 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 			input_argument.representation_time += result_record.representation_time;
 			/*-------------------------------------------------------------------------*/
 			/*-----------------------------------Rtree inserion-------------------------------*/
-			TOOL::recordStartTime(TOOL::time_record[1]);
+			
 
-			switch (input_argument.option_tree) {
+			switch (input_argument.option_tree_struct.type_tree) {
 			case 0:// R-Tree
+
+#ifdef _DEBUG
+				for (int i = 0; i < pla_MBR.segmentNum; i++) {
+					//cout << pla_MBR.a[i] << ""<< pla_MBR.b[i] <<endl;
+					assert(pla_MBR.a[i] == pla_MBR.b[i] && pla_MBR.b[i] != INF);
+				}
+#endif
+
 				RTree.Insert(pla_MBR.a, pla_MBR.b, point_id);// a min, b max
 				break;
 			case 1:// Partition Tree
@@ -2110,10 +2261,14 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 				//		//cout << sum << endl;
 				//	}
 				//}
-				
 
-				/*--------------------------210618 Partition tree-------------------------------------*/
+				/*--------------------------210618 PLA-------------------------------------*/
 				RTree_partition_object.Insert(a_min, a_max, point_id, temp_list, normalized_series_vector);
+				/*------------------------------------------------------------------------------------*/
+				break;
+			case 2:// SAPLA MBR
+				/*--------------------------211010 PLA-------------------------------------*/
+				RTree_partition_object.Insert(point_id, temp_list, normalized_series_vector);
 				/*------------------------------------------------------------------------------------*/
 				break;
 			default: assert(0);
@@ -2125,6 +2280,7 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 			a_max.clear();
 			a_max.shrink_to_fit();
 			input_argument.build_rtree_time += TOOL::recordFinishTime(TOOL::time_record[1]);
+			input_argument.time_ingest_data += TOOL::recordFinishTime(TOOL::time_record[2]);
 			/*-------------------------Time Evaluation---------------------------------*/
 			input_argument.whole_run_time += TOOL::recordFinishTime(TOOL::time_record[14]);
 			input_argument.whole_run_time_has_IO += TOOL::recordFinishTime(TOOL::time_record[16]);
@@ -2156,9 +2312,8 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 
 		}
 		else if (input_argument.representation_option == 3 || input_argument.representation_option == 4 || input_argument.representation_option == 7 || input_argument.representation_option == 9) {// PAA & APCA & PAALM & SAX
-			/*================================= PAA & APCA =====================================================================*/
-			typename TOOL::RECTANGLE rectangle_insertion(input_argument.point_dimension << 1);
 
+			/*================================= PAA & APCA =====================================================================*/
 			//typename APCA_QUAL::APCA apca;
 			//typename APCA_QUAL::APCA CminParameter, CmaxParameter, MBRParameter; //Temp MBR
 			//APCA_QUAL::initialAPCA(apca, input_argument.point_dimension);
@@ -2170,8 +2325,20 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 			case 3: {//APCA
 				APCA_QUAL::getAPCAPoint(original_time_series, input_argument.time_series_length, input_argument.point_dimension, apca_point_array[point_id]);
 				//APCA_QUAL::getAPCAPoint(original_time_series, input_argument.time_series_length, input_argument.point_dimension, apca);
+
+				/*......................................*/
+#ifdef _DEBUG
+
+				DoublyLinkedList<APLA::AREA_COEFFICIENT_SPEED_NO_MINMAX> temp_list_test;
+				transfer_apca_to_sapla(input_argument.point_dimension, apca_point_array[point_id], temp_list_test);
+				APLA::assert_endpoint_average(normalized_series_vector, temp_list_test);
+				temp_list_test.clear();
+#endif
+				/*......................................*/
+
 				break;
-			case 4: //PAA
+			}
+			case 4: {//PAA
 				APCA_QUAL::divideRemainderPAA(original_time_series, apca_point_array[point_id], input_argument.time_series_length, input_argument.point_dimension);
 				//APCA_QUAL::divideRemainderPAA(original_time_series, apca, input_argument.time_series_length, input_argument.point_dimension);
 
@@ -2187,12 +2354,14 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 				//}
 				/*-------------------------------------------------------------------------------------------------------  ---------*/
 				break;
-			case 7:// PAALM 200108
+			}
+			case 7: {// PAALM 200108
 				APCA_QUAL::divideRemainderPAA(original_time_series, apca_point_array[point_id], input_argument.time_series_length, input_argument.point_dimension);
 				//APCA_QUAL::divideRemainderPAA(original_time_series, apca, input_argument.time_series_length, input_argument.point_dimension);
 				APCA_QUAL::get_paa_lagrangian(apca_point_array[point_id]);
 				break;
-			case 9:// SAX 200923
+			}
+			case 9: {// SAX 200923
 				SaxQuantizer::SAX sax(input_argument.point_dimension);
 				/*APCA_QUAL::divideRemainderPAA(original_time_series, apca_point_array[point_id], input_argument.time_series_length, input_argument.point_dimension);
 				vector<double> mean_value_vector;
@@ -2205,28 +2374,33 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 				sax.get_SAX(normalized_series_vector, input_argument.point_dimension, apca_point_array[point_id]);
 				break;
 			}
+			
 			default:
 				assert(0);
 				break;
 			}
-
+			TOOL::recordStartTime(TOOL::time_record[1]);
 			//APCA_QUAL::getCmin(original_time_series, apca, CminParameter);
 			//APCA_QUAL::getCmax(original_time_series, apca, CmaxParameter);
 			/*---------------------------------191120 Original Rtree MBR-------------------------------------------*/
 			//RTREE::Rect rtree_rectangle;
 			//APCA_QUAL::get_minmax_original(normalized_series_vector, dimension_id, apca, rtree_rectangle_vector[point_id]);
 			/*-------------------------------------------------------------------------------------------------------*/
-		
+
 			/*---------------------------------191127 APCA Paper Rtree MBR-------------------------------------------*/
+			typename TOOL::RECTANGLE rectangle_insertion(input_argument.point_dimension << 1);
 			APCA_QUAL::get_minmax_apca(normalized_series_vector, apca_point_array[point_id], rectangle_insertion);
 			//APCA_QUAL::get_minmax_apca(normalized_series_vector, dimension_id, apca, rtree_rectangle_vector[point_id]);
 			/*-------------------------------------------------------------------------------------------------------*/
 
 			/*--------------------------  210906 transfer APCA/PAA/PAALM/SAX in partition tree  --------------------*/
-			DoublyLinkedList<typename APLA::template AREA_COEFFICIENT_RTREE_NODE<long double, long double>> temp_list;
+			DoublyLinkedList<APLA::AREA_COEFFICIENT_SPEED_NO_MINMAX> temp_list;
 			transfer_apca_to_sapla(input_argument.point_dimension, apca_point_array[point_id], temp_list);
 #ifdef _DEBUG
 			assert(temp_list.back().right_endpoint == normalized_series_vector.size() - 1);
+			if (input_argument.representation_option == 3 || input_argument.representation_option == 4) {
+				APLA::assert_endpoint_average(normalized_series_vector, temp_list);
+			}
 			APLA::assertRightEndpoint_Width(temp_list);
 			for (int id_segment = 0; id_segment < temp_list.size(); id_segment++) {
 				assert(temp_list[id_segment].apla.a == 0);
@@ -2238,29 +2412,25 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 			switch (input_argument.representation_option) {
 			case 3: {//APCA
 				APLA::move_one_point_segment_mo_min_width_average(normalized_series_vector, temp_list);
+				/*......................................*/
+#ifdef _DEBUG
+				APLA::assert_endpoint_average(normalized_series_vector, temp_list);
+#endif
+				/*......................................*/
 				break;
+			}
 			case 4: //PAA
 			case 7:// PAALM 200108
 			case 9:// SAX 200923
 				break;
-			}
+			
 			default:
 				assert(0);
 				break;
 			}
 			/*------------------------------------------------------------------------------------------------------*/
 
-			/*..........................................................................................*/
-#ifdef _DEBUG
-			assert(rectangle_insertion.m_min.size() == input_argument.point_dimension << 1 && rectangle_insertion.m_min.size() == rectangle_insertion.m_max.size());
-			for (auto&& au : rectangle_insertion.m_min) {
-				assert(au != INF);
-			}
-			for (auto&& au : rectangle_insertion.m_max) {
-				assert(au != INF);
-			}
-#endif
-			/*..........................................................................................*/
+		
 
 			//for (int array_id = 0; array_id < apca.segmentNum; array_id++) {
 				//apca.r[array_id] += input_argument.time_series_length * dimension_id;
@@ -2277,10 +2447,21 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 			input_argument.representation_time += result_record.representation_time;
 			/*----------------------------------------------------------------------------*/
 			/*--------------------------------------191128 Rtree insertion-------------------------------------------*/
-			TOOL::recordStartTime(TOOL::time_record[1]);
+			
 
-			switch (input_argument.option_tree) {
+			switch (input_argument.option_tree_struct.type_tree) {
 			case 0:// R-Tree
+					/*..........................................................................................*/
+#ifdef _DEBUG
+				assert(rectangle_insertion.m_min.size() == input_argument.point_dimension << 1 && rectangle_insertion.m_min.size() == rectangle_insertion.m_max.size());
+				for (auto&& au : rectangle_insertion.m_min) {
+					assert(au != INF);
+				}
+				for (auto&& au : rectangle_insertion.m_max) {
+					assert(au != INF);
+				}
+#endif
+				/*..........................................................................................*/
 				RTree.Insert(rectangle_insertion.m_min, rectangle_insertion.m_max, point_id);//191128 APCA paper MBR structure, min id == max id
 				break;
 			case 1:// Partition Tree
@@ -2289,13 +2470,20 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 				RTree_partition_object.Insert(rectangle_insertion.m_min, rectangle_insertion.m_max, point_id, temp_list, normalized_series_vector);
 				/*------------------------------------------------------------------------------------*/
 				break;
-			default: assert(0);
+			case 2:// SAPLA MBR
+				/*--------------------------211010 PAA, APCA, PAALM-------------------------------------*/
+				RTree_partition_object.Insert(point_id, temp_list, normalized_series_vector);
+				/*------------------------------------------------------------------------------------*/
+				break;
+			default:
+				assert(0);
 				break;
 			}
 
 			//RTree.Insert(MBRParameter.m_min, MBRParameter.m_max, point_id);//191128 APCA paper MBR structure, min id == max id
 			temp_list.clear();
 			input_argument.build_rtree_time += TOOL::recordFinishTime(TOOL::time_record[1]);
+			input_argument.time_ingest_data += TOOL::recordFinishTime(TOOL::time_record[2]);
 			/*------------------------- Time Evaluation ---------------------------------*/
 			input_argument.whole_run_time += TOOL::recordFinishTime(TOOL::time_record[14]);
 			input_argument.whole_run_time_has_IO += TOOL::recordFinishTime(TOOL::time_record[16]);
@@ -2345,7 +2533,7 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 
 			/*-----------------------------210906 transfer CHEBY in partition tree--------------*/
 			typename TOOL::template SEGMENT_WIDTH_STRUCTRE<long double, long double, long double> equal_segment_width_struct(input_argument.time_series_length, input_argument.point_multi_single_dimension);
-			DoublyLinkedList<typename APLA::template AREA_COEFFICIENT_RTREE_NODE<long double, long double>> temp_list;
+			DoublyLinkedList<APLA::AREA_COEFFICIENT_SPEED_NO_MINMAX> temp_list;
 			transfer_cheby_to_sapla(equal_segment_width_struct, chebyshev_array[point_id], temp_list);
 #ifdef _DEBUG
 			assert(temp_list.back().right_endpoint == normalized_series_vector.size() - 1);
@@ -2360,14 +2548,9 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 			vector<long double> a_max(chebyshev_MBR.segmentNum, INF);
 			copy(chebyshev_MBR.coefficient, chebyshev_MBR.coefficient + int(chebyshev_MBR.segmentNum), a_max.begin());
 			/*-------------------------------------------------------------------------------*/
-			
+
 			//copy_n(chebyshev.coefficient, chebyshev.segmentNum, chebyshev_array[point_id].coefficient + input_argument.point_dimension * dimension_id);
-#ifdef _DEBUG
-			for (int i = 0; i < chebyshev_MBR.segmentNum; i++) {
-				//cout << chebyshev_MBR.f[i] << " "<< chebyshev_MBR.coefficient[i] <<endl;
-				assert(chebyshev_MBR.f[i] == chebyshev_MBR.coefficient[i] && chebyshev_MBR.coefficient[i] != INF);
-			}
-#endif
+
 			/*-------------------------   Time Evaluation   ---------------------------------*/
 			result_record.representation_time = TOOL::recordFinishTime(TOOL::time_record[0]);
 			input_argument.representation_time += result_record.representation_time;
@@ -2375,14 +2558,26 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 				/*-----------------------------------Rtree inserion--------------------------------*/
 			TOOL::recordStartTime(TOOL::time_record[1]);
 
-			switch (input_argument.option_tree) {
+			switch (input_argument.option_tree_struct.type_tree) {
 			case 0:// R-Tree
+
+#ifdef _DEBUG
+				for (int i = 0; i < chebyshev_MBR.segmentNum; i++) {
+					//cout << chebyshev_MBR.f[i] << " "<< chebyshev_MBR.coefficient[i] <<endl;
+					assert(chebyshev_MBR.f[i] == chebyshev_MBR.coefficient[i] && chebyshev_MBR.coefficient[i] != INF);
+				}
+#endif
+
 				RTree.Insert(chebyshev_MBR.f, chebyshev_MBR.coefficient, point_id);// a min, b max
 				break;
 			case 1:// Partition Tree
-
 				/*--------------------------210618 Partition tree-------------------------------------*/
 				RTree_partition_object.Insert(a_min, a_max, point_id, temp_list, normalized_series_vector);
+				/*------------------------------------------------------------------------------------*/
+				break;
+			case 2:// SAPLA MBR
+				/*--------------------------211010 CHEBY-------------------------------------*/
+				RTree_partition_object.Insert(point_id, temp_list, normalized_series_vector);
 				/*------------------------------------------------------------------------------------*/
 				break;
 			default: assert(0);
@@ -2395,6 +2590,7 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 			a_max.clear();
 			a_max.shrink_to_fit();
 			input_argument.build_rtree_time += TOOL::recordFinishTime(TOOL::time_record[1]);
+			input_argument.time_ingest_data += TOOL::recordFinishTime(TOOL::time_record[2]);
 			/*-------------------------Time Evaluation---------------------------------*/
 			input_argument.whole_run_time += TOOL::recordFinishTime(TOOL::time_record[14]);
 			input_argument.whole_run_time_has_IO += TOOL::recordFinishTime(TOOL::time_record[16]);
@@ -2408,9 +2604,11 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 			output_argument.max_deviation_multiple_width += result_record.max_deviation_multiple_width;
 			output_argument.sum_deviation += result_record.sum_deviation;
 			/*----------------------------------------------------------------------------------------------------*/
-//
-				//CHEBYSHEV_QUAL::deleteCHEBYSHEV(chebyshev);
+			//CHEBYSHEV_QUAL::deleteCHEBYSHEV(chebyshev);
 			CHEBYSHEV_QUAL::deleteCHEBYSHEV(chebyshev_MBR);
+		}
+		else if (input_argument.representation_option == 10 || input_argument.representation_option == 11) {// Linear Scan 211201
+			initial_evaluation_input_LS_in_build_index(input_argument, output_argument, result_record);
 		}
 		else {
 			assert(0);
@@ -2419,6 +2617,7 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 
 		/*==============================================     200901 Print each time series results     ==================================================*/
 		if (input_argument.print_each_result == true) {
+			assert(0);
 			cout << "!!!!!! Time Series id: " << point_id << endl;
 			//print_result_each_time_series(input_argument, normalized_series_vector, apla_array_vector[point_id], pla_array[point_id], apca_point_array[point_id], chebyshev_array[point_id], output_argument, result_record);
 			//print_result_each_time_series(input_argument, normalized_series_vector, apla_array_vector[point_id], pla_array[point_id], apca_point_array[point_id], chebyshev_array[point_id], output_argument, result_record);
@@ -2462,17 +2661,29 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 	}
 	//}
 
-
-
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~  Tree  ~~~~~~~~~~~~~~~~~~~*/
-	switch (input_argument.option_tree) {
-	case 0:
-	
-		RTree.deleteAllLeafNodeMemory();
-		
+	switch (input_argument.option_tree_struct.type_tree) {
+	case 0:// R-Tree
+		/*--------------------------210618 Partition tree-------------------------------------*/
+		//RTree.print_tree(*RTree.m_root);//Print whole tree
+		//assert(0);
+		/*------------------------------------------------------------------------------------*/
+		/*----- RTree: Delete Leaf node memory -------*/
+		//RTree.deleteAllLeafNodeMemory();
+		/*--------------------------------------------*/
+
 		break;
-	case 1:
-	
+	case 1:// Partition Tree
+		/*--------------------------210618 Partition tree-------------------------------------*/
+		//RTree_partition_object.print_tree(*RTree_partition_object.m_root);
+		//assert(0);
+		/*------------------------------------------------------------------------------------*/
+		break;
+	case 2:// SAPLA MBR
+		/*--------------------------211010 SAPLA MBR-------------------------------------*/
+		//RTree_partition_object.print_tree(*RTree_partition_object.m_root);
+		//assert(0);
+		/*------------------------------------------------------------------------------------*/
 		break;
 	default:
 		assert(0);
@@ -2480,13 +2691,41 @@ void MULTI::all_approximation_build_rtree(vector<T>& const multi_y_projection_ar
 	}
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
+	/*################################################# Index Size ######################################################################*/
 	//file_stream.close();
-	/*cout << "Root Node : sub node number = " << RTree.m_root->m_count << " Root level = : " << RTree.m_root->m_level << "\n\nBegin to build a RTree:\n";
-	cout << "\n RTree conclusion\n The number of RTree Data Point = : " << RTree.Count() << endl;*/
-	//deletePLA(pla_array_MBR);
-	//deleteCHEBYSHEV(chebyshev_MBR);
-	//deleteMultiDimensionTrajectory(input_argument, multi_dimention_trajectories);
-	cout<< ", Max Deviation: " << output_argument.max_deviation << endl;
+	//cout << "\n RTree conclusion\n The number of RTree Data Point = : " << RTree.Count() << endl;
+	/*---------211215---------*/
+	TOOL::initial_argument_index(input_argument.argument_index_struct);
+	if (input_argument.representation_option != 10 && input_argument.representation_option != 11) {// Not for LS
+		
+		switch (input_argument.option_tree_struct.type_tree) {
+		case 0:// R-Tree
+			RTree.count_node_size(RTree.m_root, input_argument.argument_index_struct.count_node_internal, input_argument.argument_index_struct.count_node_leaf);
+			input_argument.argument_index_struct.height_index = RTree.m_root->m_level + 1;
+			break;
+		case 1:// Partition Tree
+			/*--------------------------210618 Partition tree-------------------------------------*/
+			RTree_partition_object.count_node_size(RTree_partition_object.m_root, input_argument.argument_index_struct.count_node_internal, input_argument.argument_index_struct.count_node_leaf);
+			input_argument.argument_index_struct.height_index = RTree_partition_object.m_root->m_level + 1;
+			/*------------------------------------------------------------------------------------*/
+			break;
+		case 2:// SAPLA MBR
+			/*--------------------------211010 SAPLA MBR-------------------------------------*/
+			//RTree_partition_object.print_tree(*RTree_partition_object.m_root);
+			//assert(0);
+			RTree_partition_object.count_node_size(RTree_partition_object.m_root, input_argument.argument_index_struct.count_node_internal, input_argument.argument_index_struct.count_node_leaf);
+			input_argument.argument_index_struct.height_index = RTree_partition_object.m_root->m_level + 1;
+			/*------------------------------------------------------------------------------------*/
+			break;
+		default:
+			assert(0);
+			break;
+		}
+
+		input_argument.argument_index_struct.count_node_total = input_argument.argument_index_struct.count_node_internal + input_argument.argument_index_struct.count_node_leaf;
+		print_evaluation_input_single_in_build_index(input_argument, output_argument, result_record);
+	}
+	
 	delete[] original_time_series;
 	original_time_series = nullptr;
 	normalized_series_vector.clear();
@@ -2564,6 +2803,7 @@ RTREE& MULTI::buidRTreeIndex() {
 	/*-----------------------------------------------------------------------------------------------------------------------------------*/
 #ifdef _DEBUG
 	//APCA_KNN_QUAL::recordFinishTime(APCA_KNN_QUAL::time_record[0], input_argument.build_rtree_time);
+	cout << "RTree build time: " << input_argument.build_rtree_time << " us" << endl;
 	//TOOL::writeSingleResult(input_argument.write_file_name[2], input_argument.build_rtree_time);
 #endif
 	/*================================================   KNN  =================================================================================*/
@@ -2754,6 +2994,7 @@ RTREE& MULTI::buid_rtree_knn() {
 	RTree.deleteAllLeafNodeMemory();
 	/*-----------------------------------------------------------------------------------------------------------------------------------*/
 	APCA_KNN_QUAL::recordFinishTime(APCA_KNN_QUAL::time_record[0], input_argument.build_rtree_time);
+	cout << "RTree build time: " << input_argument.build_rtree_time << " us" << endl;
 	//TOOL::writeSingleResult(input_argument.write_file_name[2], input_argument.build_rtree_time);
 
 	/*================================================   KNN  =================================================================================*/
@@ -2891,9 +3132,11 @@ void MULTI::all_knn(typename TOOL::DATA_SOURCE& const data_source, const vector<
 	}
 #endif
 	/*........................................................................................................................................*/
-	
+
 	/*-------------------------Time Evaluation---------------------------------*/
-	input_argument.knn_total_time = 0;
+	if (input_argument.representation_option != 10) {// No linear scan
+		input_argument.knn_total_time = 0;
+	}
 	input_argument.result_accuracy = 0;
 	/*--------------------------------------------------------------------------*/
 	/*================================================  Approximation KNN  =================================================================================*/
@@ -2920,11 +3163,12 @@ void MULTI::all_knn(typename TOOL::DATA_SOURCE& const data_source, const vector<
 	case 8: {//initial 200706
 		//result_set = all_knn_multi(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree, apla_array_vector);// KNN time has IO
 		/*======================================   210516   ====================================================================*/
-		switch (input_argument.option_tree) {//0 RTree, 1 Partition Tree
+		switch (input_argument.option_tree_struct.type_tree) {//0 RTree, 1 Partition Tree
 		case 0:// RTree
 			result_set = all_knn_multi_210618(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree, apla_array_vector);
 			break;
 		case 1:// Partition Tree
+		case 2:// 211010 SAPLA MBR
 			/*--------------------------210618 Partition tree-------------------------------------*/
 			result_set = all_knn_multi_210618(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree_partition_object, apla_array_vector);
 			/*------------------------------------------------------------------------------------*/
@@ -2940,11 +3184,12 @@ void MULTI::all_knn(typename TOOL::DATA_SOURCE& const data_source, const vector<
 		 //PLA_QUAL::PLAKNNMulti(input_argument, query_time_series, RTree, pla_array, input_argument.K);
 		//result_set = all_knn_multi(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree, pla_array);
 		/*======================================   210516   ====================================================================*/
-		switch (input_argument.option_tree) {
+		switch (input_argument.option_tree_struct.type_tree) {// Tree tyep
 		case 0://RTree
 			result_set = all_knn_multi_210618(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree, pla_array);
 			break;
-		case 1://Partition Tree
+		case 1:// Partition Tree
+		case 2:// 211010 SAPLA MBR
 			/*--------------------------210618-------------------------------------*/
 			result_set = all_knn_multi_210618(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree_partition_object, pla_array);
 			//result_set = all_knn_multi_210511(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree_partition_object, pla_array);
@@ -2960,11 +3205,12 @@ void MULTI::all_knn(typename TOOL::DATA_SOURCE& const data_source, const vector<
 	case 9: {//SAX
 		//result_set = all_knn_multi(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree, apca_array);
 		/*======================================   210516   ====================================================================*/
-		switch (input_argument.option_tree) {
+		switch (input_argument.option_tree_struct.type_tree) {// Tree tyep
 		case 0://RTree
 			result_set = all_knn_multi_210618(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree, apca_array);
 			break;
 		case 1://Partition Tree
+		case 2:// 211010 SAPLA MBR
 			/*--------------------------210618-------------------------------------*/
 			result_set = all_knn_multi_210618(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree_partition_object, apca_array);
 			//result_set = all_knn_multi_210511(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree_partition_object, apca_array);
@@ -2980,11 +3226,12 @@ void MULTI::all_knn(typename TOOL::DATA_SOURCE& const data_source, const vector<
 	}
 	case 5: {//Chebyshev
 		/*======================================   210516   ====================================================================*/
-		switch (input_argument.option_tree) {
+		switch (input_argument.option_tree_struct.type_tree) {// Tree tyep
 		case 0://RTree
 			result_set = CHEBYSHEV_QUAL::KNNCHEBYMulti(input_argument, data_source, query_time_series, chebyshev_share, chebyshev_array, RTree);
 			break;
 		case 1://Partition Tree
+		case 2:// 211010 SAPLA MBR
 			/*--------------------------210618 Partition Tree-------------------------------------*/
 			result_set = CHEBYSHEV_QUAL::KNNCHEBYMulti(input_argument, data_source, query_time_series, chebyshev_share, chebyshev_array, RTree_partition_object);
 			/*---------------------------------------------------------------------*/
@@ -2993,6 +3240,20 @@ void MULTI::all_knn(typename TOOL::DATA_SOURCE& const data_source, const vector<
 			break;
 		}
 		/*=====================================================================================================================*/
+		break;
+	}
+	case 10: {// Linear Scan
+		input_argument.result_accuracy = 0;
+		//input_argument.knn_total_time = 0.0;
+		//input_argument.knn_total_time_has_IO = 0.0;//210606
+		input_argument.whole_run_time = 0;
+		//input_argument.IO_cost = 0;// measure I/O cost
+		input_argument.pruning_power = 0;
+		output_argument.run_time = 0;
+
+		break;
+	}
+	case 11:{
 		break;
 	}
 	default: assert(0);
@@ -3014,13 +3275,15 @@ void MULTI::all_knn(typename TOOL::DATA_SOURCE& const data_source, const vector<
 	//assert(input_argument.result_accuracy <= 1);
 
 	/*+++++++++++++++++++++++++++++++++++ Comput new  prune power +++++++++++++++++++++++++++++++++++++++++++++++*/
-	if (input_argument.representation_option != 5) {// Not Chebyshev, Chebyshev prune power may > 1
-		assert(input_argument.pruning_power > 0);//&& input_argument.pruning_power <= 1);//210603
-	}
+	if (input_argument.representation_option != 10) {// No linear scan
+		if (input_argument.representation_option != 5) {// Not Chebyshev, Chebyshev prune power may > 1
+			assert(input_argument.pruning_power > 0);//&& input_argument.pruning_power <= 1);//210603
+		}
 
-	input_argument.result_accuracy = compute_knn_accuracy(input_argument.K, squential_scan_result_set, result_set);
-	assert(input_argument.result_accuracy > 0 && input_argument.result_accuracy <= 1);
-	input_argument.prune_power_combine = input_argument.pruning_power / input_argument.result_accuracy;
+		input_argument.result_accuracy = compute_knn_accuracy(input_argument.K, squential_scan_result_set, result_set);
+		assert(input_argument.result_accuracy > 0 && input_argument.result_accuracy <= 1);
+		input_argument.prune_power_combine = input_argument.pruning_power / input_argument.result_accuracy;
+	}
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 	//switch (input_argument.representation_option) {
@@ -3057,13 +3320,241 @@ void MULTI::all_knn(typename TOOL::DATA_SOURCE& const data_source, const vector<
 
 	/*-----------------------------------------Evaluation------------------------------------*/
 	output_argument.run_time = input_argument.whole_run_time;
-	cout << "Accuracy: " << input_argument.result_accuracy << ", KNN time: " << input_argument.knn_total_time  << "us" << endl;
+	cout << "Accuracy: " << input_argument.result_accuracy << ", KNN time: " << input_argument.knn_total_time << ", KNN time has IO: " << input_argument.knn_total_time_has_IO << "us, whole time: " << input_argument.whole_run_time << "us, I/O cost" << input_argument.IO_cost << endl;
 	/*---------------------------------------------------------------------------------------*/
 	/*delete[] query_time_series;
 	query_time_series = nullptr;*/
 	result_set.clear();
 
 	//return RTree;
+}
+
+TEMPLATE
+template<typename T>
+inline void MULTI::print_knn_evaluation_result(const T& const input_argument) {
+	cout << " Pruning Power: " << input_argument.pruning_power << " Accuracy: " << input_argument.result_accuracy << ", KNN CPU time: " << input_argument.knn_total_time
+		<< " us, KNN time: " << input_argument.knn_total_time << " us, KNN time has IO: " << input_argument.knn_total_time_has_IO << " us, whole time: " 
+		<< input_argument.whole_run_time << "us, I/O cost " << input_argument.IO_cost << endl;
+}
+
+//211205 Add multi query time series vector and multi squential_scan_result_set vector
+TEMPLATE
+template<typename T, typename Y, typename U, typename T1>
+void MULTI::all_knn(typename TOOL::DATA_SOURCE& const data_source, T1& const input_argument, const vector<vector<T>>& const query_series_vector_vector, const vector<Y>& const multi_y_projection_argument, const vector<multiset<pair<U, int>>>& const knn_result_set_vector) {
+	const int size_query = query_series_vector_vector.size();
+
+	/*.........................................................................................................................................*/
+#ifdef _DEBUG
+	assert(query_series_vector_vector.size() == knn_result_set_vector.size());
+	assert_multi_series_vector_vector(size_query, input_argument.point_multi_single_length, query_series_vector_vector);
+#endif
+	/*........................................................................................................................................*/
+
+	if (input_argument.representation_option != 10) { // Not LS
+
+		typename TOOL::template RESULT_RECORD_KNN<long double> result_record_knn_struct;
+
+		for (int od_query = 0; od_query < size_query; od_query++) {//211206 multi query time series
+
+			/*-------------------------Time Evaluation---------------------------------*/
+			if (input_argument.representation_option != 10) {// No linear scan
+				input_argument.knn_total_time = 0;
+				input_argument.knn_CPU_time = 0;
+			}
+			input_argument.result_accuracy = 0;
+			/*--------------------------------------------------------------------------*/
+
+			TOOL::assert_same_vector(input_argument.query_series_vector_vector[od_query], query_series_vector_vector[od_query]);
+
+			input_argument.query_time_series_id = input_argument.id_query_series_vector[od_query];
+			DataType* query_time_series = new DataType[input_argument.point_multi_single_length];
+			copy_n(input_argument.query_series_vector_vector[od_query].begin(), input_argument.query_series_vector_vector[od_query].size(), query_time_series);
+			std::multiset<pair<double, int>> result_set;
+
+			/*================================================  Approximation KNN  =================================================================================*/
+			switch (input_argument.representation_option) {
+			case 1:
+			case 6: //APLA & ICDE07
+			case 8: {//initial 200706
+				//result_set = all_knn_multi(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree, apla_array_vector);// KNN time has IO
+				/*======================================   210516   ====================================================================*/
+				switch (input_argument.option_tree_struct.type_tree) {//0 RTree, 1 Partition Tree
+				case 0:// RTree
+					//result_set = all_knn_multi_210618(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree, apla_array_vector);
+					result_set = all_knn_multi_211207(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree, apla_array_vector);
+					break;
+				case 1:// Partition Tree
+					/*--------------------------210618 Partition tree-------------------------------------*/
+					//result_set = all_knn_multi_210618(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree_partition_object, apla_array_vector);
+					result_set = all_knn_multi_211207(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree_partition_object, apla_array_vector);
+					/*------------------------------------------------------------------------------------*/
+					break;
+				case 2:// 211010 SAPLA MBR
+					/*--------------------------210618 Partition tree-------------------------------------*/
+					//result_set = all_knn_multi_210618(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree_partition_object, apla_array_vector);
+					result_set = all_knn_multi_211227(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree_partition_object, apla_array_vector);
+					/*------------------------------------------------------------------------------------*/
+					break;
+				default: assert(0);
+					break;
+				}
+				/*=====================================================================================================================*/
+				//result_set = all_knn_multi_210512(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree, apla_array_vector);
+				break;
+			}
+			case 2: {//PLA
+				 //PLA_QUAL::PLAKNNMulti(input_argument, query_time_series, RTree, pla_array, input_argument.K);
+				//result_set = all_knn_multi(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree, pla_array);
+				/*======================================   210516   ====================================================================*/
+				switch (input_argument.option_tree_struct.type_tree) {// Tree tyep
+				case 0://RTree
+					//result_set = all_knn_multi_210618(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree, pla_array);
+					result_set = all_knn_multi_211207(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree, pla_array);
+					break;
+				case 1:// Partition Tree
+					/*--------------------------210618 Partition Tree-------------------------------------*/
+					//result_set = all_knn_multi_210618(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree_partition_object, pla_array);
+					result_set = all_knn_multi_211207(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree_partition_object, pla_array);
+					//result_set = all_knn_multi_210511(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree_partition_object, pla_array);
+					/*---------------------------------------------------------------------*/
+					break;
+				case 2:// 211010 SAPLA MBR
+					/*--------------------------210618 Partition Tree-------------------------------------*/
+					//result_set = all_knn_multi_210618(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree_partition_object, pla_array);
+					result_set = all_knn_multi_211227(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree_partition_object, pla_array);
+					//result_set = all_knn_multi_210511(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree_partition_object, pla_array);
+					/*---------------------------------------------------------------------*/
+					break;
+				}
+				/*=====================================================================================================================*/
+				break;
+			}
+			case 3: //APCA
+			case 4://PAA 
+			case 7: //PAALM
+			case 9: {//SAX
+				//result_set = all_knn_multi(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree, apca_array);
+				/*======================================   210516   ====================================================================*/
+				switch (input_argument.option_tree_struct.type_tree) {// Tree tyep
+				case 0://RTree
+					//result_set = all_knn_multi_210618(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree, apca_array);
+					result_set = all_knn_multi_211207(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree, apca_array);
+					break;
+				case 1://Partition Tree
+					/*--------------------------210618 Partition Tree-------------------------------------*/
+					//result_set = all_knn_multi_210618(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree_partition_object, apca_array);
+					result_set = all_knn_multi_211207(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree_partition_object, apca_array);
+					//result_set = all_knn_multi_210511(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree_partition_object, apca_array);
+					/*---------------------------------------------------------------------*/
+					break;
+				case 2:// 211010 SAPLA MBR
+					/*--------------------------210618 Partition Tree-------------------------------------*/
+					//result_set = all_knn_multi_210618(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree_partition_object, apca_array);
+					result_set = all_knn_multi_211227(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree_partition_object, apca_array);
+					//result_set = all_knn_multi_210511(data_source, input_argument, multi_y_projection_argument, query_time_series, RTree_partition_object, apca_array);
+					/*---------------------------------------------------------------------*/
+					break;
+				default: assert(0);
+					break;
+				}
+				/*=====================================================================================================================*/
+				//Base KNN
+				//priority_queue<TOOL::ID_DIST, vector<TOOL::ID_DIST>, TOOL::priorityDistanceEUC > base_queue;
+				break;
+			}
+			case 5: {//Chebyshev
+				/*======================================   210516   ====================================================================*/
+				switch (input_argument.option_tree_struct.type_tree) {// Tree tyep
+				case 0://RTree
+					result_set = CHEBYSHEV_QUAL::KNNCHEBYMulti(input_argument, data_source, query_time_series, chebyshev_share, chebyshev_array, RTree);
+					break;
+				case 1://Partition Tree
+					/*--------------------------210618 Partition Tree-------------------------------------*/
+					result_set = CHEBYSHEV_QUAL::KNNCHEBYMulti(input_argument, data_source, query_time_series, chebyshev_share, chebyshev_array, RTree_partition_object);
+					/*---------------------------------------------------------------------*/
+					break;
+				case 2:// 211010 SAPLA MBR
+					/*--------------------------210618 Partition Tree-------------------------------------*/
+					result_set = CHEBYSHEV_QUAL::KNNCHEBYMulti(input_argument, data_source, query_time_series, chebyshev_share, chebyshev_array, RTree_partition_object);
+					/*---------------------------------------------------------------------*/
+					break;
+				default: assert(0);
+					break;
+				}
+				/*=====================================================================================================================*/
+				break;
+			}
+			case 10: {// Linear Scan
+				input_argument.result_accuracy = 0;
+				//input_argument.knn_total_time = 0.0;
+				//input_argument.knn_total_time_has_IO = 0.0;//210606
+				input_argument.whole_run_time = 0;
+				//input_argument.IO_cost = 0;// measure I/O cost
+				input_argument.pruning_power = 0;
+				//input_argument.knn_CPU_time = 0;
+				output_argument.run_time = 0;
+
+				break;
+			}
+			case 11: {// Linear Scan
+				input_argument.result_accuracy = 0;
+				//input_argument.knn_total_time = 0.0;
+				//input_argument.knn_total_time_has_IO = 0.0;//210606
+				input_argument.whole_run_time = 0;
+				//input_argument.IO_cost = 0;// measure I/O cost
+				input_argument.pruning_power = 0;
+				//input_argument.knn_CPU_time = 0;
+				output_argument.run_time = 0;
+				TOOL::linear_scan(input_argument, data_source, input_argument.query_series_vector_vector[od_query]);
+				break;
+			}
+			default: assert(0);
+				break;
+			}
+			/*==========================================================================================================================================*/
+
+			/*################################     get prune power & accuracy    #################################*/
+			if (input_argument.representation_option != 10 && input_argument.representation_option != 11) {// No linear scan
+				if (input_argument.representation_option != 5) {// Not Chebyshev, Chebyshev prune power may > 1
+					assert(input_argument.pruning_power > 0);//&& input_argument.pruning_power <= 1);//210603
+				}
+
+				input_argument.result_accuracy = compute_knn_accuracy(input_argument.K, knn_result_set_vector[od_query], result_set);
+				assert(input_argument.result_accuracy > 0 && input_argument.result_accuracy <= 1);
+				input_argument.prune_power_combine = input_argument.pruning_power / input_argument.result_accuracy;
+			}
+			/*###########################################################################################################*/
+
+			//211206
+			TOOL::assert_knn_result(input_argument); 
+			TOOL::assert_knn_result(result_record_knn_struct);
+			TOOL::copy_accumulate_input_to_KNN_result(input_argument, result_record_knn_struct);
+
+			/*-----------------------------------------Evaluation------------------------------------*/
+			output_argument.run_time = input_argument.whole_run_time;
+			/*.........................................................................................................................................*/
+#ifdef _DEBUG
+			cout << "After k-NN, Query time series order: " << od_query;
+			print_knn_evaluation_result(input_argument);
+#endif
+			/*---------------------------------------------------------------------------------------*/
+
+			delete[] query_time_series;
+			query_time_series = nullptr;
+			result_set.clear();
+		}//211206 multi query time series
+
+		TOOL::assert_knn_result(input_argument);
+		TOOL::assert_knn_result(result_record_knn_struct);
+		TOOL::copy_KNN_result_to_input(result_record_knn_struct, input_argument);
+	}// not LS
+	/*-----------------------------------------Evaluation------------------------------------*/
+	output_argument.run_time = input_argument.whole_run_time;
+#ifdef _DEBUG
+	cout << "Multi Query: ";
+	print_knn_evaluation_result(input_argument);
+#endif
+	/*---------------------------------------------------------------------------------------*/
 }
 
 //************************************
@@ -3097,7 +3588,7 @@ bool MULTI::apla_knn_multi(typename TOOL::INPUT_ARGUMENT& const input_argument, 
 	input_argument.distance_lowbound_time = 0.0; // distance chebyshev, PLA, APCA time
 	input_argument.distance_euc_time = 0.0;// distance euclidean time
 #endif
-	input_argument.IO_cost = 0;// measure 
+	input_argument.IO_cost = 0;// measure I/O cost
 	input_argument.sum_distance_euc = 0;
 	/*===========================================================================================================================*/
 	/*========================================Variable construct=================================================================*/
@@ -3151,7 +3642,19 @@ bool MULTI::apla_knn_multi(typename TOOL::INPUT_ARGUMENT& const input_argument, 
 				/*-------------------------------------------- Print Result ---------------------------------*/
 				cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! APLA Find result !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    result list size: " << result.size() << endl;
 
+				cout << "Total KNN time : " << input_argument.knn_total_time << " us" << endl;
+
+				cout << "R-tree index navigate time : " << input_argument.navigate_index_time << " us" << endl;
+
+				cout << "R-tree Euclidean distance time : " << input_argument.distance_euc_time << " us" << endl;
+
+				cout << "R-tree index distance time : " << input_argument.distance_lowbound_time << " us" << endl;
+
+
 				cout << "pruning power: " << input_argument.pruning_power << endl;
+
+				cout << "I/O cost: " << input_argument.IO_cost << endl;
+
 				result.sort([](const APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR& first, const  APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR& second) {return first.d_dist < second.d_dist; });//small to big
 
 				for (typename list<APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR>::iterator it = result.begin(); it != result.end(); ++it) {
@@ -3440,7 +3943,7 @@ std::multiset<pair<double, int>> MULTI::all_knn_multi(typename TOOL::DATA_SOURCE
 #endif
 	/*-------------------------      Evaluation  ---------------------------------*/
 	input_argument.knn_total_time = 0.0;// include IO time in approxitaon part.
-	input_argument.IO_cost = 0;// measure 
+	input_argument.IO_cost = 0;// measure I/O cost
 	input_argument.pruning_power = 0;
 	/*-------------------------------------------------------------------------------*/
 
@@ -3580,9 +4083,18 @@ std::multiset<pair<double, int>> MULTI::all_knn_multi(typename TOOL::DATA_SOURCE
 				/*-------------------------------------------- Print Result ---------------------------------*/
 				cout << "!!!!!!!!!!!!! KNN Find result !!!!!!!!!!!!!!!!!!!!!!!!!!!!   result list size: " << result.size() << endl;
 
+				cout << "Total KNN time : " << input_argument.knn_total_time << " us" << endl;
+
+				cout << "R-tree index navigate time : " << input_argument.navigate_index_time << " us" << endl;
+
+				cout << "R-tree Euclidean distance time : " << input_argument.distance_euc_time << " us" << endl;
+
+				cout << "R-tree index distance time : " << input_argument.distance_lowbound_time << " us" << endl;
+
 				cout << "pruning power: " << input_argument.pruning_power << endl;
 
-				
+				cout << "I/O cost: " << input_argument.IO_cost << endl;
+
 				result.sort([](const APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR& first, const  APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR& second) {return first.d_dist < second.d_dist; });//small to big
 #endif
 				for (typename list<APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR>::iterator it = result.begin(); it != result.end(); ++it) {
@@ -3969,7 +4481,7 @@ std::multiset<pair<double, int>> MULTI::all_knn_multi_210511(typename TOOL::DATA
 	/*-------------------------      Evaluation  ---------------------------------*/
 	input_argument.knn_total_time = 0.0;
 	input_argument.knn_total_time_has_IO = 0.0;//210606
-	input_argument.IO_cost = 0;// measure 
+	input_argument.IO_cost = 0;// measure I/O cost
 	input_argument.pruning_power = 0;
 	/*-------------------------------------------------------------------------------*/
 	const int option_distance_in_leaf = 0;// LB distance or SAPLA distance
@@ -4069,7 +4581,7 @@ std::multiset<pair<double, int>> MULTI::all_knn_multi_210511(typename TOOL::DATA
 	/*-------------------------Evaluation Time---------------------------------*/
 	TOOL::recordStartTime(TOOL::time_record[14]); //whole time
 	TOOL::recordStartTime(TOOL::time_record[16]); //whole time has IO
-	TOOL::recordStartTime(TOOL::time_record[2]);//knn time
+	TOOL::recordStartTime(TOOL::time_record[2]); //knn time
 	TOOL::recordStartTime(TOOL::time_record[15]);//knn has IO time 210606
 	/*--------------------------------------------------------------------------------*/
 	/*========================================== Variable Initial ===============================================================*/
@@ -4245,7 +4757,7 @@ std::multiset<pair<double, int>> MULTI::all_knn_multi_210511(typename TOOL::DATA
 					/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       210511    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 					switch (option_distance_in_leaf) {
-					case 0:{
+					case 0: {
 						/*-------210511 PAA APCA version has projection of query time series -----------*/
 						f_temp_APLA_Pair.d_dist = APLA::get_distance_LB(apla_array_vector[f_temp_APLA_Pair.original_time_series_id], APLA::get_apla_projection(query_time_series_vector, apla_array_vector[f_temp_APLA_Pair.original_time_series_id], query_apla_projection_vector));
 						/*------------------------------------------------------------------------------*/
@@ -4275,7 +4787,7 @@ std::multiset<pair<double, int>> MULTI::all_knn_multi_210511(typename TOOL::DATA
 					default:
 						assert(0);
 					}
-					
+
 					break;
 				}
 				case 2://PLA
@@ -4303,7 +4815,7 @@ std::multiset<pair<double, int>> MULTI::all_knn_multi_210511(typename TOOL::DATA
 				case 7: {//PAALM
 					//f_temp_APLA_Pair.d_dist = APCA_KNN_QUAL::distanceAE(query_time_series_vector, input_argument.time_series_length, apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)]);
 					f_temp_APLA_Pair.d_dist = APCA_KNN_QUAL::distanceLB(apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)], apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)]);
-					
+
 					break;
 				}
 				case 9: {//SAX
@@ -4452,7 +4964,7 @@ std::multiset<pair<double, int>> MULTI::all_knn_multi_210618(typename TOOL::DATA
 	assert(input_argument.time_series_length == input_argument.point_multi_single_length);
 	assert(input_argument.point_dimension == input_argument.point_multi_single_dimension);
 	assert(apcaRTree.m_root->m_level > 0);
-	const vector<string> name_representation_vector{ "MSPLA KNN","PLA KNN","APCA KNN","PAA KNN","CHEBY KNN","ICDE07 KNN","PAALM KNN","Initial 200706 KNN","SAX KNN", };
+	const vector<string> name_representation_vector{ "MSPLA KNN","PLA KNN","APCA KNN","PAA KNN","CHEBY KNN","ICDE07 KNN","PAALM KNN","Initial 200706 KNN","SAX KNN", "Linear Scan KNN" };
 	cout << name_representation_vector[input_argument.representation_option - 1] << ":" << endl;
 	assert(apcaRTree.m_root->m_count > 0);
 #endif
@@ -4460,10 +4972,11 @@ std::multiset<pair<double, int>> MULTI::all_knn_multi_210618(typename TOOL::DATA
 
 	/*-------------------------      Evaluation  ---------------------------------*/
 	input_argument.knn_total_time = 0.0;
+	input_argument.knn_CPU_time = 0.0;
 	input_argument.knn_total_time_has_IO = 0.0;//210606
-	input_argument.IO_cost = 0;// measure 
+	input_argument.IO_cost = 0;// measure I/O cost
 	input_argument.pruning_power = 0;
-	/*-------------------------------------------------------------------------------*/
+	/*----------------------------------------------------------------------------*/
 
 	/*-------------------------------------change pointer array to vector array--------------------------------*/
 	//int multi_to_single_series_length = input_argument.time_series_length * input_argument.arity_d;
@@ -4490,7 +5003,7 @@ std::multiset<pair<double, int>> MULTI::all_knn_multi_210618(typename TOOL::DATA
 	SaxQuantizer::SAX sax(input_argument.point_dimension);
 	//APCA_QUAL::getAPCAPoint(g_query_time_series, input_argument.time_series_length, input_argument.point_dimension, query_APCA);
 	typename PLA_QUAL::PLA PLA_query;
-	DoublyLinkedList<typename APLA::template AREA_COEFFICIENT_RTREE_NODE<long double, long double>> temp_list_query;
+	DoublyLinkedList<APLA::AREA_COEFFICIENT_SPEED_NO_MINMAX> temp_list_query;
 	/**/
 
 	/*========================================!!!!!!!!!!!   MSPLA & ICDE07 Variable construct=================================================================*/
@@ -4501,7 +5014,7 @@ std::multiset<pair<double, int>> MULTI::all_knn_multi_210618(typename TOOL::DATA
 	//APLA_ICDE07<DataType>::getAPLA_ICDE07(input_argument, normalized_series_vector, apla_array_vector[point_id]);
 	case 6: //ICDE07
 	case 8: {//Initial 200706
-		
+
 		query_linked_list.copy(apla_array_vector[input_argument.query_time_series_id]);
 		APLA::getAPLAReconstructSeries(query_linked_list, reconstruct_query_time_series_vector);
 
@@ -4527,6 +5040,11 @@ std::multiset<pair<double, int>> MULTI::all_knn_multi_210618(typename TOOL::DATA
 	}
 	case 3://APCA
 		transfer_apca_to_sapla(input_argument.point_dimension, apca_point_array[input_argument.query_time_series_id], temp_list_query);
+		/*......................................*/
+#ifdef _DEBUG
+		APLA::assert_endpoint_average(query_time_series_vector, temp_list_query);
+#endif
+		/*......................................*/
 		break;
 	case 4://PAA
 		APCA_QUAL::initialAPCA(query_APCA, input_argument.point_dimension);
@@ -4579,7 +5097,7 @@ std::multiset<pair<double, int>> MULTI::all_knn_multi_210618(typename TOOL::DATA
 	/*========================================================================================Begin K-NN=======================================================================================================================================*/
 	while (!queue.empty()) {
 		m_temp_queue_top = queue.top();
-		/*===========================================================================Scan temp to get ruslt=========================================================================================================*/
+		/*===========================================================================Scan temp to get reuslt=========================================================================================================*/
 		for (typename list<APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR>::iterator plist = temp.begin(); plist != temp.end();) {
 			//cout << "        Loop: " << plist->d_dist << " vs " << m_temp_queue_top.d_dist << endl;
 			if (plist->d_dist <= m_temp_queue_top.d_dist) {
@@ -4620,7 +5138,7 @@ std::multiset<pair<double, int>> MULTI::all_knn_multi_210618(typename TOOL::DATA
 				//cout << endl;
 				/*--------------------------------------------------------------------------------------------*/
 				/*--------------------------------------     Clear memory    -----------------------------------------------*/
-			
+
 				priority_queue< MULTI::RTREE_NODE_PAIR<double, int, U::Node>, vector<MULTI::RTREE_NODE_PAIR<double, int, U::Node>>, MULTI::priorityIncrement<MULTI::RTREE_NODE_PAIR<double, int, U::Node>>>().swap(queue);
 
 				temp.clear();
@@ -4661,11 +5179,12 @@ std::multiset<pair<double, int>> MULTI::all_knn_multi_210618(typename TOOL::DATA
 		/*==Pop top node ine queue==*/
 		queue.pop();
 		/*==========================*/
+		TOOL::recordStartTime(TOOL::time_record[1]);//CPU time
 		/*====================================================================== Check APLA point ==================================================================================*/
-		
+
 		if (m_temp_queue_top.p_rtree_node == nullptr) { //is Approximation data point
 			/*------------------------------------------------get original time series from database (file)----------------------------------------------*/
-		
+
 			tempOriginalTimeSeriesPair.original_time_series_id = m_temp_queue_top.original_time_series_id;//get top queue time sereis id.
 
 			/*..........................................................................................................*/
@@ -4687,7 +5206,9 @@ std::multiset<pair<double, int>> MULTI::all_knn_multi_210618(typename TOOL::DATA
 			/*=======================================*/
 
 			/*------------------------------------------------compute Euclidean distance from query times and candidate original time series-----------------------------------------*/
+			TOOL::recordStartTime(TOOL::time_record[1]);//CPU time
 			tempOriginalTimeSeriesPair.d_dist = TOOL::distanceEUC(query_time_series_vector, original_time_series_vector);
+			input_argument.knn_CPU_time += TOOL::recordFinishTime(TOOL::time_record[1]);//210603
 			temp.push_back(tempOriginalTimeSeriesPair);
 			/*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 		/*============================================================================================================================================================================*/
@@ -4720,7 +5241,7 @@ std::multiset<pair<double, int>> MULTI::all_knn_multi_210618(typename TOOL::DATA
 				case 6: //ICDE07
 				case 8: {//Initial 200706
 
-					switch (input_argument.option_tree) {
+					switch (input_argument.option_tree_struct.type_tree) {
 					case 0: {// R-Tree
 						/*-------210511 PAA APCA version has projection of query time series -----------*/
 						f_temp_APLA_Pair.d_dist = APLA::get_distance_LB(apla_array_vector[f_temp_APLA_Pair.original_time_series_id], APLA::get_apla_projection(query_time_series_vector, apla_array_vector[f_temp_APLA_Pair.original_time_series_id], query_apla_projection_vector));
@@ -4755,7 +5276,7 @@ std::multiset<pair<double, int>> MULTI::all_knn_multi_210618(typename TOOL::DATA
 					f_temp_APLA_Pair.d_dist = PLA_QUAL::getPLADistance(input_argument.point_multi_single_length, pla_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)], PLA_query, f_temp_APLA_Pair.d_dist);
 					break;
 				case 3://APCA
-					switch (input_argument.option_tree) {
+					switch (input_argument.option_tree_struct.type_tree) {
 					case 0: {// R-Tree
 						//f_temp_APLA_Pair.d_dist = APCA_KNN_QUAL::distanceAE(query_time_series_vector, input_argument.time_series_length, apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)]);
 						f_temp_APLA_Pair.d_dist = APCA_KNN_QUAL::distanceLB(APCA_KNN_QUAL::QAPCAProjection(g_query_time_series, input_argument.time_series_length, apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)], QProjection), apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)]);
@@ -4766,12 +5287,18 @@ std::multiset<pair<double, int>> MULTI::all_knn_multi_210618(typename TOOL::DATA
 						input_argument.knn_total_time += TOOL::recordFinishTime(TOOL::time_record[2]);//210603
 						input_argument.whole_run_time += TOOL::recordFinishTime(TOOL::time_record[14]);
 						TOOL::read_normalized_multi_time_series(data_source, f_temp_APLA_Pair.original_time_series_id, original_time_series_vector);
-						
-						DoublyLinkedList<typename APLA::template AREA_COEFFICIENT_RTREE_NODE<long double, long double>> temp_list;
-						
+
+						DoublyLinkedList<APLA::AREA_COEFFICIENT_SPEED_NO_MINMAX> temp_list;
+
 						transfer_apca_to_sapla(input_argument.point_dimension, apca_point_array[f_temp_APLA_Pair.original_time_series_id], temp_list);
 						TOOL::recordStartTime(TOOL::time_record[14]); //whole time
 						TOOL::recordStartTime(TOOL::time_record[2]);//knn time
+
+						/*......................................*/
+#ifdef _DEBUG
+						APLA::assert_endpoint_average(original_time_series_vector, temp_list);
+#endif
+						/*......................................*/
 
 						long double pruning_power_distance = 0;//210603
 						f_temp_APLA_Pair.d_dist = APLA::get_distance_SAPLA_average(query_time_series_vector, original_time_series_vector, temp_list_query, temp_list, pruning_power_distance);
@@ -4792,7 +5319,7 @@ std::multiset<pair<double, int>> MULTI::all_knn_multi_210618(typename TOOL::DATA
 					//f_temp_APLA_Pair.d_dist = APCA_KNN_QUAL::distanceAE(query_time_series_vector, input_argument.time_series_length, apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)]);
 					//f_temp_APLA_Pair.d_dist = APCA_KNN_QUAL::distanceLB(APCA_KNN_QUAL::QAPCAProjection(g_query_time_series, input_argument.time_series_length, apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)], QProjection), apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)]);
 					f_temp_APLA_Pair.d_dist = APCA_KNN_QUAL::distanceLB(query_APCA, apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)]);
-					
+
 					break;
 				}
 				case 9: {//SAX
@@ -4808,13 +5335,15 @@ std::multiset<pair<double, int>> MULTI::all_knn_multi_210618(typename TOOL::DATA
 				}
 				queue.push(f_temp_APLA_Pair);
 			}
+
+			input_argument.knn_CPU_time += TOOL::recordFinishTime(TOOL::time_record[1]);//210603
 			/*-------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 			/*------------------------------------------------------------------------Clear memory-------------------------------------------------------------------------------*/
 			APCA_QUAL::deleteAPCA(QProjection);
 			/*-------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-			/*============================================================================================================================================================================*/		    
-        }
-		else if (m_temp_queue_top.p_rtree_node->IsInternalNode()) {
+			/*============================================================================================================================================================================*/
+		}
+		else if (m_temp_queue_top.p_rtree_node->IsInternalNode()) {// Internal node
 #ifdef _DEBUG
 			assert(apcaRTree.NUMDIMS >> 1 == input_argument.point_dimension && input_argument.point_multi_single_length == input_argument.time_series_length);
 #endif
@@ -4929,6 +5458,1318 @@ std::multiset<pair<double, int>> MULTI::all_knn_multi_210618(typename TOOL::DATA
 }
 
 
+//211207 set of the temp and result vector
+TEMPLATE
+template<typename T, typename Y, typename U>
+std::multiset<pair<double, int>> MULTI::all_knn_multi_211207(typename TOOL::DATA_SOURCE& const data_source, typename TOOL::INPUT_ARGUMENT& const input_argument, const vector<Y>& const multi_y_projection_argument, DataType*& g_query_time_series, const U& const apcaRTree, T& const approximation_array) {
+	/*..........................................................................................................*/
+#ifdef _DEBUG
+	assert(input_argument.file_id != INF && input_argument.K <= input_argument.point_number && input_argument.time_series_length != INF && input_argument.point_number != INF && input_argument.arity_d != INF && input_argument.K != INF);
+	assert(input_argument.time_series_length == input_argument.point_multi_single_length);
+	assert(input_argument.point_dimension == input_argument.point_multi_single_dimension);
+	assert(apcaRTree.m_root->m_level > 0);
+	const vector<string> name_representation_vector{ "MSPLA KNN","PLA KNN","APCA KNN","PAA KNN","CHEBY KNN","ICDE07 KNN","PAALM KNN","Initial 200706 KNN","SAX KNN", "Linear Scan KNN" };
+	cout << name_representation_vector[input_argument.representation_option - 1] << ":" << endl;
+	assert(apcaRTree.m_root->m_count > 0);
+#endif
+	/*..........................................................................................................*/
+
+	/*-------------------------      Evaluation  ---------------------------------*/
+	input_argument.knn_total_time = 0.0;
+	input_argument.knn_CPU_time = 0.0;
+	input_argument.knn_total_time_has_IO = 0.0;//210606
+	input_argument.IO_cost = 0;// measure I/O cost
+	input_argument.pruning_power = 0;
+	/*----------------------------------------------------------------------------*/
+
+	/*-------------------------------------change pointer array to vector array--------------------------------*/
+	//int multi_to_single_series_length = input_argument.time_series_length * input_argument.arity_d;
+	int multi_to_single_series_length = input_argument.time_series_length;
+	vector<DataType> query_time_series_vector;
+	query_time_series_vector.resize(multi_to_single_series_length, INF);
+	std::copy_n(g_query_time_series, multi_to_single_series_length, query_time_series_vector.begin());
+
+	vector<DataType> reconstruct_query_time_series_vector;
+	reconstruct_query_time_series_vector.resize(multi_to_single_series_length, INF);
+	/*---------------------------------------------------------------------------------------------------------*/
+
+	/*=======================================Evaluation: plot & bar chart=======================================================*/
+#ifdef _DEBUG
+	//g_n_account_apca_point = 0;
+	input_argument.navigate_index_time = 0.0;// navigate time
+	input_argument.distance_lowbound_time = 0.0; // distance chebyshev, PLA, APCA time
+	input_argument.distance_euc_time = 0.0;// distance euclidean time
+#endif
+	/*===========================================================================================================================*/
+
+	/**/
+	typename APCA_QUAL::APCA query_APCA;
+	SaxQuantizer::SAX sax(input_argument.point_dimension);
+	//APCA_QUAL::getAPCAPoint(g_query_time_series, input_argument.time_series_length, input_argument.point_dimension, query_APCA);
+	typename PLA_QUAL::PLA PLA_query;
+	DoublyLinkedList<APLA::AREA_COEFFICIENT_SPEED_NO_MINMAX> temp_list_query;
+	/**/
+
+	/*========================================!!!!!!!!!!!   MSPLA & ICDE07 Variable construct=================================================================*/
+
+	DoublyLinkedList<APLA::AREA_COEFFICIENT_SPEED_NO_MINMAX> query_linked_list = DoublyLinkedList<APLA::AREA_COEFFICIENT_SPEED_NO_MINMAX>();
+	switch (input_argument.representation_option) {
+	case 1://MSPLA
+	//APLA_ICDE07<DataType>::getAPLA_ICDE07(input_argument, normalized_series_vector, apla_array_vector[point_id]);
+	case 6: //ICDE07
+	case 8: {//Initial 200706
+
+		query_linked_list.copy(apla_array_vector[input_argument.query_time_series_id]);
+		APLA::getAPLAReconstructSeries(query_linked_list, reconstruct_query_time_series_vector);
+
+		/*......................................*/
+#ifdef _DEBUG
+		assert(query_linked_list.size() == apla_array_vector[input_argument.query_time_series_id].size());
+		for (int segment_id = 0; segment_id < query_linked_list.size(); segment_id++) {
+			const auto& const query_segment = query_linked_list[segment_id];
+			const auto& const array_segment = apla_array_vector[input_argument.query_time_series_id][segment_id];
+			//cout <<"!!!!!!!!!!!!" <<query_segment.right_endpoint << ", "<<array_segment.right_endpoint << endl;
+			assert(query_segment.right_endpoint == array_segment.right_endpoint);
+			assert(query_segment.right_endpoint != INF && query_segment.right_endpoint >= 0 && query_segment.right_endpoint < input_argument.point_multi_single_length);
+		}
+#endif
+		/*......................................*/
+
+		break;
+	}
+	case 2: {//PLA
+		PLA_QUAL::initialPLA(PLA_query, input_argument.point_multi_single_dimension);//????????180918 , this multi ot single has problem
+		PLA_QUAL::getPLA(input_argument.point_multi_single_length, input_argument.point_multi_single_dimension, g_query_time_series, PLA_query);
+		break;
+	}
+	case 3://APCA
+		transfer_apca_to_sapla(input_argument.point_dimension, apca_point_array[input_argument.query_time_series_id], temp_list_query);
+		/*......................................*/
+#ifdef _DEBUG
+		APLA::assert_endpoint_average(query_time_series_vector, temp_list_query);
+#endif
+		/*......................................*/
+		break;
+	case 4://PAA
+		APCA_QUAL::initialAPCA(query_APCA, input_argument.point_dimension);
+		APCA_QUAL::divideRemainderPAA(g_query_time_series, query_APCA, input_argument.time_series_length, input_argument.point_dimension);
+		break;
+	case 5://CHEBY
+		assert(0);
+		break;
+	case 7://PAALM
+		APCA_QUAL::initialAPCA(query_APCA, input_argument.point_dimension);
+		APCA_QUAL::divideRemainderPAA(g_query_time_series, query_APCA, input_argument.time_series_length, input_argument.point_dimension);
+		APCA_QUAL::get_paa_lagrangian(query_APCA);
+		break;
+	case 9: {//SAX
+		APCA_QUAL::initialAPCA(query_APCA, input_argument.point_dimension);
+		sax.get_SAX(query_time_series_vector, input_argument.point_dimension, query_APCA);
+		break;
+	}
+	default:
+		assert(0);
+		break;
+	}
+	/*=======================================================================================================================================================*/
+	/*========================================!!!!!!!!!!!   APLA & ICDE07 Variable construct=================================================================*/
+	int i = NULL, j = NULL;
+	priority_queue<RTREE_NODE_PAIR<double, int, U::Node>, vector<MULTI::RTREE_NODE_PAIR<double, int, U::Node>>, MULTI::priorityIncrement<MULTI::RTREE_NODE_PAIR<double, int, U::Node>>> queue;// <Rtree node, distance>
+	MULTI::RTREE_NODE_PAIR<double, int, U::Node> f_APLA_Root, f_temp_APLA_Pair;// distance, APCA point(original time series) id, APCA point pointer, Rtree sub node pointer
+	//list<APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR> temp; // <dist, original time series id>
+	//list<APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR> result;// <dist, original time series id>
+	std::multiset<pair<double, int>> result_set;//191204 result set small to big
+	vector<APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR> result_vector;//211207
+	priority_queue<typename APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR, vector<typename APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR>, MULTI::priorityIncrement<typename APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR>> temp_queue;//191204 result
+	typename APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR tempOriginalTimeSeriesPair; // <dist, original time series id>
+	MULTI::RTREE_NODE_PAIR<double, int, U::Node> m_temp_queue_top;//
+	vector<DataType> original_time_series_vector;
+	/*==========================================================================================================================================*/
+	/*-------------------------Evaluation Time----------------------------*/
+	TOOL::recordStartTime(TOOL::time_record[14]); //whole time
+	TOOL::recordStartTime(TOOL::time_record[16]); //whole time has IO
+	TOOL::recordStartTime(TOOL::time_record[2]);//knn time
+	TOOL::recordStartTime(TOOL::time_record[15]);//knn has IO time 210606
+	/*---------------------------------------------------------------------*/
+
+	/*========================================== Variable Initial ===============================================================*/
+	f_APLA_Root.p_rtree_node = apcaRTree.m_root;
+	f_APLA_Root.d_dist = 0;
+	queue.push(f_APLA_Root);
+	//cout << "Queue.top = " << queue.top().key << " " << queue.size() << " " << queue.top().APCAValue << " " << queue.top().id_originalTimeSeries << " " << queue.top().value << endl;
+	//printf("<///////**    KNN Begin   **////////>\n");
+	/*===========================================================================================================================*/
+
+	/*========================================================================================Begin K-NN=======================================================================================================================================*/
+	while (!queue.empty()) {
+
+		m_temp_queue_top = queue.top();
+		/*===========================================================================Scan temp to get reuslt=========================================================================================================*/
+
+		while (!temp_queue.empty() && temp_queue.top().d_dist <= m_temp_queue_top.d_dist) {
+			result_vector.emplace_back(temp_queue.top());
+
+			if (input_argument.K == result_vector.size()) {
+				/*-------------------------Evaluation ---------------------------------*/
+				input_argument.knn_total_time += TOOL::recordFinishTime(TOOL::time_record[2]);
+				input_argument.knn_total_time_has_IO += TOOL::recordFinishTime(TOOL::time_record[15]);//210606
+				input_argument.whole_run_time += TOOL::recordFinishTime(TOOL::time_record[14]);
+				input_argument.whole_run_time_has_IO += TOOL::recordFinishTime(TOOL::time_record[16]);//210606
+				assert(input_argument.IO_cost != 0 && input_argument.point_number != INF);
+				input_argument.pruning_power = input_argument.IO_cost / double(input_argument.point_number);
+				assert(input_argument.pruning_power > 0);//&& input_argument.pruning_power < 1);//210603
+				/*---------------------------------------------------------------------*/
+
+				/*..........................................................................................................*/
+#ifdef _DEBUG
+				/*-------------------------------       Print Result       ---------------------------------*/
+				cout << "-------------      " << name_representation_vector[input_argument.representation_option - 1] << " SUCCESSFUL            ----------------" << endl;
+				TOOL::printInputArgument(input_argument);
+				TOOL::print_input_argument_KNN_result(input_argument);
+				cout << "-----------------------------------------------" << endl;
+				//result.sort([](const APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR& first, const  APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR& second) {return first.d_dist < second.d_dist; });//small to big
+#endif
+				/*..........................................................................................................*/
+
+				//for (typename list<APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR>::iterator it = result.begin(); it != result.end(); ++it) {
+				//	//cout << it->d_dist << ", " << it->original_time_series_id << "; ";
+				//	result_set.emplace(make_pair(it->d_dist, it->original_time_series_id));
+				//}
+				/*for (int order_result = 0; order_result < input_argument.K; order_result++) {
+					result_set.emplace(make_pair(result_vector[order_result].d_dist, result_vector[order_result].original_time_series_id));
+				}*/
+
+				for (auto&& au : result_vector) {
+					result_set.emplace(make_pair(au.d_dist, au.original_time_series_id));
+				}
+
+				assert(result_set.size() == input_argument.K && result_vector.size() == input_argument.K);
+				//cout << endl;
+				/*--------------------------------------------------------------------------------------------*/
+				/*--------------------------------------     Clear memory    -----------------------------------------------*/
+
+				priority_queue< MULTI::RTREE_NODE_PAIR<double, int, U::Node>, vector<MULTI::RTREE_NODE_PAIR<double, int, U::Node>>, MULTI::priorityIncrement<MULTI::RTREE_NODE_PAIR<double, int, U::Node>>>().swap(queue);
+
+				//temp.clear();
+				//result.clear();
+				//list <APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR>().swap(temp);
+				//list <APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR>().swap(result);
+				result_vector.clear();
+				result_vector.shrink_to_fit();
+
+				switch (input_argument.representation_option) {
+				case 1://MSPLA
+				case 6: //ICDE07
+				case 8:
+					break;
+				case 2: {//PLA
+					PLA_QUAL::deletePLA(PLA_query);
+					break;
+				}
+				case 3://APCA
+					temp_list_query.clear();
+					break;
+				case 5://CHEBY
+					assert(0);
+					break;
+				case 4://PAA
+				case 7://PAALM
+				case 9://SAX
+					APCA_QUAL::deleteAPCA(query_APCA);
+					break;
+				default:
+					assert(0);
+					break;
+				}
+
+				/*---------------------------------------------------------------------------------------------------------*/
+				return result_set;
+			}
+			temp_queue.pop();
+		}
+
+		/*==========================================================================================================================================================================*/
+		/*==Pop top node ine queue==*/
+		queue.pop();
+		/*==========================*/
+
+		/*====================================================================== Check APLA point ==================================================================================*/
+
+		if (m_temp_queue_top.p_rtree_node == nullptr) { //is Approximation data point
+			/*------------------------------------------------get original time series from database (file)----------------------------------------------*/
+
+			tempOriginalTimeSeriesPair.original_time_series_id = m_temp_queue_top.original_time_series_id;//get top queue time sereis id.
+
+			/*..........................................................................................................*/
+#ifdef _DEBUG
+			assert(input_argument.time_series_length == data_source.multi_single_time_series_length && input_argument.read_file_name == data_source.read_file_address);
+#endif
+			/*..........................................................................................................*/
+			input_argument.knn_total_time += TOOL::recordFinishTime(TOOL::time_record[2]);//210603
+			input_argument.whole_run_time += TOOL::recordFinishTime(TOOL::time_record[14]);
+			TOOL::read_normalized_multi_time_series(data_source, m_temp_queue_top.original_time_series_id, original_time_series_vector);
+			TOOL::recordStartTime(TOOL::time_record[14]); //whole time
+			TOOL::recordStartTime(TOOL::time_record[2]);//knn time
+			//			//already normalized
+			//			TOOL::getMultiFoldToSingleByID(data_source.read_file_address_vector, data_source.time_series_dimension, data_source.single_time_series_length, m_temp_queue_top.original_time_series_id, original_time_series_vector);
+			/*--------------------------------------------------------------------------------------------------------------------------------------------*/
+
+			/*===============Evaluation==============*/
+			input_argument.IO_cost++;
+			/*=======================================*/
+
+			/*------------------------------------------------compute Euclidean distance from query times and candidate original time series-----------------------------------------*/
+			TOOL::recordStartTime(TOOL::time_record[1]);//CPU time
+			tempOriginalTimeSeriesPair.d_dist = TOOL::distanceEUC(query_time_series_vector, original_time_series_vector);
+			input_argument.knn_CPU_time += TOOL::recordFinishTime(TOOL::time_record[1]);//210603
+			//temp.push_back(tempOriginalTimeSeriesPair);
+			//temp_set.emplace(make_pair(tempOriginalTimeSeriesPair.d_dist, tempOriginalTimeSeriesPair.original_time_series_id));
+			temp_queue.push(tempOriginalTimeSeriesPair);
+			/*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+		/*============================================================================================================================================================================*/
+		}
+		else if (m_temp_queue_top.p_rtree_node->IsLeaf()) {//is Leaf Node  tempQueueTop.value->IsLeaf() || tempQueueTop.swith==1
+			/*====================================================================== Check Leaf Node, insert APCA point into queue===============================================================================*/
+
+			/*................................................*/
+#ifdef _DEBUG
+			assert(apcaRTree.NUMDIMS / 2 == input_argument.point_dimension && m_temp_queue_top.p_rtree_node->m_count > 0);
+#endif
+			/*................................................*/
+
+			typename APCA_QUAL::APCA QProjection;
+			APCA_QUAL::initialAPCA(QProjection, input_argument.point_dimension);
+			vector<APLA::AREA_COEFFICIENT_SPEED_NO_MINMAX> query_apla_projection_vector(input_argument.point_dimension);
+
+			/*-----------------------------------------------------------------------queue: insert leaf node. compute distance LB--------------------------------------------------------------------------------------------*/
+
+			TOOL::recordStartTime(TOOL::time_record[1]);//CPU time
+			f_temp_APLA_Pair.p_rtree_node = nullptr;
+
+			for (int i = 0; i < m_temp_queue_top.p_rtree_node->m_count; i++) {// scan sub node in Rtree
+
+				/*-----------------------------------------get ACPA(origitnal time series) point & id----------------------------------------------------*/
+				f_temp_APLA_Pair.original_time_series_id = int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data);// get APCA(original time series) id
+				//f_temp_APLA_Pair.approximation_pointer = &apla_array_vector[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)];// pointer to APCA point
+				/*----------------------------------------------------------------------------------------------------------------------------------------*/
+
+				switch (input_argument.representation_option) {
+				case 1://MSPLA
+				case 6: //ICDE07
+				case 8: {//Initial 200706
+
+					switch (input_argument.option_tree_struct.type_tree) {
+					case 0: {// R-Tree
+						/*-------210511 PAA APCA version has projection of query time series -----------*/
+						f_temp_APLA_Pair.d_dist = APLA::get_distance_LB(apla_array_vector[f_temp_APLA_Pair.original_time_series_id], APLA::get_apla_projection(query_time_series_vector, apla_array_vector[f_temp_APLA_Pair.original_time_series_id], query_apla_projection_vector));
+						/*------------------------------------------------------------------------------*/
+						break;
+					}
+					case 1: {// Partition Tree
+						/*-------210511 PAA APCA version has projection of query time series -----------*/
+						input_argument.knn_CPU_time += TOOL::recordFinishTime(TOOL::time_record[1]);//210603
+						input_argument.knn_total_time += TOOL::recordFinishTime(TOOL::time_record[2]);//210603
+						input_argument.whole_run_time += TOOL::recordFinishTime(TOOL::time_record[14]);
+						TOOL::read_normalized_multi_time_series(data_source, f_temp_APLA_Pair.original_time_series_id, original_time_series_vector);
+						TOOL::recordStartTime(TOOL::time_record[14]); //whole time
+						TOOL::recordStartTime(TOOL::time_record[2]);//knn time
+						TOOL::recordStartTime(TOOL::time_record[1]);
+						long double pruning_power_distance = 0;//210603
+						/*-------------------  ---------------------------------*/
+						f_temp_APLA_Pair.d_dist = APLA::get_distance_SAPLA(query_time_series_vector, original_time_series_vector, apla_array_vector[input_argument.query_time_series_id], apla_array_vector[f_temp_APLA_Pair.original_time_series_id], pruning_power_distance);
+						/*----------------------------------------------------*/
+						/*===============Evaluation==============*/
+						//input_argument.IO_cost += pruning_power_distance;
+						/*=======================================*/
+						/*------------------------------------------------------------------------------*/
+						break;
+					}
+					case 2: {// Partition Tree
+				  /*-------210511 PAA APCA version has projection of query time series -----------*/
+						input_argument.knn_CPU_time += TOOL::recordFinishTime(TOOL::time_record[1]);//210603
+						input_argument.knn_total_time += TOOL::recordFinishTime(TOOL::time_record[2]);//210603
+						input_argument.whole_run_time += TOOL::recordFinishTime(TOOL::time_record[14]);
+						TOOL::read_normalized_multi_time_series(data_source, f_temp_APLA_Pair.original_time_series_id, original_time_series_vector);
+						TOOL::recordStartTime(TOOL::time_record[14]); //whole time
+						TOOL::recordStartTime(TOOL::time_record[2]);//knn time
+						TOOL::recordStartTime(TOOL::time_record[1]);
+						long double pruning_power_distance = 0;//210603
+						/*-------------------  ---------------------------------*/
+						f_temp_APLA_Pair.d_dist = APLA::get_distance_SAPLA(query_time_series_vector, original_time_series_vector, apla_array_vector[input_argument.query_time_series_id], apla_array_vector[f_temp_APLA_Pair.original_time_series_id], pruning_power_distance);
+						/*----------------------------------------------------*/
+						/*===============Evaluation==============*/
+						//input_argument.IO_cost += pruning_power_distance;
+						/*=======================================*/
+						/*------------------------------------------------------------------------------*/
+						break;
+					}
+					default:
+						assert(0);
+					}
+
+					break;
+				}
+				case 2://PLA
+					f_temp_APLA_Pair.d_dist = PLA_QUAL::getPLADistance(input_argument.point_multi_single_length, pla_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)], PLA_query, f_temp_APLA_Pair.d_dist);
+					break;
+				case 3://APCA
+					switch (input_argument.option_tree_struct.type_tree) {
+					case 0: {// R-Tree
+						//f_temp_APLA_Pair.d_dist = APCA_KNN_QUAL::distanceAE(query_time_series_vector, input_argument.time_series_length, apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)]);
+						f_temp_APLA_Pair.d_dist = APCA_KNN_QUAL::distanceLB(APCA_KNN_QUAL::QAPCAProjection(g_query_time_series, input_argument.time_series_length, apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)], QProjection), apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)]);
+						break;
+					}
+					case 1: {// Partition Tree
+						/*-------210511 PAA APCA version has projection of query time series -----------*/
+						input_argument.knn_CPU_time += TOOL::recordFinishTime(TOOL::time_record[1]);
+						input_argument.knn_total_time += TOOL::recordFinishTime(TOOL::time_record[2]);//210603
+						input_argument.whole_run_time += TOOL::recordFinishTime(TOOL::time_record[14]);
+						TOOL::read_normalized_multi_time_series(data_source, f_temp_APLA_Pair.original_time_series_id, original_time_series_vector);
+
+						DoublyLinkedList<APLA::AREA_COEFFICIENT_SPEED_NO_MINMAX> temp_list;
+
+						transfer_apca_to_sapla(input_argument.point_dimension, apca_point_array[f_temp_APLA_Pair.original_time_series_id], temp_list);
+						TOOL::recordStartTime(TOOL::time_record[14]); //whole time
+						TOOL::recordStartTime(TOOL::time_record[2]);//knn time
+						TOOL::recordStartTime(TOOL::time_record[1]);
+
+						/*......................................*/
+#ifdef _DEBUG
+						APLA::assert_endpoint_average(original_time_series_vector, temp_list);
+#endif
+						/*......................................*/
+
+						long double pruning_power_distance = 0;//210603
+						f_temp_APLA_Pair.d_dist = APLA::get_distance_SAPLA_average(query_time_series_vector, original_time_series_vector, temp_list_query, temp_list, pruning_power_distance);
+						//f_temp_APLA_Pair.d_dist = APLA::get_distance_SAPLA(query_time_series_vector, f_temp_APLA_Pair.original_time_series_id, data_source.read_file_address_vector[0], apla_array_vector[input_argument.query_time_series_id], apla_array_vector[f_temp_APLA_Pair.original_time_series_id], pruning_power_distance);
+						/*===============Evaluation==============*/
+						//input_argument.IO_cost += pruning_power_distance;
+						/*=======================================*/
+						temp_list.clear();
+						/*------------------------------------------------------------------------------*/
+						break;
+					}
+					case 2: {// Partition Tree
+				  /*-------210511 PAA APCA version has projection of query time series -----------*/
+						input_argument.knn_CPU_time += TOOL::recordFinishTime(TOOL::time_record[1]);
+						input_argument.knn_total_time += TOOL::recordFinishTime(TOOL::time_record[2]);//210603
+						input_argument.whole_run_time += TOOL::recordFinishTime(TOOL::time_record[14]);
+						TOOL::read_normalized_multi_time_series(data_source, f_temp_APLA_Pair.original_time_series_id, original_time_series_vector);
+
+						DoublyLinkedList<APLA::AREA_COEFFICIENT_SPEED_NO_MINMAX> temp_list;
+
+						transfer_apca_to_sapla(input_argument.point_dimension, apca_point_array[f_temp_APLA_Pair.original_time_series_id], temp_list);
+						TOOL::recordStartTime(TOOL::time_record[14]); //whole time
+						TOOL::recordStartTime(TOOL::time_record[2]);//knn time
+						TOOL::recordStartTime(TOOL::time_record[1]);
+
+						/*......................................*/
+#ifdef _DEBUG
+						APLA::assert_endpoint_average(original_time_series_vector, temp_list);
+#endif
+						/*......................................*/
+
+						long double pruning_power_distance = 0;//210603
+						f_temp_APLA_Pair.d_dist = APLA::get_distance_SAPLA_average(query_time_series_vector, original_time_series_vector, temp_list_query, temp_list, pruning_power_distance);
+						//f_temp_APLA_Pair.d_dist = APLA::get_distance_SAPLA(query_time_series_vector, f_temp_APLA_Pair.original_time_series_id, data_source.read_file_address_vector[0], apla_array_vector[input_argument.query_time_series_id], apla_array_vector[f_temp_APLA_Pair.original_time_series_id], pruning_power_distance);
+						/*===============Evaluation==============*/
+						//input_argument.IO_cost += pruning_power_distance;
+						/*=======================================*/
+						temp_list.clear();
+						/*------------------------------------------------------------------------------*/
+						break;
+					}
+					default:
+						assert(0);
+					}
+					break;
+				case 4://PAA
+				case 7: {//PAALM
+					//f_temp_APLA_Pair.d_dist = APCA_KNN_QUAL::distanceAE(query_time_series_vector, input_argument.time_series_length, apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)]);
+					//f_temp_APLA_Pair.d_dist = APCA_KNN_QUAL::distanceLB(APCA_KNN_QUAL::QAPCAProjection(g_query_time_series, input_argument.time_series_length, apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)], QProjection), apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)]);
+					f_temp_APLA_Pair.d_dist = APCA_KNN_QUAL::distanceLB(query_APCA, apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)]);
+
+					break;
+				}
+				case 9: {//SAX
+					f_temp_APLA_Pair.d_dist = sax.distance_LB_SAX(query_APCA, apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)]);
+					break;
+				}
+				case 5:
+					assert(0);
+					break;
+				default:
+					assert(0);
+					break;
+				}
+				queue.push(f_temp_APLA_Pair);
+			}
+
+			input_argument.knn_CPU_time += TOOL::recordFinishTime(TOOL::time_record[1]);//210603
+			/*-------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+			/*------------------------------------------------------------------------Clear memory-------------------------------------------------------------------------------*/
+			APCA_QUAL::deleteAPCA(QProjection);
+			/*-------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+			/*============================================================================================================================================================================*/
+		}
+		else if (m_temp_queue_top.p_rtree_node->IsInternalNode()) {// Internal node
+#ifdef _DEBUG
+			assert(apcaRTree.NUMDIMS >> 1 == input_argument.point_dimension && input_argument.point_multi_single_length == input_argument.time_series_length);
+#endif
+
+			TOOL::recordStartTime(TOOL::time_record[1]);//CPU time
+			MULTI::RTREE_NODE_PAIR<double, int, U::Node> temp_apla_pair;
+			typename APCA_KNN_QUAL::REGION fs_region_G;
+			typename APCA_KNN_QUAL::initialREGION(fs_region_G, input_argument.point_dimension);
+
+			for (int branch_index = 0; branch_index < m_temp_queue_top.p_rtree_node->m_count; branch_index++) {
+
+				switch (input_argument.representation_option) {
+				case 1://MSPLA
+				case 6://ICDE07
+				case 8://Initial 200706
+					// APCA paper, min id == max id
+					temp_apla_pair.d_dist = APCA_KNN_QUAL::MINDISTQR(g_query_time_series, input_argument.point_multi_single_length, APCA_KNN_QUAL::getRegionG(m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_rect, fs_region_G));
+					//temp_apla_pair.d_dist = APCA_KNN_QUAL::MINDISTQR(reconstruct_query_time_series_vector, input_argument.point_multi_single_length, APCA_KNN_QUAL::getRegionG(m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_rect, fs_region_G));
+					break;
+				case 2://PLA
+					/*-----------------*/
+					temp_apla_pair.d_dist = PLA_QUAL::getPLAMBRDistance(input_argument, m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_rect, PLA_query, temp_apla_pair.d_dist);
+					/*-----------------*/
+					break;
+				case 3://APCA
+				case 4://PAA
+				case 7://PAALM
+				case 9://SAX
+					// APCA paper, min id == max id
+					/*-----------------*/
+					temp_apla_pair.d_dist = APCA_KNN_QUAL::MINDISTQR(g_query_time_series, input_argument.point_multi_single_length, APCA_KNN_QUAL::getRegionG(m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_rect, fs_region_G));
+					/*-----------------*/
+					break;
+				case 5://CHEBY
+					assert(0);
+					break;
+				default:
+					assert(0);
+					break;
+				}
+				temp_apla_pair.p_rtree_node = m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_child;
+				queue.push(temp_apla_pair);
+			}
+			APCA_KNN_QUAL::deleteREGION(fs_region_G);
+			input_argument.knn_CPU_time += TOOL::recordFinishTime(TOOL::time_record[1]);//210603
+		}
+		else {
+			assert(0);
+		}
+	}
+	/*=====================================================================================================================================================================================================================================================================================================================*/
+
+	/*========================Evaluation==========================================*/
+	input_argument.knn_total_time += TOOL::recordFinishTime(TOOL::time_record[2]);
+	input_argument.knn_total_time_has_IO += TOOL::recordFinishTime(TOOL::time_record[15]);
+	input_argument.whole_run_time += TOOL::recordFinishTime(TOOL::time_record[14]);
+	input_argument.whole_run_time_has_IO += TOOL::recordFinishTime(TOOL::time_record[16]);
+	//assert(input_argument.pruning_power > 0);
+	input_argument.pruning_power = 1;//200929
+	/*============================================================================*/
+
+	/*................................................................................................................................*/
+#ifdef _DEBUG 
+	cout << "??????? " << name_representation_vector[input_argument.representation_option - 1] << " FAIL    ???????????" << endl;
+	cout << "result.size: " << result_vector.size() << endl;
+	TOOL::printInputArgument(input_argument);
+	TOOL::print_input_argument_KNN_result(input_argument);
+	cout << "?????????????????????????????????????????????????????????????????????????????" << endl;
+#endif
+	/*................................................................................................................................*/
+
+	//assert(0);
+	priority_queue<MULTI::RTREE_NODE_PAIR<double, int, U::Node>, vector<MULTI::RTREE_NODE_PAIR<double, int, U::Node>>, MULTI::priorityIncrement<MULTI::RTREE_NODE_PAIR<double, int, U::Node>>>().swap(queue);
+	//temp.clear();
+	//list <APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR>().swap(temp);
+
+	//f_temp_APLA_Pair.approximation_pointer = nullptr;
+	//f_APLA_Root.approximation_pointer = nullptr;
+
+	//for (typename list<APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR>::iterator it = result.begin(); it != result.end(); ++it) {
+	//	//cout << it->d_dist << ", " << it->original_time_series_id << "; ";
+	//	result_set.emplace(make_pair(it->d_dist, it->original_time_series_id));
+	//}
+	/*for (int order_result = 0; order_result < result_vector.size(); order_result++) {
+		result_set.emplace(make_pair(result_vector[order_result].d_dist, result_vector[order_result].original_time_series_id));
+	}*/
+
+	for (auto&& au : result_vector) {
+		result_set.emplace(make_pair(au.d_dist, au.original_time_series_id));
+	}
+
+	assert(result_set.size() <= input_argument.K);
+	//result.clear();
+	//list <APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR>().swap(result);
+	result_vector.clear();
+	result_vector.shrink_to_fit();
+
+	switch (input_argument.representation_option) {
+	case 1://MSPLA
+	case 6: //ICDE07
+	case 8:
+		break;
+	case 2: {//PLA
+		PLA_QUAL::deletePLA(PLA_query);
+		break;
+	}
+	case 3://APCA
+		temp_list_query.clear();
+		break;
+	case 5://CHEBY
+		assert(0);
+		break;
+	case 4://PAA
+	case 7://PAALM
+	case 9://SAX
+		APCA_QUAL::deleteAPCA(query_APCA);
+		break;
+	default:
+		assert(0);
+		break;
+	}
+
+	return result_set;
+}
+
+//211227 for convex hull index
+TEMPLATE
+template<typename T, typename Y, typename U>
+std::multiset<pair<double, int>>  MULTI::all_knn_multi_211227(typename TOOL::DATA_SOURCE& const data_source, typename TOOL::INPUT_ARGUMENT& const input_argument, const vector<Y>& const multi_y_projection_argument, DataType*& g_query_time_series, const U& const apcaRTree, T& const approximation_array) {
+	/*..........................................................................................................*/
+#ifdef _DEBUG
+	assert(input_argument.file_id != INF && input_argument.K <= input_argument.point_number && input_argument.time_series_length != INF && input_argument.point_number != INF && input_argument.arity_d != INF && input_argument.K != INF);
+	assert(input_argument.time_series_length == input_argument.point_multi_single_length);
+	assert(input_argument.point_dimension == input_argument.point_multi_single_dimension);
+	assert(apcaRTree.m_root->m_level > 0);
+	const vector<string> name_representation_vector{ "MSPLA KNN","PLA KNN","APCA KNN","PAA KNN","CHEBY KNN","ICDE07 KNN","PAALM KNN","Initial 200706 KNN","SAX KNN", "Linear Scan KNN" };
+	cout << name_representation_vector[input_argument.representation_option - 1] << ":" << endl;
+	assert(apcaRTree.m_root->m_count > 0);
+#endif
+	/*..........................................................................................................*/
+
+	/*-------------------------      Evaluation  ---------------------------------*/
+	input_argument.knn_total_time = 0.0;
+	input_argument.knn_CPU_time = 0.0;
+	input_argument.knn_total_time_has_IO = 0.0;//210606
+	input_argument.IO_cost = 0;// measure I/O cost
+	input_argument.pruning_power = 0;
+	/*----------------------------------------------------------------------------*/
+
+	/*-------------------------------------change pointer array to vector array--------------------------------*/
+	//int multi_to_single_series_length = input_argument.time_series_length * input_argument.arity_d;
+	int multi_to_single_series_length = input_argument.time_series_length;
+	vector<DataType> query_time_series_vector;
+	query_time_series_vector.resize(multi_to_single_series_length, INF);
+	std::copy_n(g_query_time_series, multi_to_single_series_length, query_time_series_vector.begin());
+
+	vector<DataType> reconstruct_query_time_series_vector;
+	reconstruct_query_time_series_vector.resize(multi_to_single_series_length, INF);
+	/*---------------------------------------------------------------------------------------------------------*/
+
+	/*=======================================Evaluation: plot & bar chart=======================================================*/
+#ifdef _DEBUG
+	//g_n_account_apca_point = 0;
+	input_argument.navigate_index_time = 0.0;// navigate time
+	input_argument.distance_lowbound_time = 0.0; // distance chebyshev, PLA, APCA time
+	input_argument.distance_euc_time = 0.0;// distance euclidean time
+#endif
+	/*===========================================================================================================================*/
+
+	/**/
+	typename APCA_QUAL::APCA query_APCA;
+	SaxQuantizer::SAX sax(input_argument.point_dimension);
+	//APCA_QUAL::getAPCAPoint(g_query_time_series, input_argument.time_series_length, input_argument.point_dimension, query_APCA);
+	typename PLA_QUAL::PLA PLA_query;
+	DoublyLinkedList<APLA::AREA_COEFFICIENT_SPEED_NO_MINMAX> temp_list_query;
+	/**/
+
+	/*========================================!!!!!!!!!!!   MSPLA & ICDE07 Variable construct=================================================================*/
+
+	DoublyLinkedList<APLA::AREA_COEFFICIENT_SPEED_NO_MINMAX> query_linked_list = DoublyLinkedList<APLA::AREA_COEFFICIENT_SPEED_NO_MINMAX>();
+	switch (input_argument.representation_option) {
+	case 1://MSPLA
+	//APLA_ICDE07<DataType>::getAPLA_ICDE07(input_argument, normalized_series_vector, apla_array_vector[point_id]);
+	case 6: //ICDE07
+	case 8: {//Initial 200706
+
+		query_linked_list.copy(apla_array_vector[input_argument.query_time_series_id]);
+		APLA::getAPLAReconstructSeries(query_linked_list, reconstruct_query_time_series_vector);
+
+		/*......................................*/
+#ifdef _DEBUG
+		assert(query_linked_list.size() == apla_array_vector[input_argument.query_time_series_id].size());
+		for (int segment_id = 0; segment_id < query_linked_list.size(); segment_id++) {
+			const auto& const query_segment = query_linked_list[segment_id];
+			const auto& const array_segment = apla_array_vector[input_argument.query_time_series_id][segment_id];
+			//cout <<"!!!!!!!!!!!!" <<query_segment.right_endpoint << ", "<<array_segment.right_endpoint << endl;
+			assert(query_segment.right_endpoint == array_segment.right_endpoint);
+			assert(query_segment.right_endpoint != INF && query_segment.right_endpoint >= 0 && query_segment.right_endpoint < input_argument.point_multi_single_length);
+		}
+#endif
+		/*......................................*/
+
+		break;
+	}
+	case 2: {//PLA
+		PLA_QUAL::initialPLA(PLA_query, input_argument.point_multi_single_dimension);//????????180918 , this multi ot single has problem
+		PLA_QUAL::getPLA(input_argument.point_multi_single_length, input_argument.point_multi_single_dimension, g_query_time_series, PLA_query);
+		break;
+	}
+	case 3://APCA
+		transfer_apca_to_sapla(input_argument.point_dimension, apca_point_array[input_argument.query_time_series_id], temp_list_query);
+		/*......................................*/
+#ifdef _DEBUG
+		APLA::assert_endpoint_average(query_time_series_vector, temp_list_query);
+#endif
+		/*......................................*/
+		break;
+	case 4://PAA
+		APCA_QUAL::initialAPCA(query_APCA, input_argument.point_dimension);
+		APCA_QUAL::divideRemainderPAA(g_query_time_series, query_APCA, input_argument.time_series_length, input_argument.point_dimension);
+		break;
+	case 5://CHEBY
+		assert(0);
+		break;
+	case 7://PAALM
+		APCA_QUAL::initialAPCA(query_APCA, input_argument.point_dimension);
+		APCA_QUAL::divideRemainderPAA(g_query_time_series, query_APCA, input_argument.time_series_length, input_argument.point_dimension);
+		APCA_QUAL::get_paa_lagrangian(query_APCA);
+		break;
+	case 9: {//SAX
+		APCA_QUAL::initialAPCA(query_APCA, input_argument.point_dimension);
+		sax.get_SAX(query_time_series_vector, input_argument.point_dimension, query_APCA);
+		break;
+	}
+	default:
+		assert(0);
+		break;
+	}
+	/*=======================================================================================================================================================*/
+	/*========================================!!!!!!!!!!!   APLA & ICDE07 Variable construct=================================================================*/
+	int i = NULL, j = NULL;
+	priority_queue<RTREE_NODE_PAIR<double, int, U::Node>, vector<MULTI::RTREE_NODE_PAIR<double, int, U::Node>>, MULTI::priorityIncrement<MULTI::RTREE_NODE_PAIR<double, int, U::Node>>> queue;// <Rtree node, distance>
+	MULTI::RTREE_NODE_PAIR<double, int, U::Node> f_APLA_Root, f_temp_APLA_Pair;// distance, APCA point(original time series) id, APCA point pointer, Rtree sub node pointer
+	//list<APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR> temp; // <dist, original time series id>
+	//list<APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR> result;// <dist, original time series id>
+	std::multiset<pair<double, int>> result_set;//191204 result set small to big
+	vector<APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR> result_vector;//211207
+	priority_queue<typename APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR, vector<typename APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR>, MULTI::priorityIncrement<typename APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR>> temp_queue;//191204 result
+	typename APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR tempOriginalTimeSeriesPair; // <dist, original time series id>
+	MULTI::RTREE_NODE_PAIR<double, int, U::Node> m_temp_queue_top;//
+	vector<DataType> original_time_series_vector;
+	
+	/*==========================================================================================================================================*/
+	/*-------------------------Evaluation Time----------------------------*/
+	TOOL::recordStartTime(TOOL::time_record[14]); //whole time
+	TOOL::recordStartTime(TOOL::time_record[16]); //whole time has IO
+	TOOL::recordStartTime(TOOL::time_record[2]);//knn time
+	TOOL::recordStartTime(TOOL::time_record[15]);//knn has IO time 210606
+	/*---------------------------------------------------------------------*/
+
+	/*========================================== Variable Initial ===============================================================*/
+	f_APLA_Root.p_rtree_node = apcaRTree.m_root;
+	f_APLA_Root.d_dist = 0;
+	queue.push(f_APLA_Root);
+	//cout << "Queue.top = " << queue.top().key << " " << queue.size() << " " << queue.top().APCAValue << " " << queue.top().id_originalTimeSeries << " " << queue.top().value << endl;
+	//printf("<///////**    KNN Begin   **////////>\n");
+	/*===========================================================================================================================*/
+
+	/*========================================================================================Begin K-NN=======================================================================================================================================*/
+	while (!queue.empty()) {
+
+		m_temp_queue_top = queue.top();
+		/*===========================================================================Scan temp to get reuslt=========================================================================================================*/
+
+		while (!temp_queue.empty() && temp_queue.top().d_dist <= m_temp_queue_top.d_dist) {
+			result_vector.emplace_back(temp_queue.top());
+
+			if (input_argument.K == result_vector.size()) {
+				/*-------------------------Evaluation ---------------------------------*/
+				input_argument.knn_total_time += TOOL::recordFinishTime(TOOL::time_record[2]);
+				input_argument.knn_total_time_has_IO += TOOL::recordFinishTime(TOOL::time_record[15]);//210606
+				input_argument.whole_run_time += TOOL::recordFinishTime(TOOL::time_record[14]);
+				input_argument.whole_run_time_has_IO += TOOL::recordFinishTime(TOOL::time_record[16]);//210606
+				assert(input_argument.IO_cost != 0 && input_argument.point_number != INF);
+				input_argument.pruning_power = input_argument.IO_cost / double(input_argument.point_number);
+				assert(input_argument.pruning_power > 0);//&& input_argument.pruning_power < 1);//210603
+				/*---------------------------------------------------------------------*/
+
+				/*..........................................................................................................*/
+#ifdef _DEBUG
+				/*-------------------------------       Print Result       ---------------------------------*/
+				cout << "-------------      " << name_representation_vector[input_argument.representation_option - 1] << " SUCCESSFUL            ----------------" << endl;
+				TOOL::printInputArgument(input_argument);
+				TOOL::print_input_argument_KNN_result(input_argument);
+				cout << "-----------------------------------------------" << endl;
+				//result.sort([](const APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR& first, const  APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR& second) {return first.d_dist < second.d_dist; });//small to big
+#endif
+				/*..........................................................................................................*/
+
+				//for (typename list<APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR>::iterator it = result.begin(); it != result.end(); ++it) {
+				//	//cout << it->d_dist << ", " << it->original_time_series_id << "; ";
+				//	result_set.emplace(make_pair(it->d_dist, it->original_time_series_id));
+				//}
+				/*for (int order_result = 0; order_result < input_argument.K; order_result++) {
+					result_set.emplace(make_pair(result_vector[order_result].d_dist, result_vector[order_result].original_time_series_id));
+				}*/
+
+				for (auto&& au : result_vector) {
+					result_set.emplace(make_pair(au.d_dist, au.original_time_series_id));
+				}
+
+				assert(result_set.size() == input_argument.K && result_vector.size() == input_argument.K);
+				//cout << endl;
+				/*--------------------------------------------------------------------------------------------*/
+				/*--------------------------------------     Clear memory    -----------------------------------------------*/
+
+				priority_queue< MULTI::RTREE_NODE_PAIR<double, int, U::Node>, vector<MULTI::RTREE_NODE_PAIR<double, int, U::Node>>, MULTI::priorityIncrement<MULTI::RTREE_NODE_PAIR<double, int, U::Node>>>().swap(queue);
+
+				//temp.clear();
+				//result.clear();
+				//list <APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR>().swap(temp);
+				//list <APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR>().swap(result);
+				result_vector.clear();
+				result_vector.shrink_to_fit();
+
+				switch (input_argument.representation_option) {
+				case 1://MSPLA
+				case 6: //ICDE07
+				case 8:
+					break;
+				case 2: {//PLA
+					PLA_QUAL::deletePLA(PLA_query);
+					break;
+				}
+				case 3://APCA
+					temp_list_query.clear();
+					break;
+				case 5://CHEBY
+					assert(0);
+					break;
+				case 4://PAA
+				case 7://PAALM
+				case 9://SAX
+					APCA_QUAL::deleteAPCA(query_APCA);
+					break;
+				default:
+					assert(0);
+					break;
+				}
+
+				/*---------------------------------------------------------------------------------------------------------*/
+				return result_set;
+			}
+			temp_queue.pop();
+		}
+
+		/*==========================================================================================================================================================================*/
+		/*==Pop top node ine queue==*/
+		queue.pop();
+		/*==========================*/
+
+		/*====================================================================== Check APLA point ==================================================================================*/
+
+		if (m_temp_queue_top.p_rtree_node == nullptr) { //is Approximation data point
+			/*------------------------------------------------get original time series from database (file)----------------------------------------------*/
+
+			tempOriginalTimeSeriesPair.original_time_series_id = m_temp_queue_top.original_time_series_id;//get top queue time sereis id.
+
+			/*..........................................................................................................*/
+#ifdef _DEBUG
+			assert(input_argument.time_series_length == data_source.multi_single_time_series_length && input_argument.read_file_name == data_source.read_file_address);
+#endif
+			/*..........................................................................................................*/
+			input_argument.knn_total_time += TOOL::recordFinishTime(TOOL::time_record[2]);//210603
+			input_argument.whole_run_time += TOOL::recordFinishTime(TOOL::time_record[14]);
+			TOOL::read_normalized_multi_time_series(data_source, m_temp_queue_top.original_time_series_id, original_time_series_vector);
+			TOOL::recordStartTime(TOOL::time_record[14]); //whole time
+			TOOL::recordStartTime(TOOL::time_record[2]);//knn time
+			//			//already normalized
+			//			TOOL::getMultiFoldToSingleByID(data_source.read_file_address_vector, data_source.time_series_dimension, data_source.single_time_series_length, m_temp_queue_top.original_time_series_id, original_time_series_vector);
+			/*--------------------------------------------------------------------------------------------------------------------------------------------*/
+
+			/*===============Evaluation==============*/
+			input_argument.IO_cost++;
+			/*=======================================*/
+
+			/*------------------------------------------------compute Euclidean distance from query times and candidate original time series-----------------------------------------*/
+			TOOL::recordStartTime(TOOL::time_record[1]);//CPU time
+			tempOriginalTimeSeriesPair.d_dist = TOOL::distanceEUC(query_time_series_vector, original_time_series_vector);
+			input_argument.knn_CPU_time += TOOL::recordFinishTime(TOOL::time_record[1]);//210603
+			//temp.push_back(tempOriginalTimeSeriesPair);
+			//temp_set.emplace(make_pair(tempOriginalTimeSeriesPair.d_dist, tempOriginalTimeSeriesPair.original_time_series_id));
+			temp_queue.push(tempOriginalTimeSeriesPair);
+			/*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+		/*============================================================================================================================================================================*/
+		}
+		else if (m_temp_queue_top.p_rtree_node->IsLeaf()) {//is Leaf Node  tempQueueTop.value->IsLeaf() || tempQueueTop.swith==1
+			/*====================================================================== Check Leaf Node, insert APCA point into queue===============================================================================*/
+
+			/*................................................*/
+#ifdef _DEBUG
+			assert(apcaRTree.NUMDIMS / 2 == input_argument.point_dimension && m_temp_queue_top.p_rtree_node->m_count > 0);
+#endif
+			/*................................................*/
+
+			typename APCA_QUAL::APCA QProjection;
+			APCA_QUAL::initialAPCA(QProjection, input_argument.point_dimension);
+			vector<APLA::AREA_COEFFICIENT_SPEED_NO_MINMAX> query_apla_projection_vector(input_argument.point_dimension);
+
+
+			/*-----------------------------------------------------------------------queue: insert leaf node. compute distance LB--------------------------------------------------------------------------------------------*/
+
+			TOOL::recordStartTime(TOOL::time_record[1]);//CPU time
+			f_temp_APLA_Pair.p_rtree_node = nullptr;
+
+			for (int i = 0; i < m_temp_queue_top.p_rtree_node->m_count; i++) {// scan sub node in Rtree
+
+				/*-----------------------------------------get ACPA(origitnal time series) point & id----------------------------------------------------*/
+				f_temp_APLA_Pair.original_time_series_id = int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data);// get APCA(original time series) id
+				//f_temp_APLA_Pair.approximation_pointer = &apla_array_vector[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)];// pointer to APCA point
+				/*----------------------------------------------------------------------------------------------------------------------------------------*/
+
+				switch (input_argument.representation_option) {
+				case 1://MSPLA
+				case 6: //ICDE07
+				case 8: {//Initial 200706
+
+					switch (input_argument.option_tree_struct.type_tree) {
+					case 0: {// R-Tree
+						/*-------210511 PAA APCA version has projection of query time series -----------*/
+						f_temp_APLA_Pair.d_dist = APLA::get_distance_LB(apla_array_vector[f_temp_APLA_Pair.original_time_series_id], APLA::get_apla_projection(query_time_series_vector, apla_array_vector[f_temp_APLA_Pair.original_time_series_id], query_apla_projection_vector));
+						/*------------------------------------------------------------------------------*/
+						break;
+					}
+					case 1: {// Partition Tree
+						/*-------210511 PAA APCA version has projection of query time series -----------*/
+						input_argument.knn_CPU_time += TOOL::recordFinishTime(TOOL::time_record[1]);//210603
+						input_argument.knn_total_time += TOOL::recordFinishTime(TOOL::time_record[2]);//210603
+						input_argument.whole_run_time += TOOL::recordFinishTime(TOOL::time_record[14]);
+						TOOL::read_normalized_multi_time_series(data_source, f_temp_APLA_Pair.original_time_series_id, original_time_series_vector);
+						TOOL::recordStartTime(TOOL::time_record[14]); //whole time
+						TOOL::recordStartTime(TOOL::time_record[2]);//knn time
+						TOOL::recordStartTime(TOOL::time_record[1]);
+						long double pruning_power_distance = 0;//210603
+						/*-------------------  ---------------------------------*/
+						f_temp_APLA_Pair.d_dist = APLA::get_distance_SAPLA(query_time_series_vector, original_time_series_vector, apla_array_vector[input_argument.query_time_series_id], apla_array_vector[f_temp_APLA_Pair.original_time_series_id], pruning_power_distance);
+						/*----------------------------------------------------*/
+						/*===============Evaluation==============*/
+						//input_argument.IO_cost += pruning_power_distance;
+						/*=======================================*/
+						/*------------------------------------------------------------------------------*/
+						break;
+					}
+					case 2: {// Partition Tree
+				  /*-------210511 PAA APCA version has projection of query time series -----------*/
+						input_argument.knn_CPU_time += TOOL::recordFinishTime(TOOL::time_record[1]);//210603
+						input_argument.knn_total_time += TOOL::recordFinishTime(TOOL::time_record[2]);//210603
+						input_argument.whole_run_time += TOOL::recordFinishTime(TOOL::time_record[14]);
+						TOOL::read_normalized_multi_time_series(data_source, f_temp_APLA_Pair.original_time_series_id, original_time_series_vector);
+						TOOL::recordStartTime(TOOL::time_record[14]); //whole time
+						TOOL::recordStartTime(TOOL::time_record[2]);//knn time
+						TOOL::recordStartTime(TOOL::time_record[1]);
+						long double pruning_power_distance = 0;//210603
+						/*-------------------  ---------------------------------*/
+						f_temp_APLA_Pair.d_dist = APLA::get_distance_SAPLA(query_time_series_vector, original_time_series_vector, apla_array_vector[input_argument.query_time_series_id], apla_array_vector[f_temp_APLA_Pair.original_time_series_id], pruning_power_distance);
+						/*----------------------------------------------------*/
+						/*===============Evaluation==============*/
+						//input_argument.IO_cost += pruning_power_distance;
+						/*=======================================*/
+						/*------------------------------------------------------------------------------*/
+						break;
+					}
+					default:
+						assert(0);
+					}
+
+					break;
+				}
+				case 2://PLA
+					f_temp_APLA_Pair.d_dist = PLA_QUAL::getPLADistance(input_argument.point_multi_single_length, pla_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)], PLA_query, f_temp_APLA_Pair.d_dist);
+					break;
+				case 3://APCA
+					switch (input_argument.option_tree_struct.type_tree) {
+					case 0: {// R-Tree
+						//f_temp_APLA_Pair.d_dist = APCA_KNN_QUAL::distanceAE(query_time_series_vector, input_argument.time_series_length, apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)]);
+						f_temp_APLA_Pair.d_dist = APCA_KNN_QUAL::distanceLB(APCA_KNN_QUAL::QAPCAProjection(g_query_time_series, input_argument.time_series_length, apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)], QProjection), apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)]);
+						break;
+					}
+					case 1: {// Partition Tree
+						/*-------210511 PAA APCA version has projection of query time series -----------*/
+						input_argument.knn_CPU_time += TOOL::recordFinishTime(TOOL::time_record[1]);
+						input_argument.knn_total_time += TOOL::recordFinishTime(TOOL::time_record[2]);//210603
+						input_argument.whole_run_time += TOOL::recordFinishTime(TOOL::time_record[14]);
+						TOOL::read_normalized_multi_time_series(data_source, f_temp_APLA_Pair.original_time_series_id, original_time_series_vector);
+
+						DoublyLinkedList<APLA::AREA_COEFFICIENT_SPEED_NO_MINMAX> temp_list;
+
+						transfer_apca_to_sapla(input_argument.point_dimension, apca_point_array[f_temp_APLA_Pair.original_time_series_id], temp_list);
+						TOOL::recordStartTime(TOOL::time_record[14]); //whole time
+						TOOL::recordStartTime(TOOL::time_record[2]);//knn time
+						TOOL::recordStartTime(TOOL::time_record[1]);
+
+						/*......................................*/
+#ifdef _DEBUG
+						APLA::assert_endpoint_average(original_time_series_vector, temp_list);
+#endif
+						/*......................................*/
+
+						long double pruning_power_distance = 0;//210603
+						f_temp_APLA_Pair.d_dist = APLA::get_distance_SAPLA_average(query_time_series_vector, original_time_series_vector, temp_list_query, temp_list, pruning_power_distance);
+						//f_temp_APLA_Pair.d_dist = APLA::get_distance_SAPLA(query_time_series_vector, f_temp_APLA_Pair.original_time_series_id, data_source.read_file_address_vector[0], apla_array_vector[input_argument.query_time_series_id], apla_array_vector[f_temp_APLA_Pair.original_time_series_id], pruning_power_distance);
+						/*===============Evaluation==============*/
+						//input_argument.IO_cost += pruning_power_distance;
+						/*=======================================*/
+						temp_list.clear();
+						/*------------------------------------------------------------------------------*/
+						break;
+					}
+					case 2: {// Partition Tree
+				  /*-------210511 PAA APCA version has projection of query time series -----------*/
+						input_argument.knn_CPU_time += TOOL::recordFinishTime(TOOL::time_record[1]);
+						input_argument.knn_total_time += TOOL::recordFinishTime(TOOL::time_record[2]);//210603
+						input_argument.whole_run_time += TOOL::recordFinishTime(TOOL::time_record[14]);
+						TOOL::read_normalized_multi_time_series(data_source, f_temp_APLA_Pair.original_time_series_id, original_time_series_vector);
+
+						DoublyLinkedList<APLA::AREA_COEFFICIENT_SPEED_NO_MINMAX> temp_list;
+
+						transfer_apca_to_sapla(input_argument.point_dimension, apca_point_array[f_temp_APLA_Pair.original_time_series_id], temp_list);
+						TOOL::recordStartTime(TOOL::time_record[14]); //whole time
+						TOOL::recordStartTime(TOOL::time_record[2]);//knn time
+						TOOL::recordStartTime(TOOL::time_record[1]);
+
+						/*......................................*/
+#ifdef _DEBUG
+						APLA::assert_endpoint_average(original_time_series_vector, temp_list);
+#endif
+						/*......................................*/
+
+						long double pruning_power_distance = 0;//210603
+						f_temp_APLA_Pair.d_dist = APLA::get_distance_SAPLA_average(query_time_series_vector, original_time_series_vector, temp_list_query, temp_list, pruning_power_distance);
+						//f_temp_APLA_Pair.d_dist = APLA::get_distance_SAPLA(query_time_series_vector, f_temp_APLA_Pair.original_time_series_id, data_source.read_file_address_vector[0], apla_array_vector[input_argument.query_time_series_id], apla_array_vector[f_temp_APLA_Pair.original_time_series_id], pruning_power_distance);
+						/*===============Evaluation==============*/
+						//input_argument.IO_cost += pruning_power_distance;
+						/*=======================================*/
+						temp_list.clear();
+						/*------------------------------------------------------------------------------*/
+						break;
+					}
+					default:
+						assert(0);
+					}
+					break;
+				case 4://PAA
+				case 7: {//PAALM
+					//f_temp_APLA_Pair.d_dist = APCA_KNN_QUAL::distanceAE(query_time_series_vector, input_argument.time_series_length, apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)]);
+					//f_temp_APLA_Pair.d_dist = APCA_KNN_QUAL::distanceLB(APCA_KNN_QUAL::QAPCAProjection(g_query_time_series, input_argument.time_series_length, apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)], QProjection), apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)]);
+					f_temp_APLA_Pair.d_dist = APCA_KNN_QUAL::distanceLB(query_APCA, apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)]);
+
+					break;
+				}
+				case 9: {//SAX
+					f_temp_APLA_Pair.d_dist = sax.distance_LB_SAX(query_APCA, apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[i].m_data)]);
+					break;
+				}
+				case 5:
+					assert(0);
+					break;
+				default:
+					assert(0);
+					break;
+				}
+				queue.push(f_temp_APLA_Pair);
+			}
+
+			input_argument.knn_CPU_time += TOOL::recordFinishTime(TOOL::time_record[1]);//210603
+			/*-------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+			/*------------------------------------------------------------------------Clear memory-------------------------------------------------------------------------------*/
+			APCA_QUAL::deleteAPCA(QProjection);
+			/*-------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+			/*============================================================================================================================================================================*/
+		}
+		else if (m_temp_queue_top.p_rtree_node->IsInternalNode()) {// Internal node
+#ifdef _DEBUG
+			assert(apcaRTree.NUMDIMS >> 1 == input_argument.point_dimension && input_argument.point_multi_single_length == input_argument.time_series_length);
+#endif
+
+			TOOL::recordStartTime(TOOL::time_record[1]);//CPU time
+			MULTI::RTREE_NODE_PAIR<double, int, U::Node> temp_apla_pair;
+			typename APCA_KNN_QUAL::REGION fs_region_G;
+			typename APCA_KNN_QUAL::initialREGION(fs_region_G, input_argument.point_dimension);
+			vector<APLA::AREA_COEFFICIENT_SPEED_NO_MINMAX> query_apla_projection_vector;
+
+			for (int branch_index = 0; branch_index < m_temp_queue_top.p_rtree_node->m_count; branch_index++) {
+
+				switch (input_argument.representation_option) {
+				case 1://MSPLA
+				case 6://ICDE07
+				case 8: {//Initial 200706
+
+					switch (input_argument.option_tree_struct.type_tree) { //0 R-Tree, 1 Partition Tree
+					case 2: {// Convex tree
+						long double distance_with_min = APLA::get_distance_LB(*m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_child->rectangle_in_node.rectangle_inter_node_struct.minmax_global_struct.list_partition_global_min_pointer, APLA::get_apla_projection(query_time_series_vector, *m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_child->rectangle_in_node.rectangle_inter_node_struct.minmax_global_struct.list_partition_global_min_pointer, query_apla_projection_vector));
+						long double distance_with_max = APLA::get_distance_LB(*m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_child->rectangle_in_node.rectangle_inter_node_struct.minmax_global_struct.list_partition_global_max_pointer, query_apla_projection_vector);
+						long double distance_convex = m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_child->rectangle_in_node.rectangle_inter_node_struct.minmax_global_struct.volume_minmax_whole_sqrt;
+						if (distance_with_min > distance_convex) {
+							if (distance_with_min > distance_with_max) temp_apla_pair.d_dist = distance_with_max;
+							else  temp_apla_pair.d_dist = distance_with_min;
+
+						}
+						else if (distance_with_max > distance_convex) {
+							if (distance_with_max > distance_with_min) temp_apla_pair.d_dist = distance_with_min;
+							else temp_apla_pair.d_dist = distance_with_max;
+						}
+						else {
+							temp_apla_pair.d_dist = 0;
+						}
+						break;
+					}
+					default: {
+						// APCA paper, min id == max id
+						temp_apla_pair.d_dist = APCA_KNN_QUAL::MINDISTQR(g_query_time_series, input_argument.point_multi_single_length, APCA_KNN_QUAL::getRegionG(m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_rect, fs_region_G));
+						//temp_apla_pair.d_dist = APCA_KNN_QUAL::MINDISTQR(reconstruct_query_time_series_vector, input_argument.point_multi_single_length, APCA_KNN_QUAL::getRegionG(m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_rect, fs_region_G));
+						break;
+					}
+					}
+					break;
+				}
+				case 2:{//PLA
+					/*-----------------*/
+					switch (input_argument.option_tree_struct.type_tree) { //0 R-Tree, 1 Partition Tree
+					case 2: {// Convex tree
+						long double distance_with_min = APLA::get_distance_LB(*m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_child->rectangle_in_node.rectangle_inter_node_struct.minmax_global_struct.list_original_min_pointer, APLA::get_apla_projection(query_time_series_vector, *m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_child->rectangle_in_node.rectangle_inter_node_struct.minmax_global_struct.list_original_min_pointer, query_apla_projection_vector));
+						long double distance_with_max = APLA::get_distance_LB(*m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_child->rectangle_in_node.rectangle_inter_node_struct.minmax_global_struct.list_original_max_pointer, query_apla_projection_vector);
+						long double distance_convex = m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_child->rectangle_in_node.rectangle_inter_node_struct.minmax_global_struct.volume_minmax_whole_sqrt;
+						if (distance_with_min > distance_convex) {
+							if (distance_with_min > distance_with_max) temp_apla_pair.d_dist = distance_with_max;
+							else  temp_apla_pair.d_dist = distance_with_min;
+
+						}
+						else if (distance_with_max > distance_convex) {
+							if (distance_with_max > distance_with_min) temp_apla_pair.d_dist = distance_with_min;
+							else temp_apla_pair.d_dist = distance_with_max;
+						}
+						else {
+							temp_apla_pair.d_dist = 0;
+						}
+						break;
+					}
+					default: {
+						// APCA paper, min id == max id
+						temp_apla_pair.d_dist = PLA_QUAL::getPLAMBRDistance(input_argument, m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_rect, PLA_query, temp_apla_pair.d_dist);
+						break;
+					}
+					}
+					/*-----------------*/
+					break;
+				}
+				case 3: {//APCA
+					switch (input_argument.option_tree_struct.type_tree) { //0 R-Tree, 1 Partition Tree
+					case 2: {// Convex tree
+						long double distance_with_min = APLA::get_distance_LB(*m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_child->rectangle_in_node.rectangle_inter_node_struct.minmax_global_struct.list_partition_global_min_pointer, APLA::get_apla_average_projection(query_time_series_vector, *m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_child->rectangle_in_node.rectangle_inter_node_struct.minmax_global_struct.list_partition_global_min_pointer, query_apla_projection_vector));
+						long double distance_with_max = APLA::get_distance_LB(*m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_child->rectangle_in_node.rectangle_inter_node_struct.minmax_global_struct.list_partition_global_max_pointer, query_apla_projection_vector);
+						long double distance_convex = m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_child->rectangle_in_node.rectangle_inter_node_struct.minmax_global_struct.volume_minmax_whole_sqrt;
+						if (distance_with_min > distance_convex) {
+							if (distance_with_min > distance_with_max) temp_apla_pair.d_dist = distance_with_max;
+							else  temp_apla_pair.d_dist = distance_with_min;
+
+						}
+						else if (distance_with_max > distance_convex) {
+							if (distance_with_max > distance_with_min) temp_apla_pair.d_dist = distance_with_min;
+							else temp_apla_pair.d_dist = distance_with_max;
+						}
+						else {
+							temp_apla_pair.d_dist = 0;
+						}
+						break;
+					}
+					default: {
+						// APCA paper, min id == max id
+						/*-----------------*/
+						temp_apla_pair.d_dist = APCA_KNN_QUAL::MINDISTQR(g_query_time_series, input_argument.point_multi_single_length, APCA_KNN_QUAL::getRegionG(m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_rect, fs_region_G));
+						/*-----------------*/
+						//temp_apla_pair.d_dist = APCA_KNN_QUAL::MINDISTQR(reconstruct_query_time_series_vector, input_argument.point_multi_single_length, APCA_KNN_QUAL::getRegionG(m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_rect, fs_region_G));
+						break;
+					}
+					}
+					break;
+				}
+				case 4://PAA
+				case 7: {//PAALM
+					// APCA paper, min id == max id
+					DoublyLinkedList<APLA::AREA_COEFFICIENT_SPEED_NO_MINMAX> temp_list_query_PAA;
+					transfer_apca_to_sapla(input_argument.point_dimension, apca_point_array[input_argument.query_time_series_id], temp_list_query_PAA);
+
+					switch (input_argument.option_tree_struct.type_tree) { //0 R-Tree, 1 Partition Tree
+					case 2: {// Convex tree
+						//APLA::get_distance_SAPLA_average(query_time_series_vector, original_time_series_vector, temp_list_query, temp_list, pruning_power_distance);
+						long double distance_with_min = APLA::get_sqrt_distance_sapla_same_endpoints(*m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_child->rectangle_in_node.rectangle_inter_node_struct.minmax_global_struct.list_original_min_pointer, temp_list_query_PAA);
+						long double distance_with_max = APLA::get_sqrt_distance_sapla_same_endpoints(*m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_child->rectangle_in_node.rectangle_inter_node_struct.minmax_global_struct.list_original_max_pointer, temp_list_query_PAA);
+						long double distance_convex = m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_child->rectangle_in_node.rectangle_inter_node_struct.minmax_global_struct.volume_minmax_whole_sqrt;
+						if (distance_with_min > distance_convex) {
+							if(distance_with_min > distance_with_max) temp_apla_pair.d_dist = distance_with_max;
+							else  temp_apla_pair.d_dist = distance_with_min;
+							
+						}
+						else if (distance_with_max > distance_convex) {
+							if (distance_with_max > distance_with_min) temp_apla_pair.d_dist = distance_with_min;
+							else temp_apla_pair.d_dist = distance_with_max;
+						}
+						else {
+							temp_apla_pair.d_dist = 0;
+						}
+						
+						break;
+					}
+					default: {
+						// APCA paper, min id == max id
+						/*-----------------*/
+						temp_apla_pair.d_dist = APCA_KNN_QUAL::MINDISTQR(g_query_time_series, input_argument.point_multi_single_length, APCA_KNN_QUAL::getRegionG(m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_rect, fs_region_G));
+						/*-----------------*/
+						//temp_apla_pair.d_dist = APCA_KNN_QUAL::MINDISTQR(reconstruct_query_time_series_vector, input_argument.point_multi_single_length, APCA_KNN_QUAL::getRegionG(m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_rect, fs_region_G));
+						break;
+					}
+					}
+					temp_list_query_PAA.clear();
+					break;
+				}
+				case 9: {//SAX
+					// APCA paper, min id == max id
+					DoublyLinkedList<APLA::AREA_COEFFICIENT_SPEED_NO_MINMAX> temp_list_query_SAX;
+					transfer_apca_to_sapla(input_argument.point_dimension, apca_point_array[input_argument.query_time_series_id], temp_list_query_SAX);
+					switch (input_argument.option_tree_struct.type_tree) { //0 R-Tree, 1 Partition Tree
+					case 2: {// Convex tree
+						/*long double distance_with_min = APLA::get_sqrt_distance_sapla_same_endpoints(*m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_child->rectangle_in_node.rectangle_inter_node_struct.minmax_global_struct.list_original_min_pointer, temp_list_query_SAX);
+						long double distance_with_max = APLA::get_sqrt_distance_sapla_same_endpoints(*m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_child->rectangle_in_node.rectangle_inter_node_struct.minmax_global_struct.list_original_max_pointer, temp_list_query_SAX);
+						long double distance_convex = m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_child->rectangle_in_node.rectangle_inter_node_struct.minmax_global_struct.volume_minmax_whole_sqrt;*/
+						long double distance_with_min = sax.distance_LB_SAX(query_APCA, apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_child->rectangle_in_node.rectangle_inter_node_struct.minmax_global_struct.seed_0)]);
+						long double distance_with_max = sax.distance_LB_SAX(query_APCA, apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_child->rectangle_in_node.rectangle_inter_node_struct.minmax_global_struct.seed_1)]);
+						long double distance_convex = sax.distance_LB_SAX(apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_child->rectangle_in_node.rectangle_inter_node_struct.minmax_global_struct.seed_0)], apca_point_array[int(m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_child->rectangle_in_node.rectangle_inter_node_struct.minmax_global_struct.seed_1)]);
+						
+						if (distance_with_min > distance_convex) {
+							if (distance_with_min > distance_with_max) temp_apla_pair.d_dist = distance_with_max;
+							else  temp_apla_pair.d_dist = distance_with_min;
+						}
+						else if (distance_with_max > distance_convex) {
+							if (distance_with_max > distance_with_min) temp_apla_pair.d_dist = distance_with_min;
+							else temp_apla_pair.d_dist = distance_with_max;
+						}
+						else {
+							temp_apla_pair.d_dist = 0;
+						}
+						break;
+					}
+					default: {
+						// APCA paper, min id == max id
+						/*-----------------*/
+						temp_apla_pair.d_dist = APCA_KNN_QUAL::MINDISTQR(g_query_time_series, input_argument.point_multi_single_length, APCA_KNN_QUAL::getRegionG(m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_rect, fs_region_G));
+						/*-----------------*/
+						//temp_apla_pair.d_dist = APCA_KNN_QUAL::MINDISTQR(reconstruct_query_time_series_vector, input_argument.point_multi_single_length, APCA_KNN_QUAL::getRegionG(m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_rect, fs_region_G));
+						break;
+					}
+					}
+					temp_list_query_SAX.clear();
+					break;
+				}
+				case 5://CHEBY
+					assert(0);
+					break;
+				default:
+					assert(0);
+					break;
+				}
+				temp_apla_pair.p_rtree_node = m_temp_queue_top.p_rtree_node->m_branch[branch_index].m_child;
+				queue.push(temp_apla_pair);
+			}
+			APCA_KNN_QUAL::deleteREGION(fs_region_G);
+			input_argument.knn_CPU_time += TOOL::recordFinishTime(TOOL::time_record[1]);//210603
+		}
+		else {
+			assert(0);
+		}
+	}
+	/*=====================================================================================================================================================================================================================================================================================================================*/
+
+	/*========================Evaluation==========================================*/
+	input_argument.knn_total_time += TOOL::recordFinishTime(TOOL::time_record[2]);
+	input_argument.knn_total_time_has_IO += TOOL::recordFinishTime(TOOL::time_record[15]);
+	input_argument.whole_run_time += TOOL::recordFinishTime(TOOL::time_record[14]);
+	input_argument.whole_run_time_has_IO += TOOL::recordFinishTime(TOOL::time_record[16]);
+	//assert(input_argument.pruning_power > 0);
+	input_argument.pruning_power = 1;//200929
+	/*============================================================================*/
+
+	/*................................................................................................................................*/
+#ifdef _DEBUG 
+	cout << "??????? " << name_representation_vector[input_argument.representation_option - 1] << " FAIL    ???????????" << endl;
+	cout << "result.size: " << result_vector.size() << endl;
+	TOOL::printInputArgument(input_argument);
+	TOOL::print_input_argument_KNN_result(input_argument);
+	cout << "?????????????????????????????????????????????????????????????????????????????" << endl;
+#endif
+	/*................................................................................................................................*/
+
+	//assert(0);
+	priority_queue<MULTI::RTREE_NODE_PAIR<double, int, U::Node>, vector<MULTI::RTREE_NODE_PAIR<double, int, U::Node>>, MULTI::priorityIncrement<MULTI::RTREE_NODE_PAIR<double, int, U::Node>>>().swap(queue);
+	//temp.clear();
+	//list <APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR>().swap(temp);
+
+	//f_temp_APLA_Pair.approximation_pointer = nullptr;
+	//f_APLA_Root.approximation_pointer = nullptr;
+
+	//for (typename list<APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR>::iterator it = result.begin(); it != result.end(); ++it) {
+	//	//cout << it->d_dist << ", " << it->original_time_series_id << "; ";
+	//	result_set.emplace(make_pair(it->d_dist, it->original_time_series_id));
+	//}
+	/*for (int order_result = 0; order_result < result_vector.size(); order_result++) {
+		result_set.emplace(make_pair(result_vector[order_result].d_dist, result_vector[order_result].original_time_series_id));
+	}*/
+
+	for (auto&& au : result_vector) {
+		result_set.emplace(make_pair(au.d_dist, au.original_time_series_id));
+	}
+
+	assert(result_set.size() <= input_argument.K);
+	//result.clear();
+	//list <APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR>().swap(result);
+	result_vector.clear();
+	result_vector.shrink_to_fit();
+
+	switch (input_argument.representation_option) {
+	case 1://MSPLA
+	case 6: //ICDE07
+	case 8:
+		break;
+	case 2: {//PLA
+		PLA_QUAL::deletePLA(PLA_query);
+		break;
+	}
+	case 3://APCA
+		temp_list_query.clear();
+		break;
+	case 5://CHEBY
+		assert(0);
+		break;
+	case 4://PAA
+	case 7://PAALM
+	case 9://SAX
+		APCA_QUAL::deleteAPCA(query_APCA);
+		break;
+	default:
+		assert(0);
+		break;
+	}
+
+	return result_set;
+}
+
 // Improve Index
 //************************************
 // Method:all_knn_multi_210512
@@ -4979,13 +6820,13 @@ std::multiset<pair<double, int>> MULTI::all_knn_multi_210512(typename TOOL::DATA
 	default:
 		assert(0);
 		break;
-	}
+}
 #endif
 	/*..........................................................................................................*/
 
 	/*-------------------------      Evaluation  ---------------------------------*/
 	input_argument.knn_total_time = 0.0;
-	input_argument.IO_cost = 0;// measure 
+	input_argument.IO_cost = 0;// measure I/O cost
 	input_argument.pruning_power = 0;
 	/*-------------------------------------------------------------------------------*/
 
@@ -5041,7 +6882,7 @@ std::multiset<pair<double, int>> MULTI::all_knn_multi_210512(typename TOOL::DATA
 			//cout <<"!!!!!!!!!!!!" <<query_segment.right_endpoint << ", "<<array_segment.right_endpoint << endl;
 			assert(query_segment.right_endpoint == array_segment.right_endpoint);
 			assert(query_segment.right_endpoint != INF && query_segment.right_endpoint >= 0 && query_segment.right_endpoint < input_argument.point_multi_single_length);
-		}
+	}
 #endif
 		/*......................................*/
 
@@ -5142,7 +6983,7 @@ std::multiset<pair<double, int>> MULTI::all_knn_multi_210512(typename TOOL::DATA
 
 				cout << "pruning power: " << input_argument.pruning_power << endl;
 
-				cout << ": " << input_argument.IO_cost << endl;
+				cout << "I/O cost: " << input_argument.IO_cost << endl;
 
 				result.sort([](const APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR& first, const  APCA_KNN_QUAL::ORIGINAL_TIME_SERIES_PAIR& second) {return first.d_dist < second.d_dist; });//small to big
 #endif
@@ -5477,7 +7318,7 @@ std::multiset<pair<double, int>> MULTI::all_knn_multi_210512(typename TOOL::DATA
 				queue.push(temp_apla_pair);
 			}
 			APCA_KNN_QUAL::deleteREGION(fs_region_G);
-		}
+	}
 		else {
 			assert(0);
 		}
@@ -5605,6 +7446,8 @@ void MULTI::print_result_each_time_series(const U& const input_argument, const v
 		assert(0);
 	}
 
+	cout << "Representation Time: " << result_record.representation_time << ", Sum Deviation: " << result_record.sum_deviation << endl;
+
 }
 
 //200930 Optimization KNN. Add APLA & ICDE07
@@ -5688,6 +7531,18 @@ void MULTI::print_result_each_time_series(const U& const input_argument, const v
 	}
 
 	cout << "Representation Time: " << result_record.representation_time << ", Sum Deviation: " << result_record.sum_deviation << endl;
+}
+
+//211206 asser parameter of linear scan
+TEMPLATE
+template<typename T, typename Y, typename U>
+void MULTI::assert_multi_series_vector_vector(const T& const size_time_series, const Y& const length_time_series, const U& const time_series_vector_vector) {
+	for (int od_query = 0; od_query < size_time_series; od_query++) {
+		assert(time_series_vector_vector[od_query].size() == length_time_series);
+		for (int array_id = 0; array_id < length_time_series; array_id++) {
+			assert(time_series_vector_vector[od_query][array_id] != INF);
+		}
+	}
 }
 
 #endif
