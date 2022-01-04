@@ -43,7 +43,6 @@ mkdir Code
 - Move **UCRArchive_2018** to Code folder
 - Switch to **Release** mode in VS2019.
 - Press **F5**.
-- input 0 for R-tree result, input 1 for updated R-tree result.
 
 ---
 ## Licence
