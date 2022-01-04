@@ -1488,7 +1488,7 @@ void Evaluation::evaluate_multi_KNN() {
 //				if (file_id == initial_file_od && K == initial_K) { N_coefficient_vector.emplace_back(N); }
 //				/*-----------------   representation method   ----------------------------------------------*/
 //				for (representation_option = 1; representation_option <= method_total_number; representation_option++) {// 1 MSPLA, 2 PLA, 3APCA, 4 PAA, 5 Chebyshev, 6 ICDE07, 7 PLALM
-//					/*------------------------------Initial N£º PAA & Cheby 12, APCA & PLA & PLALM 6, APLA & ICDE07 4-------------------------------------------------*/
+//					/*------------------------------Initial NÂ£Âº PAA & Cheby 12, APCA & PLA & PLALM 6, APLA & ICDE07 4-------------------------------------------------*/
 //					//representation_option = 5;
 //					//change_file = true;
 //					MULTI multi(data_source, n0, N, initial_N, file_id, change_file, data_source.time_series_dimension, data_source.point_number, query_time_series_id, max_node0, K, representation_option, file_address_pointer, chebyshev_write_pointer);
@@ -2028,7 +2028,7 @@ void Evaluation::evaluate_multi_KNN_speed(const T& const evaluation_argument_str
 		break;
 	case 2:// 2 real data set, heterogeneous(mixed) data.
 		n0 = 1024;
-		initial_N = 12;//single, mixed data£º 12, multi data: 24
+		initial_N = 12;//single, mixed dataÂ£Âº 12, multi data: 24
 		final_N = 192;//Default 384
 		point_number0 = 20;// for each file
 		final_K = 128;// Default 128.
@@ -2051,7 +2051,7 @@ void Evaluation::evaluate_multi_KNN_speed(const T& const evaluation_argument_str
 	case 3:// 3 multi dimension homogenous data.
 		//file_address_pointer = multi_dimension_file_name;
 		n0 = 295;//200
-		initial_N = 12;// Not multiple 3, this is final dimension for extended time serires length:= length * d .single, mixed data£º 12, multi data: 24
+		initial_N = 12;// Not multiple 3, this is final dimension for extended time serires length:= length * d .single, mixed dataÂ£Âº 12, multi data: 24
 		final_N = 192;
 		point_number0 = 300;//40
 		final_K = 128;//64,128
@@ -2248,11 +2248,6 @@ void Evaluation::evaluate_multi_KNN_speed(const T& const evaluation_argument_str
 	data_source.bigger_account = 0;
 	assert(data_source.point_number != INF && data_source.single_time_series_length != INF && data_source.multi_single_time_series_length != INF);
 	/*====================================================================================================================================================*/
-
-	/*================================       Query Time Series Vector       ====================================*/
-	
-	Result_Coefficient_Struct.id_query_series_vector = { 0,59,82,73,32,16,50,91,79,91,51,64,43,92,62,31,77,57,70,34,45,42,24,93,62,39,3,28,55,97,46,7,2,85,60,69,55,21,10,40,19,28,52,82,38,72,9,81,27,46 };//211204
-	Result_Coefficient_Struct.id_query_series_vector = { 0,1 };
 	TOOL::get_random_vector(size_query_time_series, point_number0, Result_Coefficient_Struct.id_query_series_vector);
 	/*-------  211220 Choose File id : Fills the range [first, last) with sequentially increasing values  --------*/
 	/*------------------------------------------------------------------------------------------------------------*/
@@ -2346,7 +2341,7 @@ void Evaluation::evaluate_multi_KNN_speed(const T& const evaluation_argument_str
 				/*|||||||||||||||||||||||||||||||||||||||||||||       Type of Approximation Methods        ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 				for (representation_option = 1; representation_option <= method_total_number; representation_option++) {// 1 MSPLA, 2 PLA, 3APCA, 4 PAA, 5 Chebyshev, 6 ICDE07
 
-					/*!!!!!!!!!!!!!!!!!!!!!!!!!!!         Initial N£º PAA & Cheby 12, APCA & PLA 6, APLA & ICDE07 4              !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+					/*!!!!!!!!!!!!!!!!!!!!!!!!!!!         Initial NÂ£Âº PAA & Cheby 12, APCA & PLA 6, APLA & ICDE07 4              !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
 					// Split Methods Evaluation
 					for (int split_method_id = 0; split_method_id < split_methods_number; split_method_id++) {
 						//representation_option = 5;
@@ -2433,7 +2428,7 @@ void Evaluation::evaluate_multi_KNN_speed(const T& const evaluation_argument_str
 							}
 
 							/*...................................        200219 split id evaluation        ....................................*/
-							// 1 min density,2 binary search,3  direct intersection£¬ 4 middle point and 5 best split point method.
+							// 1 min density,2 binary search,3  direct intersectionÂ£Â¬ 4 middle point and 5 best split point method.
 							APLA::get_split_coefficients(multi.input_argument, multi.output_argument, multi.input_argument.option_split_method, local_total_split_id_sum_deviation, local_total_split_id_shift, local_total_split_id_time, global_total_approximation_sum_deviation, global_total_approximation_time, global_total_knn_prune_power);
 							/*.................................................................................................................*/
 
@@ -2590,7 +2585,7 @@ void Evaluation::evaluate_multi_KNN_speed(const T& const evaluation_argument_str
 				//		approximation_initial_N_vector.emplace_back(initial_number_segment);
 				//	}
 				//	/*----------------------------------------------------------------------------------------------------------------------------------------*/
-				//	/*------------------------------Initial N£º PAA & Cheby 12, APCA & PLA 6, APLA & ICDE07 4-------------------------------------------------*/
+				//	/*------------------------------Initial NÂ£Âº PAA & Cheby 12, APCA & PLA 6, APLA & ICDE07 4-------------------------------------------------*/
 				//	//representation_option = 5;
 				//	//change_file = true;
 				//	representation_option = 1;//only evaluate SAPLA
