@@ -64,15 +64,6 @@ int main()
 	SYSTEM_INFO si;
 	GetSystemInfo(&si);
 
-	printf("The page size for this system is %u bytes.\n", si.dwPageSize);// page size is 4096 bytes
-	cout << "Size of DataType: " << sizeof(DataType) << " byte" << endl;//DataType 8 byte
-	cout << "Size of char: " << sizeof(char) << " byte" << endl;//1 byte
-	cout << "Size of int: " << sizeof(int) << " bytes" << endl;//4 byte
-	cout << "Size of float: " << sizeof(float) << " bytes" << endl;//4 byte
-	cout << "Size of double: " << sizeof(double) << " bytes" << endl;//8 byte
-	cout << "Size of long double: " << sizeof(long double) << " bytes" << endl;//8 byte
-
-
 	/*............................................................................*/
 #ifdef _DEBUG
 	cout << "Test Release.\n";
