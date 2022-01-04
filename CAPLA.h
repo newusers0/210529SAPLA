@@ -16577,7 +16577,7 @@ void APLA::optimization_segments_loop(U& const input_argument, const vector<T>& 
 TEMPLATE
 template<typename T, typename T1, typename Y, typename U, typename U1>
 void APLA::optimization_segments_loop_speed(U& const input_argument, const vector<T>& const original_time_series_vector, multimap<T1, DoublyListNode<Y>&, greater<T1>>& const split_area_difference_map, DoublyLinkedList<Y>& const doubly_linked_list, U1& const output_argument) {
-	/*..................................................................................................*/
+	/*.......................................................................f...........................*/
 #ifdef _DEBUG
 	assert(doubly_linked_list.size() == input_argument.point_dimension);
 	//assert(right_endpoint_segment_max_density_merge == right_endpoint_segment_max_area_difference);
