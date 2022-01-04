@@ -16581,7 +16581,7 @@ void APLA::optimization_segments_loop_speed(U& const input_argument, const vecto
 #ifdef _DEBUG
 	assert(doubly_linked_list.size() == input_argument.point_dimension);
 	//assert(right_endpoint_segment_max_density_merge == right_endpoint_segment_max_area_difference);
-	/*^^^^^^^^^^^^^^^        201217 Find Example      ^^^^^^^^^^^^^^^*/
+	/*^^^^^^^^^^^^^^^        201217 Find Example      ^^^^^^^^^^ ^^^^^*/
 	vector<int> initial_right_endpoint_vector;
 	for (auto&& au : doubly_linked_list) {
 		initial_right_endpoint_vector.emplace_back(au.right_endpoint);
