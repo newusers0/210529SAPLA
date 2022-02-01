@@ -1,5 +1,5 @@
-# An Indexable Time Series Dimensionality Reduction Method for Max Deviation Reduction and Similarity Search
-This repository contains VS2019 C++ implementation of the [SAPLA](https://sites.google.com/view/sapla0/home).
+<!-- An Indexable Time Series Dimensionality Reduction Method for Max Deviation Reduction and Similarity Search -->
+---This repository contains VS2019 C++ implementation of the [SAPLA](https://sites.google.com/view/sapla0/home).
 
 ## Introduction
 ```
