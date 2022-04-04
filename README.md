@@ -49,6 +49,8 @@ mkdir Code
 ```
 MIT
 ```
-<script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?d=nKKGs_Dv9bSraDGZCyYC8QdVlB4MHoRIaADH4j25WKE&cl=ffffff&w=a"></script>
 ---
+<script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?d=nKKGs_Dv9bSraDGZCyYC8QdVlB4MHoRIaADH4j25WKE&cl=ffffff&w=a">
+</script>
+
 
