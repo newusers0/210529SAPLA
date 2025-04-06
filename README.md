@@ -6,10 +6,10 @@ Xue, Ruidong, Weiren Yu, and Hongxia Wang. "An indexable time series dimensional
 BibTex:
 ```
 @inproceedings{xue2022indexable,
-  title={An indexable time series dimensionality reduction method for maximum deviation reduction and similarity search},//
-  author={Xue, Ruidong and Yu, Weiren and Wang, Hongxia},\\
-  booktitle={Proceedings of the 25th International Conference on Extending Database Technology (ACM EDBT’22)},/
-  volume={25},\
+  title={An indexable time series dimensionality reduction method for maximum deviation reduction and similarity search},
+  author={Xue, Ruidong and Yu, Weiren and Wang, Hongxia},
+  booktitle={Proceedings of the 25th International Conference on Extending Database Technology (ACM EDBT’22)},
+  volume={25},
   number={2},
   pages={183--195},
   year={2022},
