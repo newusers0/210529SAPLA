@@ -4,7 +4,7 @@
 Xue, Ruidong, Weiren Yu, and Hongxia Wang. "An indexable time series dimensionality reduction method for maximum deviation reduction and similarity search." Proceedings of the 25th International Conference on Extending Database Technology (ACM EDBT’22). Vol. 25. No. 2. Open Proceedings, 2022.
 
 BibTex:
-'''
+```
 @inproceedings{xue2022indexable,
   title={An indexable time series dimensionality reduction method for maximum deviation reduction and similarity search},//
   author={Xue, Ruidong and Yu, Weiren and Wang, Hongxia},\\
@@ -15,7 +15,7 @@ BibTex:
   year={2022},
   organization={Open Proceedings}
 }
-'''
+```
 
 ## Introduction
 ```
