@@ -1,6 +1,22 @@
 <!-- An Indexable Time Series Dimensionality Reduction Method for Max Deviation Reduction and Similarity Search -->
 ---This repository contains VS2019 C++ implementation of the [SAPLA](https://sites.google.com/view/sapla0/home).
 
+Xue, Ruidong, Weiren Yu, and Hongxia Wang. "An indexable time series dimensionality reduction method for maximum deviation reduction and similarity search." Proceedings of the 25th International Conference on Extending Database Technology (ACM EDBT’22). Vol. 25. No. 2. Open Proceedings, 2022.
+
+BibTex:
+
+@inproceedings{xue2022indexable,
+  title={An indexable time series dimensionality reduction method for maximum deviation reduction and similarity search},
+  author={Xue, Ruidong and Yu, Weiren and Wang, Hongxia},
+  booktitle={Proceedings of the 25th International Conference on Extending Database Technology (ACM EDBT’22)},
+  volume={25},
+  number={2},
+  pages={183--195},
+  year={2022},
+  organization={Open Proceedings}
+}
+
+
 ## Introduction
 ```
 This is implementation of SAPLA, APLA, APCA, PLA, PAA, CHEBY, PAALM, SAX, R-tree, updated R-tree, KNN.
